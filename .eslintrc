@@ -1,0 +1,11 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "comma-dangle": [2, "never"],
+    "max-len": [2, { "code": 120 }],
+    "no-param-reassign": ["error", { "props": false }],
+    "radix": [0],
+    "linebreak-style": [0],
+    "react/jsx-no-bind": "off"
+  }
+}
