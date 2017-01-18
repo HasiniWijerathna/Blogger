@@ -1,10 +1,13 @@
-import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
+import React, {Component} from 'react';
+import {browserHistory} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
-import { addBlog } from '../services/BlogService';
+import {addBlog} from '../services/BlogService';
 
+/**
+ * Represents the view logic of adding new blogs functionality
+ */
 class AddNewBlog extends Component {
 
   constructor(props) {
@@ -41,18 +44,18 @@ class AddNewBlog extends Component {
   }
 
   render() {
-    let onAddBlog = this.onAdd.bind(this);
-    let onChangeName = this.onChangeName.bind(this);
-    let onChangeAuthor = this.onChangeAuthor.bind(this);
+    const onAddBlog = this.onAdd.bind(this);
+    const onChangeName = this.onChangeName.bind(this);
+    const onChangeAuthor = this.onChangeAuthor.bind(this);
 
     return (
       <div>
         <p>New blog</p>
-          <TextField floatingLabelText="Name" value={this.state.blog.name} onChange={onChangeName} />
+        <TextField floatingLabelText="Name" value={this.state.blog.name} onChange={onChangeName} />
         <div>
           <TextField floatingLabelText="Author" value={this.state.blog.author} onChange={onChangeAuthor} />
         </div>
-          <RaisedButton label="Save" primary onClick={onAddBlog} />
+        <RaisedButton label="Save" primary onClick={onAddBlog} />
       </div>
     );
   }

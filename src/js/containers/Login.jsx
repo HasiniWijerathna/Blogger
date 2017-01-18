@@ -1,16 +1,23 @@
-import React, { Component } from 'react';
-import { GoogleLogin } from 'react-google-login-component';
-import { GridList, GridTile } from 'material-ui/GridList';
+import React, {Component} from 'react';
+import {GoogleLogin} from 'react-google-login-component';
+import {GridList, GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import axios from 'axios';
-import { browserHistory } from 'react-router';
+import {browserHistory} from 'react-router';
 
-import { setSession } from '../services/SessionService';
+import {setSession} from '../services/SessionService';
 
+/**
+ * Representing the logic of user login function
+ */
 class Login extends Component {
+  //
+  // static responseGoogle(googleUser) {
+  //   const idToken = googleUser.getAuthResponse().idToken;
+  // }
 
   constructor(props) {
     super(props);
@@ -24,8 +31,8 @@ class Login extends Component {
       nextPathname: pathname,
       user: {
         name: '',
-        password: ''
-      }
+        password: '',
+      },
     };
   }
 
@@ -36,7 +43,7 @@ class Login extends Component {
     user.name = newName;
 
     this.setState({
-      user
+      user,
     });
   }
 
@@ -47,20 +54,19 @@ class Login extends Component {
     user.password = newPassword;
 
     this.setState({
-      user
+      user,
     });
   }
 
   onConfirm() {
     axios.post('http://localhost:3000/auth/login', {
       username: this.state.user.name,
-      password: this.state.user.password
+      password: this.state.user.password,
     })
     .then((response) => {
-      const token = response.data.token;
       const session = {
         authenticated: true,
-        token: response.data.token
+        token: response.data.token,
       };
 
       setSession(session);
@@ -82,87 +88,89 @@ class Login extends Component {
     // });
   }
 
-  responseGoogle(googleUser) {
-    const idToken = googleUser.getAuthResponse().idToken;
-  }
 
   render() {
-    let onConfirm = this.onConfirm.bind(this);
-    let onChangeName = this.onChangeName.bind(this);
-    let onChangePassword = this.onChangePassword.bind(this);
+    const onConfirm = this.onConfirm.bind(this);
+    const onChangeName = this.onChangeName.bind(this);
+    const onChangePassword = this.onChangePassword.bind(this);
 
     const styles = {
       root: {
         display: 'flex',
         flexWrap: 'wrap',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
       },
       gridList: {
         display: 'flex',
         flexWrap: 'nowrap',
-        overflowX: 'auto'
+        overflowX: 'auto',
       },
       titleStyle: {
-        color: 'rgb(0,0,0)'
-      }
+        color: 'rgb(0,0,0)',
+      },
     };
 
     const tilesData = [
       {
         img: 'https://s0.wp.com/wp-content/themes/h4/i/features-2016/features-icon-blog-website.svg',
         title: 'Blog, website, or both',
-        author: 'Build a blog, a full website, or a combo.'
+        author: 'Build a blog, a full website, or a combo.',
       },
       {
         img: 'https://s0.wp.com/wp-content/themes/h4/i/features-2016/features-icon-plans.svg',
         title: 'Plans for any budget',
-        author: 'Start free. Upgrade for advanced customizing or business tools. Or stay free!'
+        author: 'Start free. Upgrade for advanced customizing or business tools. Or stay free!',
       },
       {
         img: 'https://s0.wp.com/wp-content/themes/h4/i/features-2016/features-icon-domains.svg',
         title: 'Add Custom domains',
-        author: 'Danson67'
-      }
+        author: 'Danson67',
+      },
     ];
     return (
 
 
-    <div>
-      <h1>Login</h1>
-       <div><center>
-       <GoogleLogin socialId="941519095950-s9379hsbftcc116mj1ubavvtojblft8d.apps.googleusercontent.com"
-         class="google-login"
-         scope="profile"
-         responseHandler={ this.responseGoogle }
-         buttonText="Login With Google"
-       />
-     </center>
-     </div>
-     <GridList cols={3.3}>
-       {tilesData.map((tile) => (
-         <GridTile
-           key={tile.img}
-           title={tile.title}
-           actionIcon={<IconButton><StarBorder color="rgb(0, 188, 212)" /></IconButton>}
-           titleStyle={styles.titleStyle}
-           titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 80%,rgba(0,0,0,0) 100%)"
-         >
-           <img src={tile.img} />
-         </GridTile>
-       ))}
-     </GridList>
       <div>
-        <TextField floatingLabelText="Username" value={this.state.user.name} onChange={onChangeName} />
-        <TextField floatingLabelText="Password" value={this.state.user.password} type='password' onChange={onChangePassword} />
-      <RaisedButton label="login" primary onClick={onConfirm} />
+        <h1>Login</h1>
+        <div><center>
+          <GoogleLogin
+            socialId="941519095950-s9379hsbftcc116mj1ubavvtojblft8d.apps.googleusercontent.com"
+            class="google-login"
+            scope="profile"
+            responseHandler={this.responseGoogle}
+            buttonText="Login With Google"
+          />
+        </center>
+        </div>
+        <GridList cols={3.3}>
+          {tilesData.map((tile) =>
+            <GridTile
+              key={tile.img}
+              title={tile.title}
+              actionIcon={<IconButton><StarBorder color="rgb(0, 188, 212)" /></IconButton>}
+              titleStyle={styles.titleStyle}
+              titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 80%,rgba(0,0,0,0) 100%)"
+            >
+              <img alt="logo" src={tile.img} />
+            </GridTile>
+          )}
+        </GridList>
+        <div>
+          <TextField floatingLabelText="Username" value={this.state.user.name} onChange={onChangeName} />
+          <TextField
+            floatingLabelText="Password"
+            value={this.state.user.password}
+            type="password" onChange={onChangePassword}
+          />
+          <RaisedButton label="login" primary onClick={onConfirm} />
+        </div>
       </div>
-
-    </div>
-  );
+    );
   }
 }
+
 Login.propTypes = {
-  location: React.PropTypes.object
+  location: React.PropTypes.object.isRequired,
 };
 
 export default Login;

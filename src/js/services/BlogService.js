@@ -1,5 +1,5 @@
 import {
-  findIndex
+  findIndex,
 } from 'lodash';
 
 /**
@@ -16,23 +16,23 @@ const blogs = [{
     content: 'Post 1 content',
     comments: [{
       id: 1,
-      comment: 'comment 1'
+      comment: 'comment 1',
     }, {
       id: 2,
-      comment: 'comment 2'
-    }]
+      comment: 'comment 2',
+    }],
   }, {
     id: 2,
     title: 'Post 2',
     content: 'Post 2 content',
     comments: [{
       id: 1,
-      comment: 'comment 3'
+      comment: 'comment 3',
     }, {
       id: 2,
-      comment: 'comment 4'
-    }]
-  }]
+      comment: 'comment 4',
+    }],
+  }],
 }, {
   id: 2,
   name: 'Pasange Wikara',
@@ -43,9 +43,9 @@ const blogs = [{
     content: 'Post 3 content',
     comments: [{
       id: 1,
-      comment: 'comment 4'
-    }]
-  }]
+      comment: 'comment 4',
+    }],
+  }],
 }];
 
 /**
@@ -61,9 +61,9 @@ const getAllBlogs = () => blogs;
  */
 /* (id) */
 
-const getBlogById = id => {
+const getBlogById = (id) => {
   const allBlogs = getAllBlogs();
-  const index = findIndex(allBlogs, blog => blog.id === id);
+  const index = findIndex(allBlogs, (blog) => blog.id === id);
 
   return allBlogs[index];
 };
@@ -76,7 +76,7 @@ const getBlogById = id => {
  */
 const getPostById = (blogId, postId) => {
   const blog = getBlogById(blogId);
-  const index = findIndex(blog.posts, post => post.id === postId);
+  const index = findIndex(blog.posts, (post) => post.id === postId);
 
   return blog.posts[index];
 };
@@ -115,4 +115,4 @@ const addBlog = (blog) => {
   allBlogs.push(blog);
 };
 
-export { getAllBlogs, getBlogById, getPostById, addPost, addBlog };
+export {getAllBlogs, getBlogById, getPostById, addPost, addBlog};

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router';
+import {Link} from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-const App = ({ children }) => (
+const App = ({children}) => (
   <MuiThemeProvider>
     <div>
       <header>
@@ -18,7 +18,7 @@ const App = ({ children }) => (
 );
 
 App.propTypes = {
-  children: React.PropTypes.object
+  children: React.PropTypes.element.isRequired,
 };
 
 export default App;

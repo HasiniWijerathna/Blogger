@@ -50,11 +50,11 @@ class Comment extends Component {
   }
 
   render() {
-    let deleteComment = this.onDelete.bind(this);
-    let onEdit = this.onEdit.bind(this, this.props.comment);
-    let onSave = this.onSave.bind(this, this.props.comment);
-    let onCancel = this.onCancel.bind(this);
-    let onChange = this.onChange.bind(this);
+    const deleteComment = this.onDelete.bind(this);
+    const onEdit = this.onEdit.bind(this, this.props.comment);
+    const onSave = this.onSave.bind(this, this.props.comment);
+    const onCancel = this.onCancel.bind(this);
+    const onChange = this.onChange.bind(this);
 
     let body = null;
 
@@ -66,27 +66,27 @@ class Comment extends Component {
             value={this.state.editingComment}
             onChange={onChange}
           />
-            <IconMenu
-              iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-              anchorOrigin={ { horizontal: 'left', vertical: 'top' } }
-              targetOrigin={ { horizontal: 'left', vertical: 'top' } }
-            >
-              <MenuItem primaryText="Save" onClick={onSave} />
-              <MenuItem primaryText="Cancel" onClick={onCancel} />
-            </IconMenu>
+          <IconMenu
+            iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+            anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
+            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+          >
+            <MenuItem primaryText="Save" onClick={onSave} />
+            <MenuItem primaryText="Cancel" onClick={onCancel} />
+          </IconMenu>
         </div>
       );
     } else {
       body = (
         <div>
-           <label>{this.props.comment.comment}</label>
+          <label htmlFor="commment">{this.props.comment.comment}</label>
           <IconMenu
             iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
             anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
             targetOrigin={{ horizontal: 'right', vertical: 'top' }}
           >
-          <MenuItem primaryText="Delete" onClick={deleteComment} />
-          <MenuItem primaryText="Edit" onClick={onEdit} />
+            <MenuItem primaryText="Delete" onClick={deleteComment} />
+            <MenuItem primaryText="Edit" onClick={onEdit} />
           </IconMenu>
         </div>
       );
@@ -97,8 +97,8 @@ class Comment extends Component {
 
 Comment.propTypes = {
   comment: React.PropTypes.object.isRequired,
-  onDelete: React.PropTypes.func,
-  onEdit: React.PropTypes.func
+  onDelete: React.PropTypes.func.isRequired,
+  onEdit: React.PropTypes.func.isRequired
 };
 
 export default Comment;

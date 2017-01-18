@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
@@ -29,8 +29,8 @@ class CommentForm extends Component {
 
 
   render() {
-    let addComment = this.onAdd.bind(this);
-    let onChange = this.onChange.bind(this);
+    const addComment = this.onAdd.bind(this);
+    const onChange = this.onChange.bind(this);
 
     return (
       <div>
@@ -43,7 +43,7 @@ class CommentForm extends Component {
 }
 
 CommentForm.propTypes = {
-  onAdd: React.PropTypes.func
+  onAdd: React.PropTypes.func.isRequired
 };
 
 export default CommentForm;

@@ -1,11 +1,23 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import { browserHistory } from 'react-router';
+import {browserHistory} from 'react-router';
 import Popup from 'react-popup';
+import axios from 'axios';
 
+import {setSession} from '../services/SessionService';
+import {post} from '../services/Requests';
+import {registerURL} from '../services/urlFactory';
+
+/**
+ * Representing the logic of user registration
+ */
 class Registration extends Component {
-
+/**
+ * Validate username
+ * @param  {String} name The username
+ * @return {String}      Relevent error of the incorrect username
+ */
   static validateName(name = '') {
     let error = null;
 
@@ -17,7 +29,11 @@ class Registration extends Component {
 
     return error;
   }
-
+  /**
+   * validate email
+   * @param  {String} email The email
+   * @return {String}       Relevent error of the incorrect email
+   */
   static validateEmail(email = '') {
     let error = null;
 
@@ -29,7 +45,13 @@ class Registration extends Component {
 
     return error;
   }
+  /**
+   * Validate password
+   * @param  {String} password        The password
+   * @param  {String} confirmPassword The confirmPassword
 
+   * @return {String}          Relevent error of the incorrect password
+   */
   static validatePassword(password = '', confirmPassword = '') {
     let passwordError = null;
     let confirmPasswordError = null;
@@ -44,9 +66,12 @@ class Registration extends Component {
       confirmPasswordError = 'Confirm password does not match';
     }
 
-    return { passwordError, confirmPasswordError };
+    return {passwordError, confirmPasswordError};
   }
-
+/**
+ * Class constructor
+ * @param {Object} props User define component
+ */
   constructor(props) {
     super(props);
 
@@ -55,31 +80,34 @@ class Registration extends Component {
         name: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
       },
       formValid: false,
       error: {
-        name: this.validateName(),
-        email: this.validateEmail(),
-        password: this.validatePassword().passwordError,
-        confirmPassword: this.validatePassword().confirmPasswordError
+        name: Registration.validateName(),
+        email: Registration.validateEmail(),
+        password: Registration.validatePassword().passwordError,
+        confirmPassword: Registration.validatePassword().confirmPasswordError,
       },
       focused: {
         name: false,
         email: false,
         password: false,
-        confirmPassword: false
-      }
+        confirmPassword: false,
+      },
     };
 
     this.validateAll = this.validateAll.bind(this);
   }
-
+/**
+ * Event changer for the username
+ * @param  {String} changeEvent Changer event of the username
+ */
   onChangeName(changeEvent) {
     const newName = `${changeEvent.target.value}`;
     const user = this.state.user;
     const error = this.state.error;
-    const nameError = this.validateName(newName);
+    const nameError = Registration.validateName(newName);
 
     user.name = newName;
     error.name = nameError;
@@ -87,15 +115,18 @@ class Registration extends Component {
     this.setState({
       formValid: this.validateAll(),
       user,
-      error
+      error,
     });
   }
-
+  /**
+   * Event changer for the email
+   * @param  {String} changeEvent Changer event of the email
+   */
   onChangeEmail(changeEvent) {
     const newEmail = `${changeEvent.target.value}`;
     const user = this.state.user;
     const error = this.state.error;
-    const emailError = this.validateEmail(newEmail);
+    const emailError = Registration.validateEmail(newEmail);
 
     user.email = newEmail;
     error.email = emailError;
@@ -103,16 +134,19 @@ class Registration extends Component {
     this.setState({
       formValid: this.validateAll(),
       user,
-      error
+      error,
     });
   }
-
+  /**
+   * Event changer for the password
+   * @param  {String} changeEvent Changer event of the password
+   */
   onChangePassword(changeEvent) {
     const password = changeEvent.target.value;
     const user = this.state.user;
     const confirmPassword = `${user.confirmPassword}`;
     const error = this.state.error;
-    const validationErrors = this.validatePassword(password, confirmPassword);
+    const validationErrors = Registration.validatePassword(password, confirmPassword);
 
     user.password = password;
     error.password = validationErrors.passwordError;
@@ -121,16 +155,53 @@ class Registration extends Component {
     this.setState({
       formValid: this.validateAll(),
       user,
-      error
+      error,
     });
   }
+/**
+ * Sends a POST Request to register the user
+ */
+  onConfirm() {
+    const data = {
+      username: this.state.user.name,
+      email: this.state.user.email,
+      password: this.state.user.password,
+    };
 
+    post(registerURL, data)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+/**
+ * Checks if the mandotory fields are empty
+ * @param {String} elementName The selected text field
+ */
+  setFocus(elementName) {
+    const focused = this.state.focused;
+
+    if (!focused[elementName]) {
+      focused[elementName] = true;
+      this.setState({
+        focused,
+      });
+    }
+  }
+
+/**
+ * Checks the password with the confirmPassword
+ * @param {Event} changeEvent The confirm password
+ */
   OnConfirmPassword(changeEvent) {
     const confirmPassword = changeEvent.target.value;
     const user = this.state.user;
     const password = user.password;
     const error = this.state.error;
-    const validationErrors = this.validatePassword(password, confirmPassword);
+    const validationErrors = Registration.validatePassword(password, confirmPassword);
 
     user.confirmPassword = confirmPassword;
     error.password = validationErrors.passwordError;
@@ -139,35 +210,22 @@ class Registration extends Component {
     this.setState({
       formValid: this.validateAll(),
       user,
-      error
+      error,
     });
   }
 
-  onConfirm() {
-    console.log(this.state.formValid);
-    if (this.state.formValid === true) {
-      browserHistory.push('/login');
-    } else if (this.state.formValid === false) {
-      browserHistory.push('/registration');
-    }
-  }
-
-  setFocus(elementName) {
-    const focused = this.state.focused;
-
-    if (!focused[elementName]) {
-      focused[elementName] = true;
-      this.setState({
-        focused
-      });
-    }
-  }
-
+/**
+ * Validates the user credentials
+ * @return {Boolean} valied user credentials
+ */
   validateAll() {
     return this.state.error.name === null && this.state.error.email === null &&
       this.state.error.password === null && this.state.error.confirmPassword === null;
   }
-
+/**
+ * Describes the elements on the registration page
+ * @return {String} HTML elements
+ */
   render() {
     const onChangeName = this.onChangeName.bind(this);
     const onChangeEmail = this.onChangeEmail.bind(this);
@@ -178,16 +236,50 @@ class Registration extends Component {
     const onNameFocusOut = this.setFocus.bind(this, 'name');
     const onEmailFocusOut = this.setFocus.bind(this, 'email');
     const onPasswordFocusOut = this.setFocus.bind(this, 'password');
-    const OnConfirmPasswordFocusOut = this.setFocus.bind(this, 'confirmPassword')
+    const OnConfirmPasswordFocusOut = this.setFocus.bind(this, 'confirmPassword');
 
     return (
       <div>
         <Popup />
         <div>
-          <div><TextField floatingLabelText="Username" value={this.state.user.name}  errorText={this.state.focused.name && this.state.error.name} onChange={onChangeName} onBlur={onNameFocusOut}/></div>
-          <div><TextField floatingLabelText="Email" value={this.state.user.email} errorText={this.state.focused.email && this.state.error.email} onChange={onChangeEmail}/></div>
-          <div><TextField floatingLabelText="Password" value={this.state.user.password} errorText={this.state.focused.password && this.state.error.password} type='password' onChange={onChangePassword}/></div>
-          <div><TextField floatingLabelText="Confirm Password" value={this.state.user.confirmPassword} errorText={this.state.focused.confirmPassword && this.state.error.confirmPassword} type='password' onChange={OnConfirmPassword}/></div>
+          <div>
+            <TextField
+              floatingLabelText="Username"
+              value={this.state.user.name}
+              errorText={this.state.focused.name && this.state.error.name}
+              onChange={onChangeName}
+              onBlur={onNameFocusOut}
+            />
+          </div>
+          <div>
+            <TextField
+              floatingLabelText="Email"
+              value={this.state.user.email}
+              errorText={this.state.focused.email && this.state.error.email}
+              onChange={onChangeEmail}
+              onBlur={onEmailFocusOut}
+            />
+          </div>
+          <div>
+            <TextField
+              floatingLabelText="Password"
+              value={this.state.user.password}
+              errorText={this.state.focused.password && this.state.error.password}
+              type="password"
+              onChange={onChangePassword}
+              onBlur={onPasswordFocusOut}
+            />
+          </div>
+          <div>
+            <TextField
+              floatingLabelText="Confirm Password"
+              value={this.state.user.confirmPassword}
+              errorText={this.state.focused.confirmPassword && this.state.error.confirmPassword}
+              type="password"
+              onChange={OnConfirmPassword}
+              onBlur={OnConfirmPasswordFocusOut}
+            />
+          </div>
           <div><RaisedButton label="Create Account" disabled={!this.state.formValid} onClick={onConfirm} /></div>
         </div>
       </div>

@@ -1,12 +1,15 @@
-import React, { Component } from 'react';
-import { findIndex } from 'lodash';
+import React, {Component} from 'react';
 
-import { getPostById } from '../services/BlogService';
+import {findIndex} from 'lodash';
+import {List, ListItem} from 'material-ui/List';
+import Subheader from 'material-ui/Subheader';
+import {getPostById} from '../services/BlogService';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
-import { List, ListItem } from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
 
+/**
+ * Representing the logic of adding new posts
+ */
 class PostPage extends Component {
 
   constructor(props) {
@@ -23,12 +26,12 @@ class PostPage extends Component {
    */
   onCommentDelete(comment) {
     const post = this.state.post;
-    const filteredComments = post.comments.filter(stateComment => stateComment.id !== comment.id);
+    const filteredComments = post.comments.filter((stateComment) => stateComment.id !== comment.id);
 
     post.comments = filteredComments;
 
     this.setState({
-      post
+      post,
     });
   }
 
@@ -40,13 +43,13 @@ class PostPage extends Component {
   onCommentEdit(editingComment, newValue) {
     const post = this.state.post;
     const comments = post.comments;
-    const index = findIndex(comments, comment => comment.id === editingComment.id);
+    const index = findIndex(comments, (comment) => comment.id === editingComment.id);
 
     if (index > -1) {
       comments[index].comment = newValue;
 
       this.setState({
-        post
+        post,
       });
     }
   }
@@ -66,23 +69,21 @@ class PostPage extends Component {
 
     comments.push({
       id: commentId,
-      comment: value
+      comment: value,
     });
 
     this.setState({
-      post
+      post,
     });
     // this.setState({comments: comments});
   }
-
-
   render() {
-    let onCommentDelete = this.onCommentDelete.bind(this);
-    let onCommentEdit = this.onCommentEdit.bind(this);
-    let onCommentAdd = this.onCommentAdd.bind(this);
+    const onCommentDelete = this.onCommentDelete.bind(this);
+    const onCommentEdit = this.onCommentEdit.bind(this);
+    const onCommentAdd = this.onCommentAdd.bind(this);
 
     const post = this.state.post;
-    const comments = post.comments.map(comment =>
+    const comments = post.comments.map((comment) =>
       <Comment
         key={comment.id}
         comment={comment}
@@ -102,18 +103,21 @@ class PostPage extends Component {
           />
           <Subheader>Comments</Subheader>
           <List>
-              {comments}
+            {comments}
           </List>
         </List>
         <CommentForm onAdd={onCommentAdd} />
-
       </div>
     );
   }
 }
 
 PostPage.propTypes = {
-  params: React.PropTypes.object
+  params: React.PropTypes.object,
+};
+
+PostPage.defaultProps = {
+  params: {},
 };
 
 export default PostPage;

@@ -4,7 +4,7 @@
  * @return {object}  Currernt session object
  */
 const getSession = () => {
-  const session = localStorage.session ? JSON.parse(localStorage.session) : { authenticated: false };
+  const session = localStorage.session ? JSON.parse(localStorage.session) : {authenticated: false};
 
   return session;
 };
@@ -28,9 +28,9 @@ const isAuthenticated = () => `${getSession().authenticated}` === 'true';
  */
 const resetSession = () => {
   const session = {
-    authenticated: false
+    authenticated: false,
   };
   setSession(session);
-}
+};
 
-export { getSession, setSession, isAuthenticated, resetSession };
+export {getSession, setSession, isAuthenticated, resetSession};

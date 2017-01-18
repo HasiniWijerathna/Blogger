@@ -1,11 +1,11 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { Router, Route, browserHistory } from 'react-router';
+import {render} from 'react-dom';
+import {Router, Route, browserHistory} from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import '../styles/master.scss';
 
-import { isAuthenticated } from './services/SessionService';
+import {isAuthenticated} from './services/SessionService';
 
 import App from './containers/App';
 import BlogsHomePage from './containers/BlogsHomePage';
@@ -27,7 +27,7 @@ const requireAuth = (nextState, replace) => {
   if (!authenticated) {
     replace({
       pathname: '/login',
-      state: { nextPathname: nextState.location.pathname }
+      state: {nextPathname: nextState.location.pathname }
     });
   }
 };

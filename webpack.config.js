@@ -48,6 +48,9 @@ module.exports = {
         'react-hot',
         'babel?presets[]=stage-0,presets[]=react,presets[]=es2015'
       ]
+    }, {
+      test: /\.json$/,
+      loader: 'json-loader'
     }]
   }
 };
