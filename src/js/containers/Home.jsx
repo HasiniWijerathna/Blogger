@@ -10,31 +10,44 @@ import {isAuthenticated, resetSession} from '../services/SessionService';
  */
 class Home extends Component {
 
+/**
+* Navigates to the login page
+*/
   static login() {
     browserHistory.push('/login');
   }
-
+/**
+* Navigates to the sign up page
+*/
   static signUp() {
     browserHistory.push('/registration');
   }
-
+/**
+* Class constructor
+* @param {Object} props User define component
+*/
   constructor(props) {
     super(props);
 
     this.state = {
-      isAuthenticated: isAuthenticated()
+      isAuthenticated: isAuthenticated(),
     };
 
     // this.logout = this.logout.bind(this);
   }
-
+/**
+* Sets the session if the authenticaion false
+*/
   logout() {
     resetSession();
     this.setState({
-      isAuthenticated: false
+      isAuthenticated: false,
     });
   }
-
+/**
+* Describes the elements on the Post page
+* @return {String} HTML elements
+*/
   render() {
     const logout = this.logout.bind(this);
     const authButton = this.state.isAuthenticated ?

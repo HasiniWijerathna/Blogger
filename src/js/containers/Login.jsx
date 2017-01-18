@@ -5,20 +5,20 @@ import IconButton from 'material-ui/IconButton';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import axios from 'axios';
 import {browserHistory} from 'react-router';
 
 import {setSession} from '../services/SessionService';
+import {post} from '../services/Requests';
+import {loginURL} from '../services/urlFactory';
 
 /**
- * Representing the logic of user login function
- */
+* Representing the logic of user login function
+*/
 class Login extends Component {
-  //
-  // static responseGoogle(googleUser) {
-  //   const idToken = googleUser.getAuthResponse().idToken;
-  // }
-
+/**
+* Class constructor
+* @param {Object} props User define component
+*/
   constructor(props) {
     super(props);
 
@@ -36,6 +36,10 @@ class Login extends Component {
     };
   }
 
+/**
+* Event changer for the username
+* @param  {String} changeEvent Changer event of the username
+*/
   onChangeName(changeEvent) {
     const newName = changeEvent.target.value;
     const user = this.state.user;
@@ -47,6 +51,10 @@ class Login extends Component {
     });
   }
 
+/**
+* Event changer for the password
+* @param  {String} changeEvent Changer event of the password
+*/
   onChangePassword(changeEvent) {
     const newPassword = changeEvent.target.value;
     const user = this.state.user;
@@ -57,25 +65,44 @@ class Login extends Component {
       user,
     });
   }
-
+/**
+* Sends a POST Request to register the user
+*/
   onConfirm() {
-    axios.post('http://localhost:3000/auth/login', {
+    const data = {
       username: this.state.user.name,
       password: this.state.user.password,
-    })
-    .then((response) => {
-      const session = {
-        authenticated: true,
-        token: response.data.token,
-      };
-
-      setSession(session);
-
-      browserHistory.push(this.state.nextPathname);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    };
+    post(loginURL(), data)
+      .then((response) => {
+        console.log(response);
+        const session = {
+          authenticated: true,
+          token: response.data.token,
+        };
+        setSession(session);
+        browserHistory.push(this.state.nextPathname);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    // axios.post('http://localhost:3000/auth/login', {
+    //   username: this.state.user.name,
+    //   password: this.state.user.password,
+    // })
+    // .then((response) => {
+    //   const session = {
+    //     authenticated: true,
+    //     token: response.data.token,
+    //   };
+    //
+    //   setSession(session);
+    //
+    //   browserHistory.push(this.state.nextPathname);
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
 
 
     // const allUsers = getAllUsers();
@@ -88,7 +115,10 @@ class Login extends Component {
     // });
   }
 
-
+/**
+* Describes the elements on the Post page
+* @return {String} HTML elements
+*/
   render() {
     const onConfirm = this.onConfirm.bind(this);
     const onChangeName = this.onChangeName.bind(this);
@@ -128,8 +158,6 @@ class Login extends Component {
       },
     ];
     return (
-
-
       <div>
         <h1>Login</h1>
         <div><center>

@@ -27,7 +27,7 @@ const requireAuth = (nextState, replace) => {
   if (!authenticated) {
     replace({
       pathname: '/login',
-      state: {nextPathname: nextState.location.pathname }
+      state: {nextPathname: nextState.location.pathname},
     });
   }
 };
@@ -37,7 +37,7 @@ const checkAuth = (nextState, replace) => {
 
   if (authenticated) {
     replace({
-      pathname: '/home'
+      pathname: '/home',
     });
   }
 };

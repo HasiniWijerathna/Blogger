@@ -9,7 +9,10 @@ import {addPost} from '../services/BlogService';
  * Representing the logic of adding new posts functionality
  */
 class AddNewPost extends Component {
-
+/**
+ * Class constructor
+ * @param {Object} props User define component
+ */
   constructor(props) {
     super(props);
 
@@ -17,11 +20,14 @@ class AddNewPost extends Component {
       post: {
         title: '',
         author: '',
-        content: ''
-      }
+        content: '',
+      },
     };
   }
-
+/**
+* Updates the state according to the change event of new title of the post
+* @param  {Event} changeEvent The change event of the post title
+*/
   onChangeTitle(changeEvent) {
     const newTitle = changeEvent.target.value;
     const post = this.state.post;
@@ -29,10 +35,13 @@ class AddNewPost extends Component {
     post.title = newTitle;
 
     this.setState({
-      post
+      post,
     });
   }
-
+/**
+* Updates the state according to the change event of new author of the post
+* @param  {Event} changeEvent The change event of the post author
+*/
   onChangeAuthor(changeEvent) {
     const newAuthor = changeEvent.target.value;
     const post = this.state.post;
@@ -40,10 +49,14 @@ class AddNewPost extends Component {
     post.author = newAuthor;
 
     this.setState({
-      post
+      post,
     });
   }
 
+/**
+* Updates the state according to the change event of new content of the post
+* @param  {Event} changeEvent The change event of the post content
+*/
   onChangeContent(changeEvent) {
     const newContent = changeEvent.target.value;
     const post = this.state.post;
@@ -51,10 +64,13 @@ class AddNewPost extends Component {
     post.content = newContent;
 
     this.setState({
-      post
+      post,
     });
   }
 
+/**
+* Adds new posts to the selected blog
+*/
   onAdd() {
     const bolgId = parseInt(this.props.params.blogId);
     const newPost = this.state.post;
@@ -62,7 +78,10 @@ class AddNewPost extends Component {
     addPost(bolgId, newPost);
     browserHistory.goBack();
   }
-
+/**
+* Describes the elements on the Add new post page
+* @return {String} HTML elements
+*/
   render() {
     const onAddPost = this.onAdd.bind(this);
     const onChangeTitle = this.onChangeTitle.bind(this);
@@ -87,7 +106,7 @@ class AddNewPost extends Component {
 }
 
 AddNewPost.propTypes = {
-  params: React.PropTypes.object.isRequired
+  params: React.PropTypes.object.isRequired,
 };
 
 export default AddNewPost;

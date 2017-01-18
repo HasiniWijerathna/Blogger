@@ -33,17 +33,10 @@ class BlogsHomePage extends Component {
 
 /**
  * Class constructor
- * @param  {[type]} props [description]
+ * @param {Object} props User define component
  */
   constructor(props) {
     super(props);
-    // const allBlogs = axios.get('http://localhost:3000/blogs/')
-    // .then((response) => {
-    //   console.log(response.data);
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
 
     this.state = {
       blogs: getAllBlogs(),

@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import {browserHistory} from 'react-router';
+// import {browserHistory} from 'react-router';
 import Popup from 'react-popup';
-import axios from 'axios';
 
 import {setSession} from '../services/SessionService';
 import {post} from '../services/Requests';
@@ -159,8 +158,8 @@ class Registration extends Component {
     });
   }
 /**
- * Sends a POST Request to register the user
- */
+* Sends a POST Request to register the user
+*/
   onConfirm() {
     const data = {
       username: this.state.user.name,
@@ -168,9 +167,15 @@ class Registration extends Component {
       password: this.state.user.password,
     };
 
-    post(registerURL, data)
+    post(registerURL(), data)
       .then((response) => {
         console.log(response);
+        const session = {
+          authenticated: true,
+          token: response.data.token,
+        };
+        setSession(session);
+        browserHistory.push('/home');
       })
       .catch((error) => {
         console.log(error);

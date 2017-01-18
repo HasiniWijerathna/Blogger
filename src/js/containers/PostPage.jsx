@@ -12,11 +12,15 @@ import CommentForm from '../components/CommentForm';
  */
 class PostPage extends Component {
 
+  /**
+   * Class constructor
+   * @param {Object} props User define component
+   */
   constructor(props) {
     super(props);
 
     this.state = {
-      post: getPostById(parseInt(props.params.blogId), parseInt(props.params.postId))
+      post: getPostById(parseInt(props.params.blogId), parseInt(props.params.postId)),
     };
   }
 
@@ -77,6 +81,11 @@ class PostPage extends Component {
     });
     // this.setState({comments: comments});
   }
+
+/**
+* Render the elements on the Post page
+* @return {String} HTML elements
+*/
   render() {
     const onCommentDelete = this.onCommentDelete.bind(this);
     const onCommentEdit = this.onCommentEdit.bind(this);

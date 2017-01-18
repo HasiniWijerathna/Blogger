@@ -15,14 +15,25 @@ import axios from 'axios';
  */
 class BlogPage extends Component {
 
+/**
+ * Navigates to the relevent post of the selected blog
+ * @param  {Integer} blogId The blog ID
+ * @param  {Integer} postId The post ID
+ */
   static onPostClick(blogId, postId) {
     browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
   }
-
+/**
+* Navigates to the new post of the selcted blog
+* @param {Integer} blogId The blog ID
+*/
   static addNewPost(blogId) {
     browserHistory.push(`/blogs/${blogId}/posts/new`);
   }
-
+/**
+ * Class constructor
+ * @param {Object} props User define component
+ */
   constructor(props) {
     super(props);
 
@@ -36,10 +47,13 @@ class BlogPage extends Component {
 
     this.state = {
       // blog: getBlogById(parseInt(props.params.blogId))
-      blog: existingBlog
+      blog: existingBlog,
     };
   }
-
+/**
+ * Describes the elements on the Blog page
+ * @return {String} HTML elements
+ */
   render() {
     console.log(this.state.blog);
     const blog = this.state.blog;
