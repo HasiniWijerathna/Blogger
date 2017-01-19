@@ -8,6 +8,10 @@ import {Card, CardActions, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import axios from 'axios';
 
+import {get} from '../services/Requests';
+import {modelURL} from '../services/urlFactory';
+
+
 // import { getBlogById } from '../services/BlogService';
 
 /**
@@ -36,15 +40,6 @@ class BlogPage extends Component {
  */
   constructor(props) {
     super(props);
-
-    const existingBlog = axios.get('http://localhost:3000/blogs/props.params.blogId')
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
     this.state = {
       // blog: getBlogById(parseInt(props.params.blogId))
       blog: existingBlog,

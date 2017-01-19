@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-// import {browserHistory} from 'react-router';
+import {browserHistory} from 'react-router';
 import Popup from 'react-popup';
 
 import {setSession} from '../services/SessionService';
 import {post} from '../services/Requests';
 import {registerURL} from '../services/urlFactory';
+import Snackbar from 'material-ui/Snackbar';
 
 /**
  * Representing the logic of user registration
@@ -94,9 +95,14 @@ class Registration extends Component {
         password: false,
         confirmPassword: false,
       },
+      errorMessage: {
+        open: false,
+        message: '',
+      },
     };
 
     this.validateAll = this.validateAll.bind(this);
+    // this.addAlert = this.addAlert.bind(this);
   }
 /**
  * Event changer for the username
@@ -166,7 +172,6 @@ class Registration extends Component {
       email: this.state.user.email,
       password: this.state.user.password,
     };
-
     post(registerURL(), data)
       .then((response) => {
         console.log(response);
@@ -177,8 +182,13 @@ class Registration extends Component {
         setSession(session);
         browserHistory.push('/home');
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((error) =>{
+        this.setState({
+          errorMessage: {
+            open: true,
+            message: 'Email already exist!',
+          },
+        });
       });
   }
 
@@ -227,6 +237,30 @@ class Registration extends Component {
     return this.state.error.name === null && this.state.error.email === null &&
       this.state.error.password === null && this.state.error.confirmPassword === null;
   }
+
+  /**
+  * [addAlert description]
+  */
+  // addAlert() {
+  //   this.setState({
+  //     errorMessage: {
+  //       open: true,
+  //       message: 'Email already exist!',
+  //     },
+  //   });
+  // }
+
+  /**
+   * [handleRequestClos description]
+   */
+  handleRequestClose() {
+    this.setState({
+      errorMessage: {
+        open: false,
+        message: '',
+      },
+    });
+  }
 /**
  * Describes the elements on the registration page
  * @return {String} HTML elements
@@ -236,6 +270,7 @@ class Registration extends Component {
     const onChangeEmail = this.onChangeEmail.bind(this);
     const onChangePassword = this.onChangePassword.bind(this);
     const OnConfirmPassword = this.OnConfirmPassword.bind(this);
+    const handleRequestClose = this.handleRequestClose.bind(this);
     const onConfirm = this.onConfirm.bind(this);
 
     const onNameFocusOut = this.setFocus.bind(this, 'name');
@@ -245,6 +280,12 @@ class Registration extends Component {
 
     return (
       <div>
+        <Snackbar
+         open={this.state.errorMessage.open}
+         message={this.state.errorMessage.message}
+         autoHideDuration={4000}
+         onRequestClose={handleRequestClose}
+       />
         <Popup />
         <div>
           <div>

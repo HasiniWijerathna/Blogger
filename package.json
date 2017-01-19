@@ -26,6 +26,7 @@
     "react-popup": "^0.4.2",
     "react-router": "^2.0.0",
     "react-tap-event-plugin": "^2.0.1",
+    "react-toastr": "^2.8.2",
     "url-join": "^1.1.0",
     "webpack": "^1.11.0",
     "webpack-dev-server": "^1.10.1"
