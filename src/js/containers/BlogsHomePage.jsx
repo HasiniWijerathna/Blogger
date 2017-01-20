@@ -22,9 +22,10 @@ class BlogsHomePage extends Component {
 /**
  * Navigates to the Blog page
  */
-  static addNewBlog() {
-    browserHistory.push('/blogs/new');
-  }
+  // static addNewBlog() {
+  //   console.log('clicked');
+  //   browserHistory.push('blogs/new');
+  // }
 
 /**
  * Navigates to the relevent blog page
@@ -46,6 +47,7 @@ class BlogsHomePage extends Component {
     },
 
     this.requestData();
+    this.addNewBlog = this.addNewBlog.bind(this);
   }
 
   /**
@@ -83,6 +85,13 @@ class BlogsHomePage extends Component {
         console.log(error);
         // TODO: Display error message
       });
+  }
+/**
+ * [addNewBlog description]
+ */
+  addNewBlog() {
+    console.log('clicked');
+    browserHistory.push('blogs/new');
   }
   /**
   * Render all blogs and autoComplete field

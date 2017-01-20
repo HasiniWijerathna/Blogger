@@ -4,6 +4,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 import {addBlog} from '../services/BlogService';
+import {post} from '../services/Requests';
+import {modelURL} from '../services/urlFactory';
 
 /**
 * Represents the view logic of adding new blogs functionality
@@ -15,22 +17,49 @@ class AddNewBlog extends Component {
 */
   constructor(props) {
     super(props);
-
     this.state = {
       blog: {
         name: '',
-        author: '',
       },
     };
+    // const blogId = parseInt(props.params.blogId);
+  }
+/**
+ * [addNewBlog description]
+ */
+  addNewBlog() {
+    const url = modelURL('blog');
+    console.log(url);
+    const data = {
+      name: this.state.blog.name,
+    };
+    post(url, data)
+    .then((response) => {
+      console.log('blog data');
+      console.log(response);
+      const session = {
+        authenticated: true,
+        token: response.data.token,
+      };
+      setSession(session);
+      browserHistory.goBack();
+    })
+    .catch((error) =>{
+      this.setState({
+        blog: {
+          name: '',
+        },
+      });
+    });
   }
 /**
 * Adds new blogs
 */
-  onAdd() {
-    const newBlog = this.state.blog;
-    addBlog(newBlog);
-    browserHistory.goBack();
-  }
+  // onAdd() {
+  //   const newBlog = this.state.blog;
+  //   addBlog(newBlog);
+  //   browserHistory.goBack();
+  // }
 /**
 * Updates the state according to the change event of the blog name
 * @param  {Event} changeEvent  Change event of the blog name
@@ -42,38 +71,27 @@ class AddNewBlog extends Component {
     blog.name = newName;
     this.setState({blog});
   }
-
-/**
-* Updates the state according to the change event of thr blog author
-* @param  {Event} changeEvent  Change event of the blog author
-*/
-  onChangeAuthor(changeEvent) {
-    const newAuthor = changeEvent.target.value;
-    const blog = this.state.blog;
-
-    blog.author = newAuthor;
-    this.setState({blog});
-  }
 /**
 * Describes the elements on the Add new post page
 * @return {String} HTML elements
 */
   render() {
-    const onAddBlog = this.onAdd.bind(this);
+    const onAddBlog = this.addNewBlog.bind(this);
     const onChangeName = this.onChangeName.bind(this);
-    const onChangeAuthor = this.onChangeAuthor.bind(this);
 
     return (
       <div>
         <p>New blog</p>
         <TextField floatingLabelText="Name" value={this.state.blog.name} onChange={onChangeName} />
-        <div>
-          <TextField floatingLabelText="Author" value={this.state.blog.author} onChange={onChangeAuthor} />
-        </div>
+
         <RaisedButton label="Save" primary onClick={onAddBlog} />
       </div>
     );
   }
 
 }
+AddNewBlog.propTypes = {
+  params: React.PropTypes.object.isRequired,
+};
+
 export default AddNewBlog;

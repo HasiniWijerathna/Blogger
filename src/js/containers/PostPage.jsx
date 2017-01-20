@@ -7,6 +7,9 @@ import {getPostById} from '../services/BlogService';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
 
+import {get} from '../services/Requests';
+import {modelURL} from '../services/urlFactory';
+
 /**
  * Representing the logic of adding new posts
  */
@@ -20,8 +23,33 @@ class PostPage extends Component {
     super(props);
 
     this.state = {
-      post: getPostById(parseInt(props.params.blogId), parseInt(props.params.postId)),
+      // post: getPostById(parseInt(props.params.blogId), parseInt(props.params.postId)),
+      post: {},
+      dataLoading: true,
     };
+    this.fetchPost = this.fetchPost.bind(this);
+
+    this.fetchPost(this.props.params.postId);
+  }
+
+  fetchPost(postId) {
+    const url = modelURL('post', postId);
+    console.log(url);
+    return get(url)
+     .then((response) => {
+       console.log(response.data);
+       this.setState({
+         post: response.data,
+         dataLoading: false,
+       });
+     })
+     .catch((error) => {
+       console.log(error);
+       this.setState({
+         post: {},
+         dataLoading: false,
+       });
+     });
   }
 
   /**
@@ -92,15 +120,17 @@ class PostPage extends Component {
     const onCommentAdd = this.onCommentAdd.bind(this);
 
     const post = this.state.post;
-    const comments = post.comments.map((comment) =>
-      <Comment
-        key={comment.id}
-        comment={comment}
-        onDelete={onCommentDelete}
-        onEdit={onCommentEdit}
-      />
+    let comments = [];
+    if(post.Comments && post.Comments.length) {
+      comments = post.Comments.map((comment) =>
+        <Comment
+          key={comment.id}
+          comment={comment}
+          onDelete={onCommentDelete}
+          onEdit={onCommentEdit}
+        />
     );
-
+    }
     return (
       <div>
 
