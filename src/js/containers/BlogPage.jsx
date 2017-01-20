@@ -42,29 +42,77 @@ class BlogPage extends Component {
     super(props);
     this.state = {
       // blog: getBlogById(parseInt(props.params.blogId))
-      blog: existingBlog,
+      // blog: existingBlog,
+      dataLoading: true,
+      blog: {},
     };
+
+    this.fetchBlog = this.fetchBlog.bind(this);
+
+    this.fetchBlog(this.props.params.blogId);
   }
+
+  fetchBlog(blogId) {
+    const url = modelURL('blog', blogId);
+
+    return get(url)
+      .then((response) => {
+        this.setState({
+          blog: response.data,
+          dataLoading: false,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          blog: {},
+          dataLoading: false,
+        });
+      });
+  }
+
+/**
+ * [fetchData description]
+ * @return {[type]} [description]
+ */
+  // fetchData(url, params) {
+  //   return get(url, params)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       this.setState({
+  //         blog: response.data.results,
+  //       });
+  //       return response.data;
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       // TODO: Display error message
+  //     });
+  // }
+
 /**
  * Describes the elements on the Blog page
  * @return {String} HTML elements
  */
   render() {
-    console.log(this.state.blog);
     const blog = this.state.blog;
     const addNewPost = BlogPage.addNewPost.bind(this, blog.id);
-    const posts = blog.posts.map((post) => {
-      const onPostClick = BlogPage.onPostClick.bind(this, blog.id, post.id);
+    let posts = [];
 
-      return (
-        <Card key={`${blog.id}-${post.id}`}>
-          <CardTitle title={post.id} subtitle={post.content} />
-          <CardActions>
-            <RaisedButton label="Leave a comment" onClick={onPostClick} />
-          </CardActions>
-        </Card>
-      );
-    });
+    if(blog.Posts && blog.Posts.length) {
+      posts = blog.Posts.map((post) => {
+        const onPostClick = BlogPage.onPostClick.bind(this, blog.id, post.id);
+
+        return (
+          <Card key={`${blog.id}-${post.id}`}>
+            <CardTitle title={post.id} subtitle={post.content} />
+            <CardActions>
+              <RaisedButton label="Leave a comment" onClick={onPostClick} />
+            </CardActions>
+          </Card>
+        );
+      });
+    }
 
     // return (
     //   <div>

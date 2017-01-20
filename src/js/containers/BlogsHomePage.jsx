@@ -9,7 +9,10 @@ import {Card, CardActions, CardHeader, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 // import axios from 'axios';
 
-import {getAllBlogs} from '../services/BlogService';
+// import {getAllBlogs} from '../services/BlogService';
+import {get} from '../services/Requests';
+import {modelURL} from '../services/urlFactory';
+import Snackbar from 'material-ui/Snackbar';
 
 /**
  * Representing the logic of presenting existing blogs
@@ -39,27 +42,67 @@ class BlogsHomePage extends Component {
     super(props);
 
     this.state = {
-      blogs: getAllBlogs(),
-    };
+      blogsData: [],
+    },
+
+    this.requestData();
   }
-/**
- * Render all blogs and autoComplete field
- * @return {String} Blog list
- */
+
+  /**
+   * Request all data from the API
+   */
+  requestData() {
+    const url = modelURL('blog');
+
+    this.fetchData(url, 'blogs', true);
+  }
+
+  /**
+   * Abstract function to fetch data from the API
+   * @param  {String} url           The URL to GET from
+   * @param  {String} stateVariable The name of the variable (inside state object) to store the data in
+   * @param  {String} isCollection  Indicates whether the returning data set is a collection
+   * @param  {Object} params        The params to be passed with the request
+   * @return {Promise}              The request promise object
+   */
+  fetchData(url, stateVariable, isCollection, params) {
+    this.setState({
+      [`${stateVariable}DataLoading`]: true,
+    });
+
+    return get(url, params)
+      .then((response) => {
+        this.setState({
+          [`${stateVariable}DataLoading`]: false,
+          [`${stateVariable}Data`]: isCollection ? response.data.results : response.data,
+        });
+
+        return response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+        // TODO: Display error message
+      });
+  }
+  /**
+  * Render all blogs and autoComplete field
+  * @return {String} Blog list
+  */
   render() {
     const blogName = [];
-    this.state.blogs.map((blog) =>
+    this.state.blogsData.map((blog) =>
       blogName.push(blog.name)
     );
-    const blogs = this.state.blogs.map((blog) => {
+
+    const blogs = this.state.blogsData.map((blog) => {
       const onBlogClick = BlogsHomePage.onBlogClick.bind(this, blog.id);
-      const x = blog.posts.length;
+      const noOfPosts = blog.Posts.length;
       return (
         <div key={blog.id}>
           <Card>
             <CardHeader
               title="No of posts"
-              subtitle={x}
+              subtitle={noOfPosts}
             />
             <CardTitle title={blog.name} subtitle={blog.author} />
             <CardActions>
