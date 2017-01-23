@@ -8,6 +8,9 @@ import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
 
 import {get} from '../services/Requests';
+import {post} from '../services/Requests';
+import {put} from '../services/Requests';
+import {httDelete} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
 
 /**
@@ -31,13 +34,16 @@ class PostPage extends Component {
 
     this.fetchPost(this.props.params.postId);
   }
-
+/**
+ * [fetchPost description]
+ * @param  {[type]} postId [description]
+ * @return {[type]}        [description]
+ */
   fetchPost(postId) {
     const url = modelURL('post', postId);
     console.log(url);
     return get(url)
      .then((response) => {
-       console.log(response.data);
        this.setState({
          post: response.data,
          dataLoading: false,
@@ -57,14 +63,34 @@ class PostPage extends Component {
    * @param  {object} comment The deleting comment object
    */
   onCommentDelete(comment) {
-    const post = this.state.post;
-    const filteredComments = post.comments.filter((stateComment) => stateComment.id !== comment.id);
+    console.log('delete');
+    const commentId = comment.id;
+    // const filteredComments = post.comments.filter((stateComment) => stateComment.id !== comment.id);
+    //
+    // post.comments = filteredComments;
+    //
+    // this.setState({
+    //   post,
+    // });
+    console.log(commentId);
+    const url = modelURL('comment', commentId);
 
-    post.comments = filteredComments;
-
-    this.setState({
-      post,
-    });
+    httDelete(url)
+      .then((response) => {
+        this.setState({
+          post: {},
+          dataLoading: true,
+        });
+        browserHistory.push(`/blogs/${blogId}/posts/${postId}/`);
+        // refresh
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          blog: {},
+          dataLoading: false,
+        });
+      });
   }
 
   /**
@@ -73,15 +99,27 @@ class PostPage extends Component {
    * @param  {string} newValue       New comment
    */
   onCommentEdit(editingComment, newValue) {
+    // console.log('onEdit');
+    // console.log(editingComment.comment);
+    // console.log(newValue);
     const post = this.state.post;
-    const comments = post.comments;
-    const index = findIndex(comments, (comment) => comment.id === editingComment.id);
-
+    const comments = post.Comments;
+    const index = findIndex(comments, (comment) => editingComment.id === comment.id);
     if (index > -1) {
       comments[index].comment = newValue;
-
-      this.setState({
-        post,
+      const commentId = comments[index].id;
+      const url = modelURL('comment', commentId);
+      const data = {
+        comment: newValue,
+      };
+      put(url, data)
+      .then((response) => {
+        console.log(response.data);
+        browserHistory.push('/home');
+      })
+      .catch((error) =>{
+        console.log('error');
+        console.log(error);
       });
     }
   }
@@ -91,22 +129,43 @@ class PostPage extends Component {
    * @param  {object} value The adding comment
    */
   onCommentAdd(value) {
-    const post = this.state.post;
-    const comments = post.comments;
-    let commentId = 1;
-
-    if (comments && comments.length) {
-      commentId = comments[comments.length - 1].id + 1;
-    }
-
-    comments.push({
-      id: commentId,
+    const url = modelURL('comment');
+    const data = {
       comment: value,
+      postId: this.state.post.id,
+    };
+    post(url, data)
+    .then((response) => {
+      this.setState({
+        comment: response.data.comment,
+        dataLoading: true,
+      });
+      browserHistory.push('/home');
+    })
+    .catch((error) =>{
+      this.setState({
+        comment: '',
+        dataLoading: false,
+
+      });
     });
 
-    this.setState({
-      post,
-    });
+    // const post = this.state.post;
+    // const comments = post.comments;
+    // let commentId = 1;
+    //
+    // if (comments && comments.length) {
+    //   commentId = comments[comments.length - 1].id + 1;
+    // }
+    //
+    // comments.push({
+    //   id: commentId,
+    //   comment: value,
+    // });
+    //
+    // this.setState({
+    //   post,
+    // });
     // this.setState({comments: comments});
   }
 
@@ -145,7 +204,7 @@ class PostPage extends Component {
             {comments}
           </List>
         </List>
-        <CommentForm onAdd={onCommentAdd} />
+        <CommentForm onAdd={onCommentAdd} post={this.state.post} />
       </div>
     );
   }

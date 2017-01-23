@@ -32,6 +32,7 @@ class BlogPage extends Component {
 * @param {Integer} blogId The blog ID
 */
   static addNewPost(blogId) {
+
     browserHistory.push(`/blogs/${blogId}/posts/new`);
   }
 /**

@@ -34,14 +34,7 @@ class AddNewBlog extends Component {
       name: this.state.blog.name,
     };
     post(url, data)
-    .then((response) => {
-      console.log('blog data');
-      console.log(response);
-      const session = {
-        authenticated: true,
-        token: response.data.token,
-      };
-      setSession(session);
+    .then(() => {
       browserHistory.goBack();
     })
     .catch((error) =>{

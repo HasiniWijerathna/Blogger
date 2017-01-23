@@ -3,7 +3,9 @@ import React, {Component} from 'react';
 import {browserHistory} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import {addPost} from '../services/BlogService';
+
+import {post} from '../services/Requests';
+import {modelURL} from '../services/urlFactory';
 
 /**
  * Representing the logic of adding new posts functionality
@@ -19,10 +21,33 @@ class AddNewPost extends Component {
     this.state = {
       post: {
         title: '',
-        author: '',
         content: '',
       },
     };
+  }
+
+  /**
+   * [addNewBlog description]
+   */
+  onAddPost() {
+    const url = modelURL('post');
+    console.log(url);
+    console.log(this.props.routeParams.blogId);
+    const data = {
+      blogId: this.props.routeParams.blogId,
+      title: this.state.post.title,
+      content: this.state.post.content,
+    };
+    post(url, data)
+    .then(() => {
+      console.log('response');
+      browserHistory.push(`/blogs/${data.blogId}`);
+    })
+    .catch((error) =>{
+      this.setState({
+        post,
+      });
+    });
   }
 /**
 * Updates the state according to the change event of new title of the post
@@ -33,20 +58,6 @@ class AddNewPost extends Component {
     const post = this.state.post;
 
     post.title = newTitle;
-
-    this.setState({
-      post,
-    });
-  }
-/**
-* Updates the state according to the change event of new author of the post
-* @param  {Event} changeEvent The change event of the post author
-*/
-  onChangeAuthor(changeEvent) {
-    const newAuthor = changeEvent.target.value;
-    const post = this.state.post;
-
-    post.author = newAuthor;
 
     this.setState({
       post,
@@ -71,30 +82,26 @@ class AddNewPost extends Component {
 /**
 * Adds new posts to the selected blog
 */
-  onAdd() {
-    const bolgId = parseInt(this.props.params.blogId);
-    const newPost = this.state.post;
-
-    addPost(bolgId, newPost);
-    browserHistory.goBack();
-  }
+  // onAdd() {
+  //   const bolgId = parseInt(this.props.params.blogId);
+  //   const newPost = this.state.post;
+  //
+  //   addPost(bolgId, newPost);
+  //   browserHistory.goBack();
+  // }
 /**
 * Describes the elements on the Add new post page
 * @return {String} HTML elements
 */
   render() {
-    const onAddPost = this.onAdd.bind(this);
+    const onAddPost = this.onAddPost.bind(this);
     const onChangeTitle = this.onChangeTitle.bind(this);
-    const onChangeAuthor = this.onChangeAuthor.bind(this);
     const onChangeContent = this.onChangeContent.bind(this);
 
     return (
       <div>
         <div>
         <TextField floatingLabelText="Title" value={this.state.post.title} onChange={onChangeTitle} />
-        </div>
-        <div>
-          <TextField floatingLabelText="Author" value={this.state.post.author} onChange={onChangeAuthor} />
         </div>
         <div>
           <TextField floatingLabelText="content" value={this.state.post.content} onChange={onChangeContent} />
@@ -106,7 +113,7 @@ class AddNewPost extends Component {
 }
 
 AddNewPost.propTypes = {
-  params: React.PropTypes.object.isRequired,
+  routeParams: React.PropTypes.object.isRequired,
 };
 
 export default AddNewPost;
