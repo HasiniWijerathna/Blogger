@@ -74,14 +74,13 @@ class PostPage extends Component {
     // });
     console.log(commentId);
     const url = modelURL('comment', commentId);
-
     httDelete(url)
       .then((response) => {
         this.setState({
           post: {},
           dataLoading: true,
         });
-        browserHistory.push(`/blogs/${blogId}/posts/${postId}/`);
+        this.fetchPost(this.props.params.postId);
         // refresh
       })
       .catch((error) => {
@@ -140,7 +139,9 @@ class PostPage extends Component {
         comment: response.data.comment,
         dataLoading: true,
       });
-      browserHistory.push('/home');
+      this.fetchPost(this.props.params.postId);
+      // browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
+
     })
     .catch((error) =>{
       this.setState({

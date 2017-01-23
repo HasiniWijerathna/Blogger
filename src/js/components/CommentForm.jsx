@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import {browserHistory} from 'react-router';
 
 import {post} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
@@ -25,8 +26,17 @@ class CommentForm extends Component {
  * [onAddComment description]
  */
   onAddComment() {
+    console.log(this.props);
+    const blogId = this.props.post.BlogId;
+    const postId = this.props.post.id;
     const comment = this.state.comment;
     this.props.onAdd(comment);
+    browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
+    console.log('sdfsdf');
+    this.setState({
+      comment: '',
+      dataLoading: true,
+    });
     // const url = modelURL('comment');
     // const data = {
     //   comment: this.state.comment,
