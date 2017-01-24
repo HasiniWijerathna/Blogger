@@ -16,8 +16,8 @@ import {modelURL} from '../services/urlFactory';
 import Snackbar from 'material-ui/Snackbar';
 
 /**
- * Representing the logic of presenting existing blogs
- */
+* Representing the logic of presenting existing blogs
+*/
 class BlogsHomePage extends Component {
 
 /**
@@ -29,17 +29,17 @@ class BlogsHomePage extends Component {
   // }
 
 /**
- * Navigates to the relevent blog page
- * @param  {Integer} blogId Id of the selected blog
- */
+* Navigates to the relevent blog page
+* @param  {Integer} blogId Id of the selected blog
+*/
   static onBlogClick(blogId) {
     browserHistory.push(`/blogs/${blogId}`);
   }
 
 /**
- * Class constructor
- * @param {Object} props User define component
- */
+* Class constructor
+* @param {Object} props User define component
+*/
   constructor(props) {
     super(props);
 
@@ -51,23 +51,23 @@ class BlogsHomePage extends Component {
     this.addNewBlog = this.addNewBlog.bind(this);
   }
 
-  /**
-   * Request all data from the API
-   */
+/**
+ * Request all data from the API
+ */
   requestData() {
     const url = modelURL('blog');
 
     this.fetchData(url, 'blogs', true);
   }
 
-  /**
-   * Abstract function to fetch data from the API
-   * @param  {String} url           The URL to GET from
-   * @param  {String} stateVariable The name of the variable (inside state object) to store the data in
-   * @param  {String} isCollection  Indicates whether the returning data set is a collection
-   * @param  {Object} params        The params to be passed with the request
-   * @return {Promise}              The request promise object
-   */
+/**
+* Abstract function to fetch data from the API
+* @param  {String} url           The URL to GET from
+* @param  {String} stateVariable The name of the variable (inside state object) to store the data in
+* @param  {String} isCollection  Indicates whether the returning data set is a collection
+* @param  {Object} params        The params to be passed with the request
+* @return {Promise}              The request promise object
+*/
   fetchData(url, stateVariable, isCollection, params) {
     this.setState({
       [`${stateVariable}DataLoading`]: true,
@@ -88,16 +88,16 @@ class BlogsHomePage extends Component {
       });
   }
 /**
- * [addNewBlog description]
- */
+* [addNewBlog description]
+*/
   addNewBlog() {
     console.log('clicked');
     browserHistory.push('blogs/new');
   }
-  /**
-  * Render all blogs and autoComplete field
-  * @return {String} Blog list
-  */
+/**
+* Render all blogs and autoComplete field
+* @return {String} Blog list
+*/
   render() {
     const blogName = [];
     this.state.blogsData.map((blog) =>

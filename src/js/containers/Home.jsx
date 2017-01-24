@@ -6,8 +6,8 @@ import FlatButton from 'material-ui/FlatButton';
 import {isAuthenticated, resetSession} from '../services/SessionService';
 
 /**
- * Representing the login sign up functionalities
- */
+* Representing the login sign up functionalities
+*/
 class Home extends Component {
 
 /**

@@ -32,13 +32,12 @@ class BlogPage extends Component {
 * @param {Integer} blogId The blog ID
 */
   static addNewPost(blogId) {
-
     browserHistory.push(`/blogs/${blogId}/posts/new`);
   }
 /**
- * Class constructor
- * @param {Object} props User define component
- */
+* Class constructor
+* @param {Object} props User define component
+*/
   constructor(props) {
     super(props);
     this.state = {
@@ -52,7 +51,11 @@ class BlogPage extends Component {
 
     this.fetchBlog(this.props.params.blogId);
   }
-
+/**
+* Fetches a blog
+* @param  {Integer} blogId The blogId
+* @return {Event}          Sends a GET request
+*/
   fetchBlog(blogId) {
     const url = modelURL('blog', blogId);
 
@@ -92,9 +95,9 @@ class BlogPage extends Component {
   // }
 
 /**
- * Describes the elements on the Blog page
- * @return {String} HTML elements
- */
+* Describes the elements on the Blog page
+* @return {String} HTML elements
+*/
   render() {
     const blog = this.state.blog;
     const addNewPost = BlogPage.addNewPost.bind(this, blog.id);
@@ -105,12 +108,14 @@ class BlogPage extends Component {
         const onPostClick = BlogPage.onPostClick.bind(this, blog.id, post.id);
 
         return (
-          <Card key={`${blog.id}-${post.id}`}>
-            <CardTitle title={post.id} subtitle={post.content} />
-            <CardActions>
-              <RaisedButton label="Leave a comment" onClick={onPostClick} />
-            </CardActions>
-          </Card>
+          <div>
+              <Card key={`${blog.id}-${post.id}`}>
+                <CardTitle title={post.id} subtitle={post.content} />
+                <CardActions>
+                  <RaisedButton label="Leave a comment" onClick={onPostClick} />
+                </CardActions>
+              </Card>
+            </div>
         );
       });
     }

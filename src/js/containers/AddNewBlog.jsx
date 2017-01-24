@@ -25,7 +25,7 @@ class AddNewBlog extends Component {
     // const blogId = parseInt(props.params.blogId);
   }
 /**
- * [addNewBlog description]
+ * Adds new blogs
  */
   addNewBlog() {
     const url = modelURL('blog');

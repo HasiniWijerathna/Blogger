@@ -14,10 +14,10 @@ import Snackbar from 'material-ui/Snackbar';
  */
 class Registration extends Component {
 /**
- * Validate username
- * @param  {String} name The username
- * @return {String}      Relevent error of the incorrect username
- */
+* Validate username
+* @param  {String} name The username
+* @return {String}      Relevent error of the incorrect username
+*/
   static validateName(name = '') {
     let error = null;
 
@@ -29,11 +29,11 @@ class Registration extends Component {
 
     return error;
   }
-  /**
-   * validate email
-   * @param  {String} email The email
-   * @return {String}       Relevent error of the incorrect email
-   */
+/**
+ * validate email
+ * @param  {String} email The email
+ * @return {String}       Relevent error of the incorrect email
+ */
   static validateEmail(email = '') {
     let error = null;
 
@@ -45,13 +45,13 @@ class Registration extends Component {
 
     return error;
   }
-  /**
-   * Validate password
-   * @param  {String} password        The password
-   * @param  {String} confirmPassword The confirmPassword
+/**
+* Validate password
+* @param  {String} password        The password
+* @param  {String} confirmPassword The confirmPassword
 
-   * @return {String}          Relevent error of the incorrect password
-   */
+* @return {String}          Relevent error of the incorrect password
+*/
   static validatePassword(password = '', confirmPassword = '') {
     let passwordError = null;
     let confirmPasswordError = null;
@@ -69,9 +69,9 @@ class Registration extends Component {
     return {passwordError, confirmPasswordError};
   }
 /**
- * Class constructor
- * @param {Object} props User define component
- */
+* Class constructor
+* @param {Object} props User define component
+*/
   constructor(props) {
     super(props);
 
@@ -105,9 +105,9 @@ class Registration extends Component {
     // this.addAlert = this.addAlert.bind(this);
   }
 /**
- * Event changer for the username
- * @param  {String} changeEvent Changer event of the username
- */
+* Event changer for the username
+* @param  {String} changeEvent Changer event of the username
+*/
   onChangeName(changeEvent) {
     const newName = `${changeEvent.target.value}`;
     const user = this.state.user;
@@ -123,10 +123,10 @@ class Registration extends Component {
       error,
     });
   }
-  /**
-   * Event changer for the email
-   * @param  {String} changeEvent Changer event of the email
-   */
+/**
+* Event changer for the email
+* @param  {String} changeEvent Changer event of the email
+*/
   onChangeEmail(changeEvent) {
     const newEmail = `${changeEvent.target.value}`;
     const user = this.state.user;
@@ -142,10 +142,10 @@ class Registration extends Component {
       error,
     });
   }
-  /**
-   * Event changer for the password
-   * @param  {String} changeEvent Changer event of the password
-   */
+/**
+* Event changer for the password
+* @param  {String} changeEvent Changer event of the password
+*/
   onChangePassword(changeEvent) {
     const password = changeEvent.target.value;
     const user = this.state.user;
@@ -193,9 +193,9 @@ class Registration extends Component {
   }
 
 /**
- * Checks if the mandotory fields are empty
- * @param {String} elementName The selected text field
- */
+* Checks if the mandotory fields are empty
+* @param {String} elementName The selected text field
+*/
   setFocus(elementName) {
     const focused = this.state.focused;
 
@@ -208,9 +208,9 @@ class Registration extends Component {
   }
 
 /**
- * Checks the password with the confirmPassword
- * @param {Event} changeEvent The confirm password
- */
+* Checks the password with the confirmPassword
+* @param {Event} changeEvent The confirm password
+*/
   OnConfirmPassword(changeEvent) {
     const confirmPassword = changeEvent.target.value;
     const user = this.state.user;
@@ -230,9 +230,9 @@ class Registration extends Component {
   }
 
 /**
- * Validates the user credentials
- * @return {Boolean} valied user credentials
- */
+* Validates the user credentials
+* @return {Boolean} valied user credentials
+*/
   validateAll() {
     return this.state.error.name === null && this.state.error.email === null &&
       this.state.error.password === null && this.state.error.confirmPassword === null;
@@ -262,9 +262,9 @@ class Registration extends Component {
     });
   }
 /**
- * Describes the elements on the registration page
- * @return {String} HTML elements
- */
+* Describes the elements on the registration page
+* @return {String} HTML elements
+*/
   render() {
     const onChangeName = this.onChangeName.bind(this);
     const onChangeEmail = this.onChangeEmail.bind(this);

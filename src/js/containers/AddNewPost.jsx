@@ -12,9 +12,9 @@ import {modelURL} from '../services/urlFactory';
  */
 class AddNewPost extends Component {
 /**
- * Class constructor
- * @param {Object} props User define component
- */
+* Class constructor
+* @param {Object} props User define component
+*/
   constructor(props) {
     super(props);
 
@@ -26,9 +26,9 @@ class AddNewPost extends Component {
     };
   }
 
-  /**
-   * [addNewBlog description]
-   */
+/**
+ * Adds new posts
+ */
   onAddPost() {
     const url = modelURL('post');
     console.log(url);

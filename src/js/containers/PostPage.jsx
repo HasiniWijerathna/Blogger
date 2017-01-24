@@ -18,10 +18,10 @@ import {modelURL} from '../services/urlFactory';
  */
 class PostPage extends Component {
 
-  /**
-   * Class constructor
-   * @param {Object} props User define component
-   */
+/**
+* Class constructor
+* @param {Object} props User define component
+*/
   constructor(props) {
     super(props);
 
@@ -35,10 +35,10 @@ class PostPage extends Component {
     this.fetchPost(this.props.params.postId);
   }
 /**
- * [fetchPost description]
- * @param  {[type]} postId [description]
- * @return {[type]}        [description]
- */
+* [fetchPost description]
+* @param  {[type]} postId [description]
+* @return {[type]}        [description]
+*/
   fetchPost(postId) {
     const url = modelURL('post', postId);
     console.log(url);
@@ -58,10 +58,10 @@ class PostPage extends Component {
      });
   }
 
-  /**
-   * Callback function for deleting comment
-   * @param  {object} comment The deleting comment object
-   */
+/**
+* Callback function for deleting comment
+* @param  {object} comment The deleting comment object
+*/
   onCommentDelete(comment) {
     console.log('delete');
     const commentId = comment.id;
@@ -92,11 +92,11 @@ class PostPage extends Component {
       });
   }
 
-  /**
-   * Callback function for editing comment
-   * @param  {object} editingComment The editng comment object
-   * @param  {string} newValue       New comment
-   */
+/**
+* Callback function for editing comment
+* @param  {object} editingComment The editng comment object
+* @param  {string} newValue       New comment
+*/
   onCommentEdit(editingComment, newValue) {
     // console.log('onEdit');
     // console.log(editingComment.comment);
@@ -123,10 +123,10 @@ class PostPage extends Component {
     }
   }
 
-  /**
-   * Callback function for adding comment
-   * @param  {object} value The adding comment
-   */
+/**
+* Callback function for adding comment
+* @param  {object} value The adding comment
+*/
   onCommentAdd(value) {
     const url = modelURL('comment');
     const data = {
@@ -141,7 +141,6 @@ class PostPage extends Component {
       });
       this.fetchPost(this.props.params.postId);
       // browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
-
     })
     .catch((error) =>{
       this.setState({
