@@ -8,7 +8,7 @@ import {Card, CardActions, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import axios from 'axios';
 
-import {get} from '../services/Requests';
+import {get, httDelete} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
 
 
@@ -62,9 +62,34 @@ class BlogPage extends Component {
     return get(url)
       .then((response) => {
         this.setState({
-          blog: response.data,
           dataLoading: false,
+          blog: response.data,
         });
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          dataLoading: true,
+          blog: {},
+        });
+      });
+  }
+/**
+ * Delets a selected post
+ */
+  onDeleteBlog() {
+    console.log(this.state.blog.id);
+    const blogId = this.state.blog.id;
+
+    const url = modelURL('blog', blogId);
+    httDelete(url)
+      .then((response) => {
+        this.setState({
+          post: {},
+          dataLoading: true,
+        });
+        browserHistory.push('blog');
+        // refresh
       })
       .catch((error) => {
         console.log(error);
@@ -74,7 +99,6 @@ class BlogPage extends Component {
         });
       });
   }
-
 /**
  * [fetchData description]
  * @return {[type]} [description]
@@ -101,6 +125,7 @@ class BlogPage extends Component {
   render() {
     const blog = this.state.blog;
     const addNewPost = BlogPage.addNewPost.bind(this, blog.id);
+    const onDeleteBlog = this.onDeleteBlog.bind(this);
     let posts = [];
 
     if(blog.Posts && blog.Posts.length) {
@@ -135,6 +160,7 @@ class BlogPage extends Component {
       <div>
         <List>
           <Subheader>Postes</Subheader>
+          <RaisedButton label="Delete Posts" primary onClick={onDeleteBlog}/>
           {posts}
         </List>
         <FloatingActionButton onClick={addNewPost}>
