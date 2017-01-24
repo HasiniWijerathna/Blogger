@@ -23,13 +23,12 @@ class CommentForm extends Component {
  * [onAddComment description]
  */
   onAddComment() {
-    console.log(this.props);
+    console.log('postid');
     const blogId = this.props.post.BlogId;
     const postId = this.props.post.id;
     const comment = this.state.comment;
     this.props.onAdd(comment);
     browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
-    console.log('sdfsdf');
     this.setState({
       comment: '',
       dataLoading: true,

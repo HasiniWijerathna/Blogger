@@ -38,7 +38,6 @@ class PostPage extends Component {
 */
   fetchPost(postId) {
     const url = modelURL('post', postId);
-    console.log(url);
     return get(url)
      .then((response) => {
        this.setState({
@@ -60,7 +59,6 @@ class PostPage extends Component {
 * @param  {object} comment The deleting comment object
 */
   onCommentDelete(comment) {
-    console.log('delete');
     const commentId = comment.id;
     // const filteredComments = post.comments.filter((stateComment) => stateComment.id !== comment.id);
     //
@@ -114,7 +112,6 @@ class PostPage extends Component {
         browserHistory.push('/home');
       })
       .catch((error) =>{
-        console.log('error');
         console.log(error);
       });
     }

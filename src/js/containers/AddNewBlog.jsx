@@ -5,6 +5,7 @@ import TextField from 'material-ui/TextField';
 
 import {post} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
+import Snackbar from 'material-ui/Snackbar';
 
 /**
 * Represents the view logic of adding new blogs functionality
@@ -19,6 +20,10 @@ class AddNewBlog extends Component {
     this.state = {
       blog: {
         name: '',
+      },
+      errorMessage: {
+        open: false,
+        message: '',
       },
     };
     // const blogId = parseInt(props.params.blogId);
@@ -40,6 +45,10 @@ class AddNewBlog extends Component {
       this.setState({
         blog: {
           name: '',
+        },
+        errorMessage: {
+          open: false,
+          message: 'Please login to add blogs',
         },
       });
     });
@@ -63,6 +72,17 @@ class AddNewBlog extends Component {
     blog.name = newName;
     this.setState({blog});
   }
+  /**
+   * [handleRequestClos description]
+   */
+  handleRequestClose() {
+    this.setState({
+      errorMessage: {
+        open: false,
+        message: '',
+      },
+    });
+  }
 /**
 * Describes the elements on the Add new post page
 * @return {String} HTML elements
@@ -70,9 +90,16 @@ class AddNewBlog extends Component {
   render() {
     const onAddBlog = this.addNewBlog.bind(this);
     const onChangeName = this.onChangeName.bind(this);
+    const handleRequestClose = this.handleRequestClose.bind(this);
 
     return (
       <div>
+        <Snackbar
+         open={this.state.errorMessage.open}
+         message={this.state.errorMessage.message}
+         autoHideDuration={4000}
+         onRequestClose={handleRequestClose}
+       />
         <p>New blog</p>
         <TextField floatingLabelText="Name" value={this.state.blog.name} onChange={onChangeName} />
 

@@ -27,12 +27,10 @@ class AddNewPost extends Component {
   }
 
 /**
- * Adds new posts
- */
+* Adds new posts
+*/
   onAddPost() {
     const url = modelURL('post');
-    console.log(url);
-    console.log(this.props.routeParams.blogId);
     const data = {
       blogId: this.props.routeParams.blogId,
       title: this.state.post.title,

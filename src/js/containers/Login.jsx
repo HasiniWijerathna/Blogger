@@ -9,7 +9,8 @@ import {browserHistory} from 'react-router';
 
 import {setSession} from '../services/SessionService';
 import {post} from '../services/Requests';
-import {loginURL} from '../services/urlFactory';
+import {loginURL} from '../services/urlFactory'
+import Snackbar from 'material-ui/Snackbar';
 
 /**
 * Representing the logic of user login function
@@ -32,6 +33,10 @@ class Login extends Component {
       user: {
         name: '',
         password: '',
+      },
+      errorMessage: {
+        open: false,
+        message: '',
       },
     };
   }
@@ -84,7 +89,12 @@ class Login extends Component {
         browserHistory.push(this.state.nextPathname);
       })
       .catch((error) => {
-        console.log(error);
+        this.setState({
+          errorMessage: {
+            open: true,
+            message: 'Incorrect email or password',
+          },
+        });
       });
     // axios.post('http://localhost:3000/auth/login', {
     //   username: this.state.user.name,
@@ -114,7 +124,17 @@ class Login extends Component {
     //   }
     // });
   }
-
+  /**
+   * [handleRequestClos description]
+   */
+  handleRequestClose() {
+    this.setState({
+      errorMessage: {
+        open: false,
+        message: '',
+      },
+    });
+  }
 /**
 * Describes the elements on the Post page
 * @return {String} HTML elements
@@ -123,6 +143,7 @@ class Login extends Component {
     const onConfirm = this.onConfirm.bind(this);
     const onChangeName = this.onChangeName.bind(this);
     const onChangePassword = this.onChangePassword.bind(this);
+    const handleRequestClose = this.handleRequestClose.bind(this);
 
     const styles = {
       root: {
@@ -159,6 +180,12 @@ class Login extends Component {
     ];
     return (
       <div>
+        <Snackbar
+         open={this.state.errorMessage.open}
+         message={this.state.errorMessage.message}
+         autoHideDuration={4000}
+         onRequestClose={handleRequestClose}
+       />
         <h1>Login</h1>
         <div><center>
           <GoogleLogin

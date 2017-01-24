@@ -143,4 +143,9 @@ class BlogsHomePage extends Component {
   }
 }
 
+BlogsHomePage.propTypes = {
+  user: React.PropTypes.object.isRequired,
+  params: React.PropTypes.func.isRequired,
+};
+
 export default BlogsHomePage;
