@@ -5,9 +5,6 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import TextField from 'material-ui/TextField';
 
-import {httDelete} from '../services/Requests';
-import {modelURL} from '../services/urlFactory';
-
 /**
 * Represents the  logic of adding new comments functionality
 */

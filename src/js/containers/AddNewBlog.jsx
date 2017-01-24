@@ -3,7 +3,6 @@ import {browserHistory} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
-import {addBlog} from '../services/BlogService';
 import {post} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
 

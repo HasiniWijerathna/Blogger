@@ -3,14 +3,11 @@ import React, {Component} from 'react';
 import {findIndex} from 'lodash';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
-import {getPostById} from '../services/BlogService';
+
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
 
-import {get} from '../services/Requests';
-import {post} from '../services/Requests';
-import {put} from '../services/Requests';
-import {httDelete} from '../services/Requests';
+import {get, post, put, httDelete} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
 
 /**

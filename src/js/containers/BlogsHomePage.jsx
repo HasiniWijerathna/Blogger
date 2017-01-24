@@ -7,13 +7,10 @@ import AutoComplete from 'material-ui/AutoComplete';
 import {List} from 'material-ui/List';
 import {Card, CardActions, CardHeader, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
-import BlogPage from './BlogPage';
-// import axios from 'axios';
 
-// import {getAllBlogs} from '../services/BlogService';
 import {get} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
-import Snackbar from 'material-ui/Snackbar';
+// import Snackbar from 'material-ui/Snackbar';
 
 /**
 * Representing the logic of presenting existing blogs

@@ -3,9 +3,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {browserHistory} from 'react-router';
 
-import {post} from '../services/Requests';
-import {modelURL} from '../services/urlFactory';
-
 /**
 * Represents the comment form functionality
 */
