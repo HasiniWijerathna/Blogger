@@ -6,61 +6,56 @@ import TextField from 'material-ui/TextField';
 import {post} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
 import Snackbar from 'material-ui/Snackbar';
-
+import {getSession} from '../services/SessionService';
 /**
 * Represents the view logic of adding new blogs functionality
 */
 class AddNewBlog extends Component {
-/**
-* Class constructor
-* @param {Object} props User define component
-*/
+
+  /**
+  * Class constructor
+  * @param {Object} props User define component
+  */
   constructor(props) {
     super(props);
     this.state = {
       blog: {
         name: '',
       },
-      errorMessage: {
-        open: false,
-        message: '',
-      },
+      open: false,
+      message: '',
     };
     // const blogId = parseInt(props.params.blogId);
   }
-/**
- * Adds new blogs
- */
+
+  /**
+   * [addNewBlog description]
+   */
   addNewBlog() {
-    const url = modelURL('blog');
-    console.log(url);
-    const data = {
-      name: this.state.blog.name,
-    };
-    post(url, data)
-    .then(() => {
-      browserHistory.goBack();
-    })
-    .catch((error) =>{
-      this.setState({
-        blog: {
-          name: '',
-        },
-        errorMessage: {
-          open: false,
-          message: 'Please login to add blogs',
-        },
+    console.log('jojij');
+    const loggedUser = getSession().user.id;
+    if (loggedUser) {
+      const url = modelURL('blog');
+      const data = {
+        name: this.state.blog.name,
+      };
+      post(url, data)
+      .then(() => {
+        browserHistory.goBack();
+      })
+      .catch((error) =>{
+        this.setState({
+          blog: {
+            name: '',
+          },
+          open: true,
+          message: 'Plese login to add blogs',
+        });
       });
-    });
+    } else {
+      console.log('login!');
+    }
   }
-/**
-* Adds new blogs
-*/
-  // onAdd() {
-  //   const newBlog = this.state.blog;
-  //   addBlog(newBlog);
-  //   browserHistory.goBack();
-  // }
 /**
 * Updates the state according to the change event of the blog name
 * @param  {Event} changeEvent  Change event of the blog name
@@ -77,10 +72,8 @@ class AddNewBlog extends Component {
    */
   handleRequestClose() {
     this.setState({
-      errorMessage: {
-        open: false,
-        message: '',
-      },
+      open: false,
+      message: '',
     });
   }
 /**
@@ -95,8 +88,8 @@ class AddNewBlog extends Component {
     return (
       <div>
         <Snackbar
-         open={this.state.errorMessage.open}
-         message={this.state.errorMessage.message}
+         open={this.state.open}
+         message={this.state.message}
          autoHideDuration={4000}
          onRequestClose={handleRequestClose}
        />

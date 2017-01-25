@@ -77,7 +77,7 @@ class Comment extends Component {
     const onSave = this.onSave.bind(this, this.props.comment);
     const onCancel = this.onCancel.bind(this);
     const onChange = this.onChange.bind(this);
-
+    // console.log(this.props.username);
     let body = null;
 
     if (this.state.editMode) {

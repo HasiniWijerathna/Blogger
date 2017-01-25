@@ -47,12 +47,12 @@ render(
     <Route path="/" component={App}>
       <Route path="home" component={Home} />
       <Route path="login" component={Login} onEnter={checkAuth} />
-      <Route path="registration" component={Registration} />
-      <Route path="blog" component={BlogsHomePage} onEnter={requireAuth} />
+      <Route path="registration" component={Registration} onEnter={checkAuth} />
+      <Route path="blogs" component={BlogsHomePage} />
       <Route path="blogs/new" component={AddNewBlog} onEnter={requireAuth} />
-      <Route path="blogs/:blogId" component={BlogPage} onEnter={requireAuth} />
+      <Route path="blogs/:blogId" component={BlogPage} />
       <Route path="blogs/:blogId/posts/new" component={AddNewPost} onEnter={requireAuth} />
-      <Route path="blogs/:blogId/posts/:postId" component={PostPage} onEnter={requireAuth} />
+      <Route path="blogs/:blogId/posts/:postId" component={PostPage} />
     </Route>
   </Router>), document.getElementById('root')
 );

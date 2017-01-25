@@ -10,20 +10,13 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import {get} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
-// import Snackbar from 'material-ui/Snackbar';
-
+import {getSession} from '../services/SessionService';
+import Snackbar from 'material-ui/Snackbar';
 /**
 * Representing the logic of presenting existing blogs
 */
 class BlogsHomePage extends Component {
 
-/**
- * Navigates to the Blog page
- */
-  // static addNewBlog() {
-  //   console.log('clicked');
-  //   browserHistory.push('blogs/new');
-  // }
 
 /**
 * Navigates to the relevent blog page
@@ -42,6 +35,8 @@ class BlogsHomePage extends Component {
 
     this.state = {
       blogsData: [],
+      open: false,
+      message: '',
     },
 
     this.requestData();
@@ -88,14 +83,31 @@ class BlogsHomePage extends Component {
 * [addNewBlog description]
 */
   addNewBlog() {
-    console.log('clicked');
-    browserHistory.push('blogs/new');
+    const authenticated = getSession().authenticated;
+    if (authenticated) {
+      browserHistory.push('blogs/new');
+    } else {
+      this.setState({
+        open: true,
+        message: 'Plese login to add blogs',
+      });
+    }
+  }
+  /**
+   * [handleRequestClos description]
+   */
+  handleRequestClose() {
+    this.setState({
+      open: false,
+      message: '',
+    });
   }
 /**
 * Render all blogs and autoComplete field
 * @return {String} Blog list
 */
   render() {
+    const handleRequestClose = this.handleRequestClose.bind(this);
     const blogName = [];
     this.state.blogsData.map((blog) =>
       blogName.push(blog.name)
@@ -122,6 +134,12 @@ class BlogsHomePage extends Component {
 
     return (
       <div>
+        <Snackbar
+         open={this.state.open}
+         message={this.state.message}
+         autoHideDuration={4000}
+         onRequestClose={handleRequestClose}
+       />
         <div>
           <AutoComplete
             floatingLabelText="Search Blogs"
@@ -142,10 +160,5 @@ class BlogsHomePage extends Component {
     );
   }
 }
-
-BlogsHomePage.propTypes = {
-  user: React.PropTypes.object.isRequired,
-  params: React.PropTypes.func.isRequired,
-};
 
 export default BlogsHomePage;

@@ -38,7 +38,6 @@ class AddNewPost extends Component {
     };
     post(url, data)
     .then(() => {
-      console.log('response');
       browserHistory.push(`/blogs/${data.blogId}`);
     })
     .catch((error) =>{
@@ -76,17 +75,6 @@ class AddNewPost extends Component {
       post,
     });
   }
-
-/**
-* Adds new posts to the selected blog
-*/
-  // onAdd() {
-  //   const bolgId = parseInt(this.props.params.blogId);
-  //   const newPost = this.state.post;
-  //
-  //   addPost(bolgId, newPost);
-  //   browserHistory.goBack();
-  // }
 /**
 * Describes the elements on the Add new post page
 * @return {String} HTML elements

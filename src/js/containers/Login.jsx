@@ -84,6 +84,7 @@ class Login extends Component {
         const session = {
           authenticated: true,
           token: response.data.token,
+          user: response.data.user,
         };
         setSession(session);
         browserHistory.push(this.state.nextPathname);

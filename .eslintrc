@@ -33,7 +33,7 @@
           2,
           "always"
       ],
-      "no-console": 0,
+      "no-console": "warn",
       "max-len": ["error", 120, 4]
   },
   "extends": ["google", "plugin:react/recommended"]

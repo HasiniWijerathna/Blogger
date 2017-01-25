@@ -6,9 +6,11 @@ import Subheader from 'material-ui/Subheader';
 
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
+import {browserHistory} from 'react-router';
 
 import {get, post, put, httDelete} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
+import {getSession} from '../services/SessionService';
 
 /**
  * Representing the logic of adding new posts
@@ -122,27 +124,33 @@ class PostPage extends Component {
 * @param  {object} value The adding comment
 */
   onCommentAdd(value) {
-    const url = modelURL('comment');
-    const data = {
-      comment: value,
-      postId: this.state.post.id,
-    };
-    post(url, data)
-    .then((response) => {
-      this.setState({
-        comment: response.data.comment,
-        dataLoading: true,
-      });
-      this.fetchPost(this.props.params.postId);
-      // browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
-    })
-    .catch((error) =>{
-      this.setState({
-        comment: '',
-        dataLoading: false,
+    const authenticated = getSession().authenticated;
+    console.log(authenticated);
+    if (authenticated) {
+      const url = modelURL('comment');
+      const data = {
+        comment: value,
+        postId: this.state.post.id,
+      };
+      post(url, data)
+      .then((response) => {
+        this.setState({
+          comment: response.data.comment,
+          dataLoading: true,
+        });
+        this.fetchPost(this.props.params.postId);
+        // browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
+      })
+      .catch((error) =>{
+        this.setState({
+          comment: '',
+          dataLoading: false,
 
+        });
       });
-    });
+    } else {
+      browserHistory.push('/login');
+    }
 
     // const post = this.state.post;
     // const comments = post.comments;
@@ -175,6 +183,8 @@ class PostPage extends Component {
     const post = this.state.post;
     let comments = [];
     if(post.Comments && post.Comments.length) {
+      const username = getSession().user.username;
+      console.log(post.Comments);
       comments = post.Comments.map((comment) =>
         <Comment
           key={comment.id}

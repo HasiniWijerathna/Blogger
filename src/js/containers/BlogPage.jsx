@@ -6,13 +6,11 @@ import {List} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import {Card, CardActions, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
-import axios from 'axios';
 
 import {get, httDelete} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
-
-
-// import { getBlogById } from '../services/BlogService';
+import {getSession} from '../services/SessionService';
+import Snackbar from 'material-ui/Snackbar';
 
 /**
  * Representing the logic of presenting existing posts belogs to the blog
@@ -32,7 +30,24 @@ class BlogPage extends Component {
 * @param {Integer} blogId The blog ID
 */
   static addNewPost(blogId) {
-    browserHistory.push(`/blogs/${blogId}/posts/new`);
+    const authenticated = getSession().authenticated;
+    if(authenticated) {
+      const loggedUser = getSession().user.id;
+      const blogAddedUser = this.state.blog.UserId;
+      if (blogAddedUser == loggedUser) {
+        browserHistory.push(`/blogs/${blogId}/posts/new`);
+      } else {
+        this.setState({
+          open: true,
+          errorMessage: 'Invalied user',
+        });
+      }
+    } else {
+      this.setState({
+        open: true,
+        errorMessage: 'Please login to add posts',
+      });
+    }
   }
 /**
 * Class constructor
@@ -45,6 +60,8 @@ class BlogPage extends Component {
       // blog: existingBlog,
       dataLoading: true,
       blog: {},
+      open: false,
+      errorMessage: '',
     };
 
     this.fetchBlog = this.fetchBlog.bind(this);
@@ -67,10 +84,10 @@ class BlogPage extends Component {
         });
       })
       .catch((error) => {
-        console.log(error);
         this.setState({
           dataLoading: true,
           blog: {},
+          open: true,
         });
       });
   }
@@ -78,46 +95,41 @@ class BlogPage extends Component {
  * Delets a selected post
  */
   onDeleteBlog() {
-    console.log(this.state.blog.id);
-    const blogId = this.state.blog.id;
-
-    const url = modelURL('blog', blogId);
-    httDelete(url)
-      .then((response) => {
-        this.setState({
-          post: {},
-          dataLoading: true,
+    const authenticated = getSession().authenticated;
+    if (authenticated) {
+      const blogId = this.state.blog.id;
+      const url = modelURL('blog', blogId);
+      httDelete(url)
+        .then((response) => {
+          this.setState({
+            post: {},
+            dataLoading: true,
+          });
+          browserHistory.push('blog');
+          // refresh
+        })
+        .catch((error) => {
+          this.setState({
+            blog: {},
+            dataLoading: false,
+          });
         });
-        browserHistory.push('blog');
-        // refresh
-      })
-      .catch((error) => {
-        console.log(error);
-        this.setState({
-          blog: {},
-          dataLoading: false,
-        });
+    } else {
+      this.setState({
+        open: true,
+        errorMessage: 'Please login to edit post',
       });
+    }
   }
-/**
- * [fetchData description]
- * @return {[type]} [description]
- */
-  // fetchData(url, params) {
-  //   return get(url, params)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       this.setState({
-  //         blog: response.data.results,
-  //       });
-  //       return response.data;
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       // TODO: Display error message
-  //     });
-  // }
-
+  /**
+   * [handleRequestClos description]
+   */
+  handleRequestClose() {
+    this.setState({
+      open: false,
+      errorMessage: '',
+    });
+  }
 /**
 * Describes the elements on the Blog page
 * @return {String} HTML elements
@@ -126,6 +138,7 @@ class BlogPage extends Component {
     const blog = this.state.blog;
     const addNewPost = BlogPage.addNewPost.bind(this, blog.id);
     const onDeleteBlog = this.onDeleteBlog.bind(this);
+    const handleRequestClose = this.handleRequestClose.bind(this);
     let posts = [];
 
     if(blog.Posts && blog.Posts.length) {
@@ -133,7 +146,13 @@ class BlogPage extends Component {
         const onPostClick = BlogPage.onPostClick.bind(this, blog.id, post.id);
 
         return (
-          <div>
+          <div key={blog.id}>
+            <Snackbar
+             open={this.state.open}
+             message={this.state.errorMessage}
+             autoHideDuration={3000}
+             onRequestClose={handleRequestClose}
+           />
               <Card key={`${blog.id}-${post.id}`}>
                 <CardTitle title={post.id} subtitle={post.content} />
                 <CardActions>
@@ -145,19 +164,15 @@ class BlogPage extends Component {
       });
     }
 
-    // return (
-    //   <div>
-    //     {this.state.blog.name}
-    //     <div>{this.state.blog.author}</div>
-    //       <FloatingActionButton onClick={addNewPost}>
-    //   <ContentAdd />
-    // </FloatingActionButton>
-    //     {posts}
-    //   </div>
-    // );
-    //
+
     return (
       <div>
+        <Snackbar
+         open={this.state.open}
+         message={this.state.errorMessage}
+         autoHideDuration={4000}
+         onRequestClose={handleRequestClose}
+       />
         <List>
           <Subheader>Postes</Subheader>
           <RaisedButton label="Delete Posts" primary onClick={onDeleteBlog}/>
