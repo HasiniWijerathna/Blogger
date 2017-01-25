@@ -43,10 +43,7 @@ class BlogPage extends Component {
         });
       }
     } else {
-      this.setState({
-        open: true,
-        errorMessage: 'Please login to add posts',
-      });
+      browserHistory.push('login');
     }
   }
 /**
@@ -95,31 +92,24 @@ class BlogPage extends Component {
  * Delets a selected post
  */
   onDeleteBlog() {
-    const authenticated = getSession().authenticated;
-    if (authenticated) {
-      const blogId = this.state.blog.id;
-      const url = modelURL('blog', blogId);
-      httDelete(url)
-        .then((response) => {
-          this.setState({
-            post: {},
-            dataLoading: true,
-          });
-          browserHistory.push('blog');
-          // refresh
-        })
-        .catch((error) => {
-          this.setState({
-            blog: {},
-            dataLoading: false,
-          });
+    const blogId = this.state.blog.id;
+    const url = modelURL('blog', blogId);
+    httDelete(url)
+      .then((response) => {
+        this.setState({
+          post: {},
+          dataLoading: true,
         });
-    } else {
-      this.setState({
-        open: true,
-        errorMessage: 'Please login to edit post',
+        browserHistory.push('blogs');
+        // refresh
+      })
+      .catch((error) => {
+        this.setState({
+          blog: {},
+          dataLoading: false,
+        });
+        browserHistory.push('blogs');
       });
-    }
   }
   /**
    * [handleRequestClos description]
@@ -146,13 +136,7 @@ class BlogPage extends Component {
         const onPostClick = BlogPage.onPostClick.bind(this, blog.id, post.id);
 
         return (
-          <div key={blog.id}>
-            <Snackbar
-             open={this.state.open}
-             message={this.state.errorMessage}
-             autoHideDuration={3000}
-             onRequestClose={handleRequestClose}
-           />
+          <div key={`${blog.id}-${post.id}`}>
               <Card key={`${blog.id}-${post.id}`}>
                 <CardTitle title={post.id} subtitle={post.content} />
                 <CardActions>
@@ -164,6 +148,15 @@ class BlogPage extends Component {
       });
     }
 
+    let deleteAction = null;
+    const authenticated = getSession().authenticated;
+    if (authenticated) {
+      const loggedUser = getSession().user.id;
+      const blogAddedUser = this.state.blog.UserId;
+      if(loggedUser == blogAddedUser) {
+        deleteAction = <RaisedButton label="Delete Posts" primary onClick={onDeleteBlog}/>;
+      }
+    }
 
     return (
       <div>
@@ -175,8 +168,8 @@ class BlogPage extends Component {
        />
         <List>
           <Subheader>Postes</Subheader>
-          <RaisedButton label="Delete Posts" primary onClick={onDeleteBlog}/>
           {posts}
+          {deleteAction}
         </List>
         <FloatingActionButton onClick={addNewPost}>
           <ContentAdd />

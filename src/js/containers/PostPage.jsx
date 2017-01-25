@@ -183,8 +183,6 @@ class PostPage extends Component {
     const post = this.state.post;
     let comments = [];
     if(post.Comments && post.Comments.length) {
-      const username = getSession().user.username;
-      console.log(post.Comments);
       comments = post.Comments.map((comment) =>
         <Comment
           key={comment.id}

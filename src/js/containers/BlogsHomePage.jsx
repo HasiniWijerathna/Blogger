@@ -83,15 +83,7 @@ class BlogsHomePage extends Component {
 * [addNewBlog description]
 */
   addNewBlog() {
-    const authenticated = getSession().authenticated;
-    if (authenticated) {
-      browserHistory.push('blogs/new');
-    } else {
-      this.setState({
-        open: true,
-        message: 'Plese login to add blogs',
-      });
-    }
+    browserHistory.push('blogs/new');
   }
   /**
    * [handleRequestClos description]

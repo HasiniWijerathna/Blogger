@@ -32,7 +32,6 @@ class AddNewBlog extends Component {
    * [addNewBlog description]
    */
   addNewBlog() {
-    console.log('jojij');
     const loggedUser = getSession().user.id;
     if (loggedUser) {
       const url = modelURL('blog');
@@ -94,7 +93,7 @@ class AddNewBlog extends Component {
          onRequestClose={handleRequestClose}
        />
         <p>New blog</p>
-        <TextField floatingLabelText="Name" value={this.state.blog.name} onChange={onChangeName} />
+        <TextField floatingLabelText="Name" value={this.state.blog.name} onChange={onChangeName} fullWidth/>
 
         <RaisedButton label="Save" primary onClick={onAddBlog} />
       </div>

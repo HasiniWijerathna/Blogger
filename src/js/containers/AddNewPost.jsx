@@ -87,10 +87,10 @@ class AddNewPost extends Component {
     return (
       <div>
         <div>
-        <TextField floatingLabelText="Title" value={this.state.post.title} onChange={onChangeTitle} />
+        <TextField floatingLabelText="Title" value={this.state.post.title} onChange={onChangeTitle} fullWidth/>
         </div>
         <div>
-          <TextField floatingLabelText="content" value={this.state.post.content} onChange={onChangeContent} />
+          <TextField floatingLabelText="content" value={this.state.post.content} onChange={onChangeContent} fullWidth/>
         </div>
         <RaisedButton label="Save" primary onClick={onAddPost} />
       </div>

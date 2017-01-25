@@ -49,6 +49,9 @@ class CommentForm extends Component {
       comment: comment,
     });
   }
+  login() {
+    browserHistory.push('/login');
+  }
 /**
 * Render all blogs and autoComplete field
 * @return {String} Blog list
@@ -56,13 +59,28 @@ class CommentForm extends Component {
   render() {
     const onAddComment = this.onAddComment.bind(this);
     const onChange = this.onChange.bind(this);
-
+    let addAction = null;
+    const authenticated = getSession().authenticated;
+    if (authenticated) {
+      addAction = <div>
+        <TextField floatingLabelText="Comment" value={this.state.comment} onChange={onChange} />
+         <RaisedButton label="Save" primary onClick={onAddComment} />
+        </div>
+    } else {
+      addAction =<div>
+        <h1>Please login to add comments</h1>
+         <RaisedButton label="Login" primary onClick={this.login} />
+        </div>
+    }
     return (
       <div>
-        <div>Leave a comment </div>
-        <TextField floatingLabelText="Comment" value={this.state.comment} onChange={onChange} />
-        <RaisedButton label="Save" primary onClick={onAddComment} />
+        {addAction}
       </div>
+      // <div>
+      //   <div>Leave a comment </div>
+      //   <TextField floatingLabelText="Comment" value={this.state.comment} onChange={onChange} />
+      //   <RaisedButton label="Save" primary onClick={onAddComment} />
+      // </div>
     );
   }
 }
