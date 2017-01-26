@@ -9,8 +9,9 @@ import {browserHistory} from 'react-router';
 
 import {setSession} from '../services/SessionService';
 import {post} from '../services/Requests';
-import {loginURL} from '../services/urlFactory'
+import {loginURL} from '../services/urlFactory';
 import Snackbar from 'material-ui/Snackbar';
+import FlatButton from 'material-ui/FlatButton';
 
 /**
 * Representing the logic of user login function
@@ -126,6 +127,12 @@ class Login extends Component {
     // });
   }
   /**
+   * [signUp description]
+   */
+  signUp() {
+    browserHistory.push('/registration');
+  }
+  /**
    * [handleRequestClos description]
    */
   handleRequestClose() {
@@ -145,6 +152,7 @@ class Login extends Component {
     const onChangeName = this.onChangeName.bind(this);
     const onChangePassword = this.onChangePassword.bind(this);
     const handleRequestClose = this.handleRequestClose.bind(this);
+    const signUp = this.signUp.bind(this);
 
     const styles = {
       root: {
@@ -197,6 +205,11 @@ class Login extends Component {
             buttonText="Login With Google"
           />
         </center>
+        <div><center>
+            <FlatButton label="Create your account" Primary onClick={signUp}/>
+          </center>
+        </div>
+
         </div>
         <GridList cols={3.3}>
           {tilesData.map((tile) =>
@@ -218,7 +231,7 @@ class Login extends Component {
             value={this.state.user.password}
             type="password" onChange={onChangePassword}
           />
-          <RaisedButton label="login" primary onClick={onConfirm} />
+        <RaisedButton label="Login" primary onClick={onConfirm} />
         </div>
       </div>
     );

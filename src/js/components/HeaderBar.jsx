@@ -94,7 +94,8 @@ class HeaderBar extends Component {
     } else {
       addAction = <div> <AppBar
           title="Title"
-          iconElementRight={<FlatButton label="Login" primary={true} onClick={login} />}
+          iconElementRight={<FlatButton label="Login" primary={true} onClick={login} />
+      }
         />
     </div>
   //     addAction = <div>
