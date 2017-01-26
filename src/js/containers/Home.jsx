@@ -53,7 +53,6 @@ class Home extends Component {
     const authButton = this.state.isAuthenticated ?
       <FlatButton label="LOGOUT" onClick={logout} /> :
       <FlatButton label="LOGIN" onClick={Home.login} />;
-
     return (
       <div>
         <div>

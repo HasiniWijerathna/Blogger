@@ -62,13 +62,6 @@ class PostPage extends Component {
 */
   onCommentDelete(comment) {
     const commentId = comment.id;
-    // const filteredComments = post.comments.filter((stateComment) => stateComment.id !== comment.id);
-    //
-    // post.comments = filteredComments;
-    //
-    // this.setState({
-    //   post,
-    // });
     console.log(commentId);
     const url = modelURL('comment', commentId);
     httDelete(url)

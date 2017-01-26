@@ -77,6 +77,7 @@ class Registration extends Component {
 
     this.state = {
       user: {
+        username: '',
         name: '',
         email: '',
         password: '',
@@ -108,6 +109,25 @@ class Registration extends Component {
 * Event changer for the username
 * @param  {String} changeEvent Changer event of the username
 */
+  onChangeUsername(changeEvent) {
+    const username = `${changeEvent.target.value}`;
+    const user = this.state.user;
+    const error = this.state.error;
+    const nameError = Registration.validateName(username);
+
+    user.username = username;
+    error.name = nameError;
+
+    this.setState({
+      formValid: this.validateAll(),
+      user,
+      error,
+    });
+  }
+  /**
+  * Event changer for the name
+  * @param  {String} changeEvent Changer event of the username
+  */
   onChangeName(changeEvent) {
     const newName = `${changeEvent.target.value}`;
     const user = this.state.user;
@@ -123,6 +143,7 @@ class Registration extends Component {
       error,
     });
   }
+
 /**
 * Event changer for the email
 * @param  {String} changeEvent Changer event of the email
@@ -168,7 +189,8 @@ class Registration extends Component {
 */
   onConfirm() {
     const data = {
-      username: this.state.user.name,
+      username: this.state.user.username,
+      name: this.state.user.name,
       email: this.state.user.email,
       password: this.state.user.password,
     };
@@ -267,6 +289,7 @@ class Registration extends Component {
 */
   render() {
     const onChangeName = this.onChangeName.bind(this);
+    const onChangeUsername = this.onChangeUsername.bind(this);
     const onChangeEmail = this.onChangeEmail.bind(this);
     const onChangePassword = this.onChangePassword.bind(this);
     const OnConfirmPassword = this.OnConfirmPassword.bind(this);
@@ -291,6 +314,15 @@ class Registration extends Component {
           <div>
             <TextField
               floatingLabelText="Username"
+              value={this.state.user.username}
+              errorText={this.state.focused.name && this.state.error.name}
+              onChange={onChangeUsername}
+              onBlur={onNameFocusOut}
+            />
+          </div>
+          <div>
+            <TextField
+              floatingLabelText="Name"
               value={this.state.user.name}
               errorText={this.state.focused.name && this.state.error.name}
               onChange={onChangeName}
