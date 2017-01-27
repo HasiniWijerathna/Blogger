@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
 import {GoogleLogin} from 'react-google-login-component';
-import {GridList, GridTile} from 'material-ui/GridList';
-import IconButton from 'material-ui/IconButton';
-import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {browserHistory} from 'react-router';
@@ -12,6 +9,7 @@ import {post} from '../services/Requests';
 import {loginURL} from '../services/urlFactory';
 import Snackbar from 'material-ui/Snackbar';
 import FlatButton from 'material-ui/FlatButton';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
 /**
 * Representing the logic of user login function
@@ -154,39 +152,6 @@ class Login extends Component {
     const handleRequestClose = this.handleRequestClose.bind(this);
     const signUp = this.signUp.bind(this);
 
-    const styles = {
-      root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-      },
-      gridList: {
-        display: 'flex',
-        flexWrap: 'nowrap',
-        overflowX: 'auto',
-      },
-      titleStyle: {
-        color: 'rgb(0,0,0)',
-      },
-    };
-
-    const tilesData = [
-      {
-        img: 'https://s0.wp.com/wp-content/themes/h4/i/features-2016/features-icon-blog-website.svg',
-        title: 'Blog, website, or both',
-        author: 'Build a blog, a full website, or a combo.',
-      },
-      {
-        img: 'https://s0.wp.com/wp-content/themes/h4/i/features-2016/features-icon-plans.svg',
-        title: 'Plans for any budget',
-        author: 'Start free. Upgrade for advanced customizing or business tools. Or stay free!',
-      },
-      {
-        img: 'https://s0.wp.com/wp-content/themes/h4/i/features-2016/features-icon-domains.svg',
-        title: 'Add Custom domains',
-        author: 'Danson67',
-      },
-    ];
     return (
       <div>
         <Snackbar
@@ -195,49 +160,32 @@ class Login extends Component {
          autoHideDuration={4000}
          onRequestClose={handleRequestClose}
        />
-        <h1>Login</h1>
-        <div><center>
-          <GoogleLogin
-            socialId="941519095950-s9379hsbftcc116mj1ubavvtojblft8d.apps.googleusercontent.com"
-            class="google-login"
-            scope="profile"
-            responseHandler={this.responseGoogle}
-            buttonText="Login With Google"
-          />
-        </center>
-        <div><center>
-            <FlatButton label="Create your account" Primary onClick={signUp}/>
-          </center>
-        </div>
-
-        </div>
-        <GridList cols={3.3}>
-          {tilesData.map((tile) =>
-            <GridTile
-              key={tile.img}
-              title={tile.title}
-              actionIcon={<IconButton><StarBorder color="rgb(0, 188, 212)" /></IconButton>}
-              titleStyle={styles.titleStyle}
-              titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 80%,rgba(0,0,0,0) 100%)"
-            >
-              <img alt="logo" src={tile.img} />
-            </GridTile>
-          )}
-        </GridList>
-        <div>
-          <TextField floatingLabelText="Username" value={this.state.user.name} onChange={onChangeName} />
-          <TextField
-            floatingLabelText="Password"
-            value={this.state.user.password}
-            type="password" onChange={onChangePassword}
-          />
+   <Card>
+    <CardHeader/>
+      <hgroup>
+        <h1>Login to Blogger</h1>
+          <h3>By </h3>
+    <form>
+      <formgroup>
+        <FlatButton label="Create your account" primary onClick={signUp}/>
+        <TextField floatingLabelText="Username" value={this.state.user.name} onChange={onChangeName} />
+        <TextField
+          floatingLabelText="Password"
+          value={this.state.user.password}
+          type="password" onChange={onChangePassword}
+        />
+    </formgroup>
+      <footer>
         <RaisedButton label="Login" primary onClick={onConfirm} />
-        </div>
+      </footer>
+      </form>
+        </hgroup>
+      <CardText></CardText>
+    </Card>
       </div>
     );
   }
 }
-
 Login.propTypes = {
   location: React.PropTypes.object.isRequired,
 };

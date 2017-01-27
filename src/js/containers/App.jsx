@@ -2,16 +2,16 @@ import React from 'react';
 import {Link} from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import HeaderBar from '../components/HeaderBar';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+const muiTheme = getMuiTheme({
+  fontFamily: 'Overpass, sans-serif',
+});
 
 const App = ({children}) => (
-  <MuiThemeProvider>
+  <MuiThemeProvider muiTheme={muiTheme}>
     <div>
       <HeaderBar/>
-      <header>
-        <h1>React Starterify</h1>
-        <Link to="/home">Home</Link>
-        <Link to="/blogs">Blogs</Link>
-      </header>
       <section>
         {children || 'Welcome to React Starterify'}
       </section>

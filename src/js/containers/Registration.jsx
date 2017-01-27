@@ -8,6 +8,7 @@ import {setSession} from '../services/SessionService';
 import {post} from '../services/Requests';
 import {registerURL} from '../services/urlFactory';
 import Snackbar from 'material-ui/Snackbar';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
 /**
  * Representing the logic of user registration
@@ -311,54 +312,66 @@ class Registration extends Component {
        />
         <Popup />
         <div>
-          <div>
-            <TextField
-              floatingLabelText="Username"
-              value={this.state.user.username}
-              errorText={this.state.focused.name && this.state.error.name}
-              onChange={onChangeUsername}
-              onBlur={onNameFocusOut}
-            />
-          </div>
-          <div>
-            <TextField
-              floatingLabelText="Name"
-              value={this.state.user.name}
-              errorText={this.state.focused.name && this.state.error.name}
-              onChange={onChangeName}
-              onBlur={onNameFocusOut}
-            />
-          </div>
-          <div>
-            <TextField
-              floatingLabelText="Email"
-              value={this.state.user.email}
-              errorText={this.state.focused.email && this.state.error.email}
-              onChange={onChangeEmail}
-              onBlur={onEmailFocusOut}
-            />
-          </div>
-          <div>
-            <TextField
-              floatingLabelText="Password"
-              value={this.state.user.password}
-              errorText={this.state.focused.password && this.state.error.password}
-              type="password"
-              onChange={onChangePassword}
-              onBlur={onPasswordFocusOut}
-            />
-          </div>
-          <div>
-            <TextField
-              floatingLabelText="Confirm Password"
-              value={this.state.user.confirmPassword}
-              errorText={this.state.focused.confirmPassword && this.state.error.confirmPassword}
-              type="password"
-              onChange={OnConfirmPassword}
-              onBlur={OnConfirmPasswordFocusOut}
-            />
-          </div>
-          <div><RaisedButton label="Create Account" disabled={!this.state.formValid} onClick={onConfirm} /></div>
+          <hgroup>
+          <Card>
+            <CardHeader/>
+              <h1>Create your Account</h1>
+            <form>
+              <CardActions>
+                <div>
+                  <TextField
+                    floatingLabelText="Username"
+                    value={this.state.user.username}
+                    errorText={this.state.focused.name && this.state.error.name}
+                    onChange={onChangeUsername}
+                    onBlur={onNameFocusOut}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    floatingLabelText="Name"
+                    value={this.state.user.name}
+                    errorText={this.state.focused.name && this.state.error.name}
+                    onChange={onChangeName}
+                    onBlur={onNameFocusOut}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    floatingLabelText="Email"
+                    value={this.state.user.email}
+                    errorText={this.state.focused.email && this.state.error.email}
+                    onChange={onChangeEmail}
+                    onBlur={onEmailFocusOut}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    floatingLabelText="Password"
+                    value={this.state.user.password}
+                    errorText={this.state.focused.password && this.state.error.password}
+                    type="password"
+                    onChange={onChangePassword}
+                    onBlur={onPasswordFocusOut}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    floatingLabelText="Confirm Password"
+                    value={this.state.user.confirmPassword}
+                    errorText={this.state.focused.confirmPassword && this.state.error.confirmPassword}
+                    type="password"
+                    onChange={OnConfirmPassword}
+                    onBlur={OnConfirmPasswordFocusOut}
+                  />
+                </div>
+              </CardActions>
+              <div><RaisedButton label="Create Account" disabled={!this.state.formValid} onClick={onConfirm} /></div>
+              </form>
+              <CardText >
+              </CardText>
+          </Card>
+          </hgroup>
         </div>
       </div>
     );

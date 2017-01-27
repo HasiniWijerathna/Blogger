@@ -1,0 +1,45 @@
+.app-toolbar {
+  background-color: #0066bb !important;
+}
+hgroup {
+	text-align:center;
+	margin-top: 4em;
+}
+formgroup {
+  text-align:center;
+}
+footer { text-align: center; }
+
+footer a {
+	color: #4a89dc;
+	text-decoration: none;
+	transition: all .2s ease;
+}
+
+footer a:hover {
+	color: #666;
+	text-decoration: underline;
+}
+
+footer img {
+	width: 80px;
+	transition: all .2s ease;
+}
+
+footer img:hover { opacity: .83; }
+
+footer img:focus , footer a:focus { outline: none; }
+form {
+  font-family: 'Overpass', sans-serif;
+	width: 380px;
+	margin: 4em auto;
+	padding: 3em 2em 2em 2em;
+	background: #fafafa;
+	border: 1px solid #ebebeb;
+	box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
+}
+
+
+// #id {
+//
+// }

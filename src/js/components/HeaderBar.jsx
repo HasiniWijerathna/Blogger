@@ -3,11 +3,8 @@ import {browserHistory} from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import MenuItem from 'material-ui/MenuItem';
 import {getSession, isAuthenticated, resetSession} from '../services/SessionService';
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
+import DropDownMenu from 'material-ui/DropDownMenu';
 
 /**
  * Representing the header bar
@@ -20,8 +17,9 @@ class HeaderBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: true,
+      value: 1,
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 /**
  * [login description]
@@ -36,6 +34,7 @@ class HeaderBar extends Component {
     resetSession();
     isAuthenticated() === false;
     console.log(isAuthenticated());
+    browserHistory.push('/home');
   }
 // logged(props) {
 //   <IconMenu
@@ -66,7 +65,30 @@ class HeaderBar extends Component {
 //    <MenuItem primaryText="Sign out" />
 //  </IconMenu>
 // );
+/**
+ * [handleChange description]
+ * @param  {[type]} event [description]
+ * @param  {[type]} index [description]
+ * @param  {[type]} value [description]
+ */
+  handleChange(event, index, value) {
+    this.setState({
+      value,
+    });
+  }
 
+  /**
+   * [navaigateHome description]
+   */
+  navaigateHome() {
+    browserHistory.push('/home');
+  }
+/**
+ * [navaigateBlogs description
+ */
+  navaigateBlogs() {
+    browserHistory.push('/blogs');
+  }
   /**
    * [render description]
    * @return {[type]} [description]
@@ -75,47 +97,52 @@ class HeaderBar extends Component {
     const login = this.login.bind(this);
     const authenticated = getSession().authenticated;
     const signOut = this.signOut.bind(this);
-    let addAction = null;
-    if(authenticated) {
-      addAction = <div>
-        <AppBar
-          title="Blogger"
-          iconElementRight={<IconMenu
-            iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-            anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-            targetOrigin={{horizontal: 'right', vertical: 'top'}}
-          >
-             <MenuItem primaryText="Sign out" onClick = {signOut}/>
-             <MenuItem primaryText="Help" />
-             <MenuItem primaryText="Settings" />
-          </IconMenu>}
-          />
-      </div>
-    } else {
-      addAction = <div> <AppBar
-          title="Title"
-          iconElementRight={<FlatButton label="Login" primary={true} onClick={login} />
-      }
-        />
-    </div>
-  //     addAction = <div>
-  //     <IconMenu
-  //    targetOrigin={{horizontal: 'right', vertical: 'top'}}
-  //    anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-  //  >
-  //    <MenuItem primaryText="Refresh" />
-  //    <MenuItem primaryText="Help" />
-  //    <MenuItem primaryText="Sign out" />
-  //  </IconMenu>
-  //     </div>
-    }
-    return (
+    const navaigateHome = this.navaigateHome.bind(this);
+    const navaigateBlogs = this.navaigateBlogs.bind(this);
 
-        <div>
-          <div>
-          </div>
-          {addAction}
-         </div>
+    // const name = getSession().user.name;
+    // let username = '';
+    // if(name) {
+    //   // username = `Welcome ${name}`;
+    // } else {
+    //   username = 'Welcome';
+    // }
+    // console.log(getSession().user.name);
+
+    let message = 'Welcome!';
+    let toolbarGroup = (
+      <ToolbarGroup>
+        <FlatButton label="Login" primary={true} onClick={login}/>
+      </ToolbarGroup>
+    );
+
+    if(authenticated) {
+      const user = getSession().user.name;
+      if(user) {
+        message = `Welcome ${user}`;
+      }
+
+      toolbarGroup = (
+        <ToolbarGroup>
+          <ToolbarTitle text={message} />
+          <FlatButton label="Logout" primary={true} onClick={signOut}/>
+        </ToolbarGroup>
+      );
+    }
+
+
+    return (
+      <div>
+        <Toolbar className={'app-toolbar'}>
+          <ToolbarGroup firstChild={true}>
+            <DropDownMenu value={this.state.value} onChange={this.handleChange}>
+              <MenuItem value={1} primaryText="Home" onClick={navaigateHome}/>
+              <MenuItem value={2} primaryText="Blogs" onClick={navaigateBlogs}/>
+            </DropDownMenu>
+          </ToolbarGroup>
+          {toolbarGroup}
+        </Toolbar>
+      </div>
     );
   }
 }
