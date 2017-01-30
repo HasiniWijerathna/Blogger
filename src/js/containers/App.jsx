@@ -13,7 +13,7 @@ const App = ({children}) => (
     <div>
       <HeaderBar/>
       <section>
-        {children || 'Welcome to React Starterify'}
+        {children || 'Blogger App loading...'}
       </section>
     </div>
   </MuiThemeProvider>

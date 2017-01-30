@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {browserHistory} from 'react-router';
 import {getSession} from '../services/SessionService';
+import FlatButton from 'material-ui/FlatButton';
 
 /**
 * Represents the comment form functionality
@@ -49,6 +49,9 @@ class CommentForm extends Component {
       comment: comment,
     });
   }
+/**
+ * Navigates to the login page
+ */
   login() {
     browserHistory.push('/login');
   }
@@ -64,23 +67,20 @@ class CommentForm extends Component {
     if (authenticated) {
       addAction = <div>
         <TextField floatingLabelText="Comment" value={this.state.comment} onChange={onChange} />
-         <RaisedButton label="Save" primary onClick={onAddComment} />
-        </div>
+         <FlatButton label="Save" onClick={onAddComment} />
+        </div>;
     } else {
       addAction =<div>
-        <h1>Please login to add comments</h1>
-         <RaisedButton label="Login" primary onClick={this.login} />
-        </div>
+          <hgroup>
+            <h3>Please login to add comments</h3>
+            <FlatButton label="Login" onClick={this.login} />
+         </hgroup>
+        </div>;
     }
     return (
       <div>
         {addAction}
       </div>
-      // <div>
-      //   <div>Leave a comment </div>
-      //   <TextField floatingLabelText="Comment" value={this.state.comment} onChange={onChange} />
-      //   <RaisedButton label="Save" primary onClick={onAddComment} />
-      // </div>
     );
   }
 }

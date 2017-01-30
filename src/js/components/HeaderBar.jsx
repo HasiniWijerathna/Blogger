@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
 import {browserHistory} from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
-import MenuItem from 'material-ui/MenuItem';
 import {getSession, isAuthenticated, resetSession} from '../services/SessionService';
-import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
-import DropDownMenu from 'material-ui/DropDownMenu';
-
+import {Link} from 'react-router';
 /**
  * Representing the header bar
  */
@@ -31,6 +28,7 @@ class HeaderBar extends Component {
  * [signOut description]
  */
   signOut() {
+    console.log('sign out');
     resetSession();
     isAuthenticated() === false;
     console.log(isAuthenticated());
@@ -89,6 +87,12 @@ class HeaderBar extends Component {
   navaigateBlogs() {
     browserHistory.push('/blogs');
   }
+/**
+ * [navaigateAboutUs description]
+ */
+  navaigateAboutUs() {
+    browserHistory.push('/aboutUs');
+  }
   /**
    * [render description]
    * @return {[type]} [description]
@@ -99,29 +103,65 @@ class HeaderBar extends Component {
     const signOut = this.signOut.bind(this);
     const navaigateHome = this.navaigateHome.bind(this);
     const navaigateBlogs = this.navaigateBlogs.bind(this);
-
-    // const name = getSession().user.name;
-    // let username = '';
-    // if(name) {
-    //   // username = `Welcome ${name}`;
-    // } else {
-    //   username = 'Welcome';
-    // }
-    // console.log(getSession().user.name);
-
-    let message = 'Welcome!';
-    let toolbarGroup = (
-      <ToolbarGroup>
-        <FlatButton label="Login" primary={true} onClick={login}/>
-      </ToolbarGroup>
-    );
-
-    if(authenticated) {
+    const navaigateAboutUs = this.navaigateAboutUs.bind(this);
+    let container = <div className="container">
+      <div className="row">
+        <div className="col-12">
+          <nav className="navbar navbar-default">
+            <div className="container-fluid">
+              <div className="navbar-header">
+                <a className="navbar-brand" href="index.html">
+                  <img src="img/logo.png" alt="Logo"/>
+                </a>
+              </div>
+              <div className="navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul className="nav navbar-nav navbar-right">
+                  <li><Link to="/home">Home</Link></li>
+                  <li><Link to="/blogs">Blogs</Link></li>
+                  <li><Link to="/aboutUs">About Us</Link></li>
+                  <li><Link to="/login">Login</Link></li>
+              </ul>
+              </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>;
+    if (authenticated) {
+      let message = 'Welcome!';
+      let toolbarGroup = (
+        <ToolbarGroup>
+          <FlatButton label="Login" primary={true} onClick={login}/>
+        </ToolbarGroup>
+      );
       const user = getSession().user.name;
       if(user) {
         message = `Welcome ${user}`;
       }
-
+      console.log('authenticated');
+      container = <div className="container">
+          <div className="row">
+            <div className="col-12">
+              <nav className="navbar navbar-default">
+                <div className="container-fluid">
+                  <div className="navbar-header">
+                    <a className="navbar-brand" href="index.html">
+                        <img src="img/logo.png" alt="Logo"/>
+                    </a>
+                  </div>
+                  <div className="navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul className="nav navbar-nav navbar-right">
+                      <li><Link to="/home">Home</Link></li>
+                      <li><Link to="/blogs">Blogs</Link></li>
+                      <li><Link to="/aboutUs">About Us</Link></li>
+                      <a className="btn btn-default btn-call-to-action" onClick={signOut} >Sign out</a>
+                  </ul>
+                  </div>
+                  </div>
+                </nav>
+              </div>
+            </div>
+          </div>;
       toolbarGroup = (
         <ToolbarGroup>
           <ToolbarTitle text={message} />
@@ -133,15 +173,9 @@ class HeaderBar extends Component {
 
     return (
       <div>
-        <Toolbar className={'app-toolbar'}>
-          <ToolbarGroup firstChild={true}>
-            <DropDownMenu value={this.state.value} onChange={this.handleChange}>
-              <MenuItem value={1} primaryText="Home" onClick={navaigateHome}/>
-              <MenuItem value={2} primaryText="Blogs" onClick={navaigateBlogs}/>
-            </DropDownMenu>
-          </ToolbarGroup>
-          {toolbarGroup}
-        </Toolbar>
+        <header>
+        {container}
+          </header>
       </div>
     );
   }

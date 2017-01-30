@@ -9,7 +9,7 @@ import {post} from '../services/Requests';
 import {registerURL} from '../services/urlFactory';
 import Snackbar from 'material-ui/Snackbar';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-
+import {Link} from 'react-router';
 /**
  * Representing the logic of user registration
  */
@@ -312,11 +312,26 @@ class Registration extends Component {
        />
         <Popup />
         <div>
+          <section id="global-header">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="block">
+                    <h1>It’s time to get more from what you read.</h1>
+                    <p>Find and share real perspectives about topics that matter today</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
           <hgroup>
           <Card>
             <CardHeader/>
+            <hgroup>
               <h1>Create your Account</h1>
+            </hgroup>
             <form>
+              <img src="img/login.png" alt="loginlogo"/>
               <CardActions>
                 <div>
                   <TextField
@@ -373,6 +388,22 @@ class Registration extends Component {
           </Card>
           </hgroup>
         </div>
+        <footer>
+          <div className="container">
+            <div className="row">
+              <div className="col-md-12">
+                <div className="footer-manu">
+                  <ul>
+                    <li><Link to="/home">Home</Link></li>
+                    <li><Link to="/blogs">Blogs</Link></li>
+                    <li><Link to="/aboutUs">About Us</Link></li>
+                  </ul>
+                </div>
+                  <p>Copyright &copy; Crafted by <a href="home">Blogger</a>.</p>
+                </div>
+              </div>
+            </div>
+          </footer>
       </div>
     );
   }

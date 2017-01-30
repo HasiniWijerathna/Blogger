@@ -11,7 +11,8 @@ import {browserHistory} from 'react-router';
 import {get, post, put, httDelete} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
 import {getSession} from '../services/SessionService';
-
+import {Card} from 'material-ui/Card';
+import {Link} from 'react-router';
 /**
  * Representing the logic of adding new posts
  */
@@ -187,7 +188,7 @@ class PostPage extends Component {
     }
     return (
       <div>
-
+      <Card>
         <List>
           <ListItem
             key={post.id}
@@ -199,7 +200,26 @@ class PostPage extends Component {
             {comments}
           </List>
         </List>
+      </Card>
         <CommentForm onAdd={onCommentAdd} post={this.state.post} />
+        <div>
+          <footer>
+            <div className="container">
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="footer-manu">
+                    <ul>
+                      <li><Link to="/home">Home</Link></li>
+                      <li><Link to="/blogs">Blogs</Link></li>
+                      <li><Link to="/aboutUs">About Us</Link></li>
+                    </ul>
+                  </div>
+                    <p>Copyright &copy; Crafted by <a href="home">Blogger</a>.</p>
+                  </div>
+                </div>
+              </div>
+            </footer>
+          </div>
       </div>
     );
   }

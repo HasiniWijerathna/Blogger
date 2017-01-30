@@ -94,7 +94,6 @@ class AddNewBlog extends Component {
        />
         <p>New blog</p>
         <TextField floatingLabelText="Name" value={this.state.blog.name} onChange={onChangeName} fullWidth/>
-
         <RaisedButton label="Save" primary onClick={onAddBlog} />
       </div>
     );

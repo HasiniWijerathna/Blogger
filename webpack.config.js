@@ -36,6 +36,9 @@ module.exports = {
         'sass?outputStyle=expanded',
       ],
     }, {
+      test: /\.css$/,
+      loaders: ['style', 'css'],
+    }, {
       test: /\.(jpe?g|png|gif|svg)$/i,
       loaders: [
         'url?limit=8192',

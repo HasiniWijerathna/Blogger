@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {Card, CardHeader, CardMedia, CardTitle} from 'material-ui/Card';
+import {Card, CardHeader} from 'material-ui/Card';
 import {browserHistory} from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
-
+import RaisedButton from 'material-ui/RaisedButton';
 import {isAuthenticated, resetSession} from '../services/SessionService';
-
+import {Link} from 'react-router';
 /**
 * Representing the login sign up functionalities
 */
@@ -20,6 +20,7 @@ class Home extends Component {
 * Navigates to the sign up page
 */
   static signUp() {
+    console.log('login');
     browserHistory.push('/registration');
   }
 /**
@@ -44,40 +45,93 @@ class Home extends Component {
       isAuthenticated: false,
     });
   }
+
+/**
+ * Navigate to the blogs page
+ */
+  navaigateBlogs() {
+    console.log('clicked');
+    browserHistory.push('blogs');
+  }
 /**
 * Describes the elements on the Post page
 * @return {String} HTML elements
 */
   render() {
     const logout = this.logout.bind(this);
+    const navaigateBlogs = this.navaigateBlogs.bind(this);
     const authButton = this.state.isAuthenticated ?
       <FlatButton label="LOGOUT" onClick={logout} /> :
       <FlatButton label="LOGIN" onClick={Home.login} />;
     return (
-      <div>
-        <div>
+      <div className="home-container">
+        <Card>
+          <div>
+            <Card>
+              <section id="slider">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-md-10 col-md-offset-2">
+                      <div className="block">
+                        <h1 className="animated fadeInUp">Publish your passions, your way</h1>
+                        <p className="animated fadeInUp">Create a unique and beautiful blog. It’s easy and free</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </Card>
+          </div>
+        <Card></Card>
+      <Card>
+        <section id="feature">
+          <div className="container">
+            <div className="row">
+              <div className="col-12">
+                <h2>Choose the perfect design</h2>
+                <p>Create a beautiful blog that fits your style. Choose from a</p>
+                <p>selection of easy-to-use templates – all with flexible layouts and </p>
+                <p>hundreds of background images – or design something new.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </Card>
+        <Card></Card>
           <Card>
-            <CardHeader title="Personal | Business | Politics | Non-profits | Sports" />
-            <CardMedia
-              overlay={
-                <CardTitle
-                  title="Choose a plan that works for you.
-                  Customize as much or as little as you want. Get help when you need it. Tell your story."
-                />
-            }
-            >
-              <img
-                alt="Logo"
-                src="http://static.wixstatic.com/media/2dffea_5fd0f21658c0452aa83414245c77249c.jpg_srz_1226_690_85_22_0.50_1.20_0.00_jpg_srz" // eslint-disable-line
-              />
-            </CardMedia>
-            { authButton }
-            <FlatButton
-              label="Sign up"
-              onClick={Home.signUp}
-            />
+            <section id="call-to-action">
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="block">
+                      <h2>We design delightful digital experiences.</h2>
+                      <p>Read more about what we do and our philosophy of design.</p>
+                      <p>Judge for yourself The work and results we’ve achieved for other clients,</p>
+                      <p> and meet our highly experienced Team who just love to design.</p>
+                      <RaisedButton label="Create your blog" style onClick={navaigateBlogs} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
           </Card>
-        </div>
+            <footer>
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="footer-manu">
+                      <ul>
+                        <li><Link to="/home">Home</Link></li>
+                        <li><Link to="/blogs">Blogs</Link></li>
+                        <li><Link to="/aboutUs">About Us</Link></li>
+                      </ul>
+                    </div>
+                      <p>Copyright &copy; Crafted by <a href="home">Blogger</a>.</p>
+                    </div>
+                  </div>
+                </div>
+              </footer>
+          </Card>
       </div>
     );
   }

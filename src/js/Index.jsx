@@ -3,6 +3,8 @@ import {render} from 'react-dom';
 import {Router, Route, browserHistory} from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
+// import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/master.scss';
 
 import {isAuthenticated} from './services/SessionService';
@@ -16,6 +18,7 @@ import AddNewBlog from './containers/AddNewBlog';
 import Home from './containers/Home';
 import Login from './containers/Login';
 import Registration from './containers/Registration';
+import AboutUs from './containers/AboutUs';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -46,6 +49,7 @@ render(
   (<Router history={browserHistory}>
     <Route path="/" component={App}>
       <Route path="home" component={Home} />
+      <Route path="aboutUs" component={AboutUs} />
       <Route path="login" component={Login} onEnter={checkAuth} />
       <Route path="registration" component={Registration} onEnter={checkAuth} />
       <Route path="blogs" component={BlogsHomePage} />
