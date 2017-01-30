@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardHeader} from 'material-ui/Card';
+import {Card} from 'material-ui/Card';
 import {browserHistory} from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -20,7 +20,6 @@ class Home extends Component {
 * Navigates to the sign up page
 */
   static signUp() {
-    console.log('login');
     browserHistory.push('/registration');
   }
 /**
@@ -33,8 +32,6 @@ class Home extends Component {
     this.state = {
       isAuthenticated: isAuthenticated(),
     };
-
-    // this.logout = this.logout.bind(this);
   }
 /**
 * Sets the session if the authenticaion false

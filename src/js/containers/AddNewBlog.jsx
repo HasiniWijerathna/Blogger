@@ -25,11 +25,10 @@ class AddNewBlog extends Component {
       open: false,
       message: '',
     };
-    // const blogId = parseInt(props.params.blogId);
   }
 
   /**
-   * [addNewBlog description]
+   * Allows logged users to add blogs
    */
   addNewBlog() {
     const loggedUser = getSession().user.id;
@@ -51,8 +50,6 @@ class AddNewBlog extends Component {
           message: 'Plese login to add blogs',
         });
       });
-    } else {
-      console.log('login!');
     }
   }
 /**
@@ -67,7 +64,7 @@ class AddNewBlog extends Component {
     this.setState({blog});
   }
   /**
-   * [handleRequestClos description]
+   * Hides the snackbar when the user clicks it
    */
   handleRequestClose() {
     this.setState({

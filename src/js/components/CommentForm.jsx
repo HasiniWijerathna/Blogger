@@ -21,7 +21,7 @@ class CommentForm extends Component {
     };
   }
 /**
- * [onAddComment description]
+ * Allows to add comments on the selected post
  */
   onAddComment() {
     const authenticated = getSession().authenticated;

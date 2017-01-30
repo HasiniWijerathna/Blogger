@@ -10,7 +10,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import {get} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
-import {getSession} from '../services/SessionService';
 import Snackbar from 'material-ui/Snackbar';
 import {Link} from 'react-router';
 /**

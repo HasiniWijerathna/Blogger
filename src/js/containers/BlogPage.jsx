@@ -112,7 +112,7 @@ class BlogPage extends Component {
       });
   }
   /**
-   * [handleRequestClos description]
+   * Hides the snackbar when the user clicks it
    */
   handleRequestClose() {
     this.setState({
