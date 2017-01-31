@@ -99,7 +99,7 @@ class HeaderBar extends Component {
                       <li><Link to="/home">Home</Link></li>
                       <li><Link to="/blogs">Blogs</Link></li>
                       <li><Link to="/aboutUs">About Us</Link></li>
-                      <a className="btn btn-default btn-call-to-action" onClick={signOut} >Sign out</a>
+                      <li><a onClick={signOut} >Sign out</a></li>
                   </ul>
                   </div>
                   </div>

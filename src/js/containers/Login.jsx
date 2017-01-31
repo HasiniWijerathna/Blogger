@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {GoogleLogin} from 'react-google-login-component';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {browserHistory} from 'react-router';
@@ -9,7 +8,34 @@ import {post} from '../services/Requests';
 import {loginURL} from '../services/urlFactory';
 import Snackbar from 'material-ui/Snackbar';
 import FlatButton from 'material-ui/FlatButton';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import {Card, CardText} from 'material-ui/Card';
+
+const snackBarStyleMap = {
+  success: {
+    bodyStyle: {
+      'background-color': '#66BB6A',
+    },
+    contentStyle: {
+      color: 'black',
+    },
+  },
+  error: {
+    bodyStyle: {
+      'background-color': '#C62828',
+    },
+    contentStyle: {
+      color: 'black',
+    },
+  },
+  warning: {
+    bodyStyle: {
+      'background-color': '#FFF176',
+    },
+    contentStyle: {
+      color: 'black',
+    },
+  },
+};
 
 /**
 * Representing the logic of user login function
@@ -152,6 +178,11 @@ class Login extends Component {
     const handleRequestClose = this.handleRequestClose.bind(this);
     const signUp = this.signUp.bind(this);
 
+    const snackBarStyle = {
+      marginBottom: '20px',
+      left: '20%',
+    };
+
     return (
       <div>
         <Snackbar
@@ -159,6 +190,9 @@ class Login extends Component {
          message={this.state.errorMessage.message}
          autoHideDuration={4000}
          onRequestClose={handleRequestClose}
+         style={snackBarStyle}
+         bodyStyle={snackBarStyleMap.error.bodyStyle}
+         contentStyle={snackBarStyleMap.error.contentStyle}
        />
     <Card>
       <section id="global-header">
