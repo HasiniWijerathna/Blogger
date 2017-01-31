@@ -6,7 +6,8 @@ import TextField from 'material-ui/TextField';
 
 import {post} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
-
+import ReactMarkdown from 'react-markdown';
+import {Card, CardText} from 'material-ui/Card';
 /**
  * Representing the logic of adding new posts functionality
  */
@@ -84,15 +85,46 @@ class AddNewPost extends Component {
     const onChangeTitle = this.onChangeTitle.bind(this);
     const onChangeContent = this.onChangeContent.bind(this);
 
+    const contentCardStyle = {
+      position: 'right',
+      display: 'block',
+      width: '52%',
+      paddingBottom: '100px',
+      transitionDuration: '0.3s',
+      float: 'left',
+      height: '560px',
+    };
+    const previewCardStyle = {
+      position: 'right',
+      display: 'block',
+      width: '47%',
+      paddingBottom: '665px',
+      transitionDuration: '0.3s',
+      float: 'right',
+      height: '480px',
+    };
+
     return (
       <div>
+        <Card style={contentCardStyle}>
         <div>
         <TextField floatingLabelText="Title" value={this.state.post.title} onChange={onChangeTitle} fullWidth/>
         </div>
-        <div>
-          <TextField floatingLabelText="content" value={this.state.post.content} onChange={onChangeContent} fullWidth/>
+        <div className="col-md-6">
+          <TextField
+            floatingLabelText="Post content"
+            multiLine={true}
+            rows={20}
+            value={this.state.post.content}
+            onChange={onChangeContent}
+            fullWidth
+          />
+          <RaisedButton label="Save" primary onClick={onAddPost} />
         </div>
-        <RaisedButton label="Save" primary onClick={onAddPost} />
+        </Card>
+        <Card style={previewCardStyle}>
+          <ReactMarkdown source={this.state.post.content} />
+        </Card>
       </div>
     );
   }

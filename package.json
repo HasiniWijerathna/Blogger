@@ -23,6 +23,7 @@
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-google-login-component": "^0.5.2",
+    "react-markdown": "^2.4.4",
     "react-popup": "^0.4.2",
     "react-router": "^2.0.0",
     "react-tap-event-plugin": "^2.0.1",

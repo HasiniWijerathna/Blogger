@@ -77,6 +77,7 @@ class AddNewBlog extends Component {
 * @return {String} HTML elements
 */
   render() {
+    // const input = '# This is a header\n\nAnd this is a paragraph';
     const onAddBlog = this.addNewBlog.bind(this);
     const onChangeName = this.onChangeName.bind(this);
     const handleRequestClose = this.handleRequestClose.bind(this);
