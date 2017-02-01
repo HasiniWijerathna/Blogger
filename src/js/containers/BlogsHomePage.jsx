@@ -124,6 +124,14 @@ class BlogsHomePage extends Component {
       );
     });
 
+    const buttonStyle = {
+      position: 'fixed',
+      bottom: 0,
+      right: 0,
+      marginBottom: '10px',
+      zIndex: 99999,
+    };
+
     return (
       <div className =".app.blogList">
         <Snackbar
@@ -145,25 +153,9 @@ class BlogsHomePage extends Component {
           <Subheader>Blogs</Subheader>
           {blogs}
         </List>
-        <FloatingActionButton onClick={this.addNewBlog} style={this.style}>
+        <FloatingActionButton onClick={this.addNewBlog} style={buttonStyle}>
           <ContentAdd />
         </FloatingActionButton>
-      <footer>
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="footer-manu">
-                <ul>
-                  <li><Link to="/home">Home</Link></li>
-                  <li><Link to="/blogs">Blogs</Link></li>
-                  <li><Link to="/aboutUs">About Us</Link></li>
-                </ul>
-              </div>
-                <p>Copyright &copy; Crafted by <a href="home">Blogger</a>.</p>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
     );
   }

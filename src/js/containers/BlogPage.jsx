@@ -131,6 +131,14 @@ class BlogPage extends Component {
     const handleRequestClose = this.handleRequestClose.bind(this);
     let posts = [];
 
+    const buttonStyle = {
+      position: 'fixed',
+      bottom: 0,
+      right: 0,
+      marginBottom: '10px',
+      zIndex: 99999,
+    };
+
     if(blog.Posts && blog.Posts.length) {
       posts = blog.Posts.map((post) => {
         const onPostClick = BlogPage.onPostClick.bind(this, blog.id, post.id);
@@ -171,25 +179,12 @@ class BlogPage extends Component {
           {posts}
           {deleteAction}
         </List>
-        <FloatingActionButton onClick={addNewPost}>
+        <FloatingActionButton
+          style={buttonStyle}
+          onClick={addNewPost}
+          >
           <ContentAdd />
         </FloatingActionButton>
-        <footer>
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12">
-                <div className="footer-manu">
-                  <ul>
-                    <li><Link to="/home">Home</Link></li>
-                    <li><Link to="/blogs">Blogs</Link></li>
-                    <li><Link to="/aboutUs">About Us</Link></li>
-                  </ul>
-                </div>
-                  <p>Copyright &copy; Crafted by <a href="home">Blogger</a>.</p>
-                </div>
-              </div>
-            </div>
-          </footer>
       </div>
     );
   }

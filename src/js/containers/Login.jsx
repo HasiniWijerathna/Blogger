@@ -241,22 +241,6 @@ class Login extends Component {
             </div>
           </section>
         </Card>
-          <footer>
-            <div className="container">
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="footer-manu">
-                    <ul>
-                      <li><a href="home">Home</a></li>
-                      <li><a href="blogs">Blogs</a></li>
-                      <li><a href="aboutUs">About Us</a></li>
-                    </ul>
-                  </div>
-                  <p>Copyright &copy; Crafted by <a href="home">Blogger</a>.</p>
-                </div>
-              </div>
-            </div>
-          </footer>
       </div>
     );
   }

@@ -9,8 +9,15 @@
   text-align:cen !important;
 }
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Overpass', sans-serif;
+  color: #333;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
   -webkit-font-smoothing: antialiased;
+  margin: 0 0 303px;
+  /* bottom = footer height */
+  padding: 25px;
 }
 h1,
 h2,
@@ -778,10 +785,16 @@ font header .navbar-default .navbar-nav li a:hover {
 	footer Start
 --*/
 footer {
+  height: 200px;
   background: #F5F5F5;
   text-align: center;
   padding-top: 48px;
   padding-bottom: 55px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  overflow:hidden;
 }
 footer p {
   font-size: 13px;
