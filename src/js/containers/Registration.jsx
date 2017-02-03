@@ -3,12 +3,13 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {browserHistory} from 'react-router';
 import Popup from 'react-popup';
+import Snackbar from 'material-ui/Snackbar';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
 import {setSession} from '../services/SessionService';
 import {post} from '../services/Requests';
 import {registerURL} from '../services/urlFactory';
-import Snackbar from 'material-ui/Snackbar';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+
 /**
  * Representing the logic of user registration
  */
@@ -29,6 +30,7 @@ class Registration extends Component {
 
     return error;
   }
+
 /**
  * validate email
  * @param  {String} email The email
@@ -45,6 +47,7 @@ class Registration extends Component {
 
     return error;
   }
+
 /**
 * Validate password
 * @param  {String} password        The password
@@ -68,6 +71,7 @@ class Registration extends Component {
 
     return {passwordError, confirmPasswordError};
   }
+
 /**
 * Class constructor
 * @param {Object} props User define component
@@ -103,8 +107,8 @@ class Registration extends Component {
     };
 
     this.validateAll = this.validateAll.bind(this);
-    // this.addAlert = this.addAlert.bind(this);
   }
+
 /**
 * Event changer for the username
 * @param  {String} changeEvent Changer event of the username
@@ -124,6 +128,7 @@ class Registration extends Component {
       error,
     });
   }
+
   /**
   * Event changer for the name
   * @param  {String} changeEvent Changer event of the username
@@ -163,6 +168,7 @@ class Registration extends Component {
       error,
     });
   }
+
 /**
 * Event changer for the password
 * @param  {String} changeEvent Changer event of the password
@@ -184,6 +190,7 @@ class Registration extends Component {
       error,
     });
   }
+
 /**
 * Sends a POST Request to register the user
 */
@@ -196,7 +203,6 @@ class Registration extends Component {
     };
     post(registerURL(), data)
       .then((response) => {
-        console.log(response);
         const session = {
           authenticated: true,
           token: response.data.token,
@@ -261,19 +267,7 @@ class Registration extends Component {
   }
 
   /**
-  * [addAlert description]
-  */
-  // addAlert() {
-  //   this.setState({
-  //     errorMessage: {
-  //       open: true,
-  //       message: 'Email already exist!',
-  //     },
-  //   });
-  // }
-
-  /**
-   * [handleRequestClos description]
+   * Hides the snackbar
    */
   handleRequestClose() {
     this.setState({
@@ -283,6 +277,7 @@ class Registration extends Component {
       },
     });
   }
+
 /**
 * Describes the elements on the registration page
 * @return {String} HTML elements
@@ -317,77 +312,80 @@ class Registration extends Component {
                 <div className="col-md-12">
                   <div className="block">
                     <h1>It’s time to get more from what you read.</h1>
-                    <p>Find and share real perspectives about topics that matter today</p>
+                      <p>Find and share real perspectives about topics that matter today</p>
                   </div>
                 </div>
               </div>
             </div>
           </section>
-          <hgroup>
-          <Card>
-            <CardHeader/>
             <hgroup>
-              <h1>Create your Account</h1>
-            </hgroup>
-            <form>
-              <img src="img/login.png" alt="loginlogo"/>
-              <CardActions>
-                <div>
-                  <TextField
-                    floatingLabelText="Username"
-                    value={this.state.user.username}
-                    errorText={this.state.focused.name && this.state.error.name}
-                    onChange={onChangeUsername}
-                    onBlur={onNameFocusOut}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    floatingLabelText="Name"
-                    value={this.state.user.name}
-                    errorText={this.state.focused.name && this.state.error.name}
-                    onChange={onChangeName}
-                    onBlur={onNameFocusOut}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    floatingLabelText="Email"
-                    value={this.state.user.email}
-                    errorText={this.state.focused.email && this.state.error.email}
-                    onChange={onChangeEmail}
-                    onBlur={onEmailFocusOut}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    floatingLabelText="Password"
-                    value={this.state.user.password}
-                    errorText={this.state.focused.password && this.state.error.password}
-                    type="password"
-                    onChange={onChangePassword}
-                    onBlur={onPasswordFocusOut}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    floatingLabelText="Confirm Password"
-                    value={this.state.user.confirmPassword}
-                    errorText={this.state.focused.confirmPassword && this.state.error.confirmPassword}
-                    type="password"
-                    onChange={OnConfirmPassword}
-                    onBlur={OnConfirmPasswordFocusOut}
-                  />
-                </div>
-              </CardActions>
-              <div><RaisedButton label="Create Account" disabled={!this.state.formValid} onClick={onConfirm} /></div>
-              </form>
-              <CardText >
-              </CardText>
-          </Card>
-          </hgroup>
-        </div>
-      </div>
+              <Card>
+                <CardHeader/>
+                  <hgroup>
+                    <h1>Create your Account</h1>
+                  </hgroup>
+                    <form>
+                      <img src="img/login.png" alt="loginlogo"/>
+                        <CardActions>
+                          <div>
+                            <TextField
+                              floatingLabelText="Username"
+                              value={this.state.user.username}
+                              errorText={this.state.focused.name && this.state.error.name}
+                              onChange={onChangeUsername}
+                              onBlur={onNameFocusOut}
+                            />
+                          </div>
+                          <div>
+                            <TextField
+                              floatingLabelText="Name"
+                              value={this.state.user.name}
+                              errorText={this.state.focused.name && this.state.error.name}
+                              onChange={onChangeName}
+                              onBlur={onNameFocusOut}
+                            />
+                          </div>
+                          <div>
+                            <TextField
+                              floatingLabelText="Email"
+                              value={this.state.user.email}
+                              errorText={this.state.focused.email && this.state.error.email}
+                              onChange={onChangeEmail}
+                              onBlur={onEmailFocusOut}
+                            />
+                          </div>
+                          <div>
+                            <TextField
+                              floatingLabelText="Password"
+                              value={this.state.user.password}
+                              errorText={this.state.focused.password && this.state.error.password}
+                              type="password"
+                              onChange={onChangePassword}
+                              onBlur={onPasswordFocusOut}
+                            />
+                          </div>
+                          <div>
+                            <TextField
+                              floatingLabelText="Confirm Password"
+                              value={this.state.user.confirmPassword}
+                              errorText={this.state.focused.confirmPassword && this.state.error.confirmPassword}
+                              type="password"
+                              onChange={OnConfirmPassword}
+                              onBlur={OnConfirmPasswordFocusOut}
+                            />
+                          </div>
+                        </CardActions>
+                          <div>
+                            <RaisedButton
+                              label="Create Account"
+                              disabled={!this.state.formValid}
+                              onClick={onConfirm} /></div>
+                        </form>
+                        <CardText ></CardText>
+                  </Card>
+                </hgroup>
+              </div>
+            </div>
     );
   }
 }

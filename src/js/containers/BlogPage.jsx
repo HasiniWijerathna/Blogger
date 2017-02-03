@@ -4,14 +4,18 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import {browserHistory} from 'react-router';
 import {List} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
-import {Card, CardActions, CardTitle} from 'material-ui/Card';
+import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
+import ReactMarkdown from 'react-markdown';
+import Snackbar from 'material-ui/Snackbar';
+import {SocialIcon} from 'react-social-icons';
+import IconButton from 'material-ui/IconButton';
+import ActionGrade from 'material-ui/svg-icons/action/grade';
 
 import {get, httDelete} from '../services/Requests';
-import {modelURL} from '../services/urlFactory';
+import {modelURL, modelLikeURL} from '../services/urlFactory';
 import {getSession} from '../services/SessionService';
-import Snackbar from 'material-ui/Snackbar';
-import {Link} from 'react-router';
+import {post} from '../services/Requests';
 /**
  * Representing the logic of presenting existing posts belogs to the blog
  */
@@ -59,6 +63,7 @@ class BlogPage extends Component {
       blog: {},
       open: false,
       errorMessage: '',
+      count: null,
     };
 
     this.fetchBlog = this.fetchBlog.bind(this);
@@ -111,14 +116,35 @@ class BlogPage extends Component {
         browserHistory.push('blogs');
       });
   }
-  /**
-   * Hides the snackbar when the user clicks it
-   */
+/**
+ * Hides the snackbar when the user clicks it
+ */
   handleRequestClose() {
     this.setState({
       open: false,
       errorMessage: '',
     });
+  }
+  /**
+   * Gets the count of the likes
+   */
+  getCount() {
+    const blogId = this.state.blog.id;
+    const baseURL = modelURL('blog', blogId, 'like');
+    const url = modelLikeURL(baseURL);
+    post(url)
+    .then(() => {
+      console.log('count');
+      this.setState({
+        count: 1,
+      });
+    })
+    .catch((error) =>{
+      console.log('error');
+    });
+    // this.setState({
+    //   count: this.state.count + 1,
+    // });
   }
 /**
 * Describes the elements on the Blog page
@@ -129,29 +155,41 @@ class BlogPage extends Component {
     const addNewPost = BlogPage.addNewPost.bind(this, blog.id);
     const onDeleteBlog = this.onDeleteBlog.bind(this);
     const handleRequestClose = this.handleRequestClose.bind(this);
+    const getCount = this.getCount.bind(this);
     let posts = [];
 
     const buttonStyle = {
       position: 'fixed',
-      bottom: 0,
-      right: 0,
+      bottom: '16px',
+      right: '16px',
       marginBottom: '10px',
       zIndex: 99999,
+    };
+
+    const deleteButtonStyle = {
+      marginLeft: '100px',
+    };
+
+    const iconButton = {
+      marginLeft: '550px',
     };
 
     if(blog.Posts && blog.Posts.length) {
       posts = blog.Posts.map((post) => {
         const onPostClick = BlogPage.onPostClick.bind(this, blog.id, post.id);
-
+        const postContent = <div> <ReactMarkdown source={post.content || ''} /></div>;
         return (
           <div key={`${blog.id}-${post.id}`}>
-              <Card key={`${blog.id}-${post.id}`}>
-                <CardTitle title={post.id} subtitle={post.content} />
-                <CardActions>
-                  <RaisedButton label="Leave a comment" onClick={onPostClick} />
-                </CardActions>
+              <Card key={`${blog.id}-${post.id}`}>>
+                <CardTitle>
+                  {post.title}
+                  {postContent}
+                </CardTitle>
+                  <CardActions>
+                    <RaisedButton label="View Post" onClick={onPostClick} />
+                  </CardActions>
               </Card>
-            </div>
+          </div>
         );
       });
     }
@@ -162,8 +200,23 @@ class BlogPage extends Component {
       const loggedUser = getSession().user.id;
       const blogAddedUser = this.state.blog.UserId;
       if(loggedUser == blogAddedUser) {
-        deleteAction = <RaisedButton label="Delete Posts" primary onClick={onDeleteBlog}/>;
+        deleteAction = <RaisedButton label="Delete Blog" onClick={onDeleteBlog} style={deleteButtonStyle}/>;
       }
+    }
+    let count = <div> <IconButton tooltip={this.state.count}
+     touch={true} style={iconButton} onClick={getCount} >
+                   <ActionGrade />
+                 </IconButton>
+
+    </div>;
+    if(this.state.count ==1) {
+      console.log('cliked');
+      count = <div> <IconButton tooltip={this.state.count}
+       touch={true} style={iconButton} onClick={getCount} disabled >
+                     <ActionGrade />
+                   </IconButton>
+
+      </div>;
     }
 
     return (
@@ -175,16 +228,25 @@ class BlogPage extends Component {
          onRequestClose={handleRequestClose}
        />
         <List>
-          <Subheader>Postes</Subheader>
-          {posts}
-          {deleteAction}
-        </List>
+          <header>
+            {this.state.blog.name}
+            {deleteAction}
+            <div>
+              {count}
+            </div>
+          </header>
+            <Subheader>Postes</Subheader>
+              {posts}
+          </List>
         <FloatingActionButton
           style={buttonStyle}
           onClick={addNewPost}
           >
           <ContentAdd />
         </FloatingActionButton>
+        <div className= "socialIcon">
+          <SocialIcon url="http://twitter.com/jaketrent" />
+        </div>
       </div>
     );
   }

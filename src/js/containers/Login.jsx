@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {browserHistory} from 'react-router';
+import Snackbar from 'material-ui/Snackbar';
+import FlatButton from 'material-ui/FlatButton';
+import {Card, CardText} from 'material-ui/Card';
 
 import {setSession} from '../services/SessionService';
 import {post} from '../services/Requests';
 import {loginURL} from '../services/urlFactory';
-import Snackbar from 'material-ui/Snackbar';
-import FlatButton from 'material-ui/FlatButton';
-import {Card, CardText} from 'material-ui/Card';
+
 
 const snackBarStyleMap = {
   success: {
@@ -105,7 +106,6 @@ class Login extends Component {
     };
     post(loginURL(), data)
       .then((response) => {
-        console.log(response);
         const session = {
           authenticated: true,
           token: response.data.token,
@@ -122,43 +122,16 @@ class Login extends Component {
           },
         });
       });
-    // axios.post('http://localhost:3000/auth/login', {
-    //   username: this.state.user.name,
-    //   password: this.state.user.password,
-    // })
-    // .then((response) => {
-    //   const session = {
-    //     authenticated: true,
-    //     token: response.data.token,
-    //   };
-    //
-    //   setSession(session);
-    //
-    //   browserHistory.push(this.state.nextPathname);
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
-
-
-    // const allUsers = getAllUsers();
-    // const users = allUsers.map(user => {
-    //   if (user.name === this.state.user.name && user.password === this.state.user.password) {
-    //     console.log("logged in");
-    //   } else {
-    //     console.log("logging failed");
-    //   }
-    // });
   }
-  /**
-   * [signUp description]
-   */
+/**
+ * Navigates to the registration page
+ */
   signUp() {
     browserHistory.push('/registration');
   }
-  /**
-   * [handleRequestClos description]
-   */
+/**
+ * Hides the Snackbar
+ */
   handleRequestClose() {
     this.setState({
       errorMessage: {
@@ -184,16 +157,16 @@ class Login extends Component {
     };
 
     return (
-      <div>
-        <Snackbar
-         open={this.state.errorMessage.open}
-         message={this.state.errorMessage.message}
-         autoHideDuration={4000}
-         onRequestClose={handleRequestClose}
-         style={snackBarStyle}
-         bodyStyle={snackBarStyleMap.error.bodyStyle}
-         contentStyle={snackBarStyleMap.error.contentStyle}
-       />
+    <div>
+      <Snackbar
+       open={this.state.errorMessage.open}
+       message={this.state.errorMessage.message}
+       autoHideDuration={4000}
+       onRequestClose={handleRequestClose}
+       style={snackBarStyle}
+       bodyStyle={snackBarStyleMap.error.bodyStyle}
+       contentStyle={snackBarStyleMap.error.contentStyle}
+     />
     <Card>
       <section id="global-header">
         <div className="container">
@@ -201,29 +174,34 @@ class Login extends Component {
             <div className="col-md-12">
               <div className="block">
                 <h1>It’s time to get more from what you read.</h1>
-                <p>Find and share real perspectives about topics that matter today</p>
+                  <p>Find and share real perspectives about topics that matter today</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-        <form>
-          <formgroup>
-            <hgroup>
-              <img src="img/login.png" alt="loginlogo"/>
-              <h2><FlatButton label="Create your account" onClick={signUp}/></h2>
-            <TextField floatingLabelText="Username" value={this.state.user.name} onChange={onChangeName} />
-            <TextField
-              floatingLabelText="Password"
-              value={this.state.user.password}
-              type="password" onChange={onChangePassword}
-            />
-              <FlatButton label="Login" onClick={onConfirm} />
-            </hgroup>
-          </formgroup>
-        </form>
-          <CardText></CardText>
-      </Card>
+        </section>
+          <form>
+            <formgroup>
+              <hgroup>
+                <img src="img/login.png" alt="loginlogo"/>
+                  <h2>
+                    <FlatButton label="Create your account" onClick={signUp}/>
+                  </h2>
+                    <TextField
+                      floatingLabelText="Username"
+                      value={this.state.user.name}
+                      onChange={onChangeName} />
+                    <TextField
+                      floatingLabelText="Password"
+                      value={this.state.user.password}
+                      type="password"
+                      onChange={onChangePassword} />
+                    <FlatButton label="Login" onClick={onConfirm} />
+                  </hgroup>
+                </formgroup>
+              </form>
+            <CardText></CardText>
+        </Card>
         <Card>
           <section id="call-to-action">
             <div className="container">
@@ -231,17 +209,17 @@ class Login extends Component {
                 <div className="col-md-12">
                   <div className="block">
                     <h2>We design delightful digital experiences.</h2>
-                    <p>Read more about what we do and our philosophy of design.</p>
-                    <p>Judge for yourself The work and results we’ve achieved for other clients,</p>
-                    <p> and meet our highly experienced Team who just love to design.</p>
-                    <RaisedButton label="Create your blog" style />
+                      <p>Read more about what we do and our philosophy of design.</p>
+                      <p>Judge for yourself The work and results we’ve achieved for other clients,</p>
+                      <p> and meet our highly experienced Team who just love to design.</p>
+                        <RaisedButton label="Create your blog" style />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-        </Card>
-      </div>
+            </section>
+          </Card>
+        </div>
     );
   }
 }

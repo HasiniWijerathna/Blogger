@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {browserHistory} from 'react-router';
-import FlatButton from 'material-ui/FlatButton';
 import {getSession, isAuthenticated, resetSession} from '../services/SessionService';
 import {Link} from 'react-router';
+
+
 /**
  * Representing the header bar
  */
@@ -51,7 +52,6 @@ class HeaderBar extends Component {
   * @return {String} HTML elements
   */
   render() {
-    const login = this.login.bind(this);
     const authenticated = getSession().authenticated;
     const signOut = this.signOut.bind(this);
     let container = <div className="container">
@@ -60,7 +60,7 @@ class HeaderBar extends Component {
           <nav className="navbar navbar-default">
             <div className="container-fluid">
               <div className="navbar-header">
-                <a className="navbar-brand" href="index.html">
+                <a className="navbar-brand">
                   <img src="http://localhost:8000/img/logo.png" alt="Logo"/>
                 </a>
               </div>
@@ -78,20 +78,14 @@ class HeaderBar extends Component {
         </div>
       </div>;
     if (authenticated) {
-      let message = 'Welcome!';
-      const user = getSession().user.name;
-      if(user) {
-        message = `Welcome ${user}`;
-      }
-      console.log('authenticated');
       container = <div className="container">
           <div className="row">
             <div className="col-12">
               <nav className="navbar navbar-default">
                 <div className="container-fluid">
                   <div className="navbar-header">
-                    <a className="navbar-brand" href="index.html">
-                        <img src={this.props.logo} alt="Logo"/>
+                    <a className="navbar-brand">
+                      <img src={this.props.logo} alt="Logo"/>
                     </a>
                   </div>
                   <div className="navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -100,26 +94,26 @@ class HeaderBar extends Component {
                       <li><Link to="/blogs">Blogs</Link></li>
                       <li><Link to="/aboutUs">About Us</Link></li>
                       <li><a onClick={signOut} >Sign out</a></li>
-                  </ul>
+
+                      <li></li>
+
+                    </ul>
                   </div>
-                  </div>
+                 </div>
                 </nav>
               </div>
             </div>
           </div>;
     }
-
-
     return (
-      <div>
-        <header>
-        {container}
+        <div>
+          <header>
+            {container}
           </header>
-      </div>
+        </div>
     );
   }
 }
-
 HeaderBar.propTypes = {
   logo: React.PropTypes.string.isRequired,
 };

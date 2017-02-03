@@ -7,16 +7,14 @@ import AutoComplete from 'material-ui/AutoComplete';
 import {List} from 'material-ui/List';
 import {Card, CardActions, CardHeader, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
+import Snackbar from 'material-ui/Snackbar';
 
 import {get} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
-import Snackbar from 'material-ui/Snackbar';
-import {Link} from 'react-router';
 /**
 * Representing the logic of presenting existing blogs
 */
 class BlogsHomePage extends Component {
-
 
 /**
 * Navigates to the relevent blog page
@@ -42,7 +40,6 @@ class BlogsHomePage extends Component {
     this.requestData();
     this.addNewBlog = this.addNewBlog.bind(this);
   }
-
 /**
  * Request all data from the API
  */
@@ -51,7 +48,6 @@ class BlogsHomePage extends Component {
 
     this.fetchData(url, 'blogs', true);
   }
-
 /**
 * Abstract function to fetch data from the API
 * @param  {String} url           The URL to GET from
@@ -76,18 +72,17 @@ class BlogsHomePage extends Component {
       })
       .catch((error) => {
         console.log(error);
-        // TODO: Display error message
       });
   }
 /**
-* [addNewBlog description]
+* Navigates to the Add blogs page
 */
   addNewBlog() {
     browserHistory.push('blogs/new');
   }
-  /**
-   * [handleRequestClos description]
-   */
+/**
+ * Hides the snack bar
+ */
   handleRequestClose() {
     this.setState({
       open: false,
@@ -126,8 +121,8 @@ class BlogsHomePage extends Component {
 
     const buttonStyle = {
       position: 'fixed',
-      bottom: 0,
-      right: 0,
+      bottom: '16px',
+      right: '16px',
       marginBottom: '10px',
       zIndex: 99999,
     };

@@ -1,9 +1,25 @@
 .app-toolbar {
   background-color:#7a7f93 !important;
 }
+.commentLabel {
+  width: 90%;
+}
+.socialIcon {
+  position: fixed;
+  bottom: 30px;
+  left: 16px;
+
+  z-index: 99999;
+}
+.count {
+  margin-right: 60px;
+}
 .app.blogList {
   color: #4a89dc;
   background: #fafafa;
+}
+.RichTextEditor__editor___1QqIU .public-DraftEditor-content {
+  height: 300px;
 }
 .message {
   font-family: 'Open Sans', 'sans-serif';

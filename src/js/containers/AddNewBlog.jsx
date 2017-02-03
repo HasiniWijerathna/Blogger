@@ -11,7 +11,6 @@ import {getSession} from '../services/SessionService';
 * Represents the view logic of adding new blogs functionality
 */
 class AddNewBlog extends Component {
-
   /**
   * Class constructor
   * @param {Object} props User define component
@@ -26,7 +25,6 @@ class AddNewBlog extends Component {
       message: '',
     };
   }
-
   /**
    * Allows logged users to add blogs
    */
@@ -63,9 +61,9 @@ class AddNewBlog extends Component {
     blog.name = newName;
     this.setState({blog});
   }
-  /**
-   * Hides the snackbar when the user clicks it
-   */
+/**
+ * Hides the snackbar when the user clicks it
+ */
   handleRequestClose() {
     this.setState({
       open: false,
@@ -77,7 +75,6 @@ class AddNewBlog extends Component {
 * @return {String} HTML elements
 */
   render() {
-    // const input = '# This is a header\n\nAnd this is a paragraph';
     const onAddBlog = this.addNewBlog.bind(this);
     const onChangeName = this.onChangeName.bind(this);
     const handleRequestClose = this.handleRequestClose.bind(this);

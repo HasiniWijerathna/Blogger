@@ -3,7 +3,7 @@ import TextField from 'material-ui/TextField';
 import {browserHistory} from 'react-router';
 import {getSession} from '../services/SessionService';
 import FlatButton from 'material-ui/FlatButton';
-
+import Snackbar from 'material-ui/Snackbar';
 /**
 * Represents the comment form functionality
 */
@@ -18,25 +18,39 @@ class CommentForm extends Component {
     this.state = {
       comment: '',
       dataLoading: true,
+      errorMessage: {
+        open: false,
+        message: '',
+      },
     };
   }
 /**
  * Allows to add comments on the selected post
  */
   onAddComment() {
-    const authenticated = getSession().authenticated;
-    if (authenticated) {
-      const blogId = this.props.post.BlogId;
-      const postId = this.props.post.id;
-      const comment = this.state.comment;
-      this.props.onAdd(comment);
-      browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
-      this.setState({
-        comment: '',
-        dataLoading: true,
-      });
+    const comment = this.state.comment;
+    if(comment) {
+      const authenticated = getSession().authenticated;
+      if (authenticated) {
+        const blogId = this.props.post.BlogId;
+        const postId = this.props.post.id;
+        const comment = this.state.comment;
+        this.props.onAdd(comment);
+        browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
+        this.setState({
+          comment: '',
+          dataLoading: true,
+        });
+      } else {
+        browserHistory.push('/login');
+      }
     } else {
-      browserHistory.push('/login');
+      this.setState({
+        errorMessage: {
+          open: true,
+          message: 'Empty Comment',
+        },
+      });
     }
   }
 /**
@@ -56,17 +70,60 @@ class CommentForm extends Component {
     browserHistory.push('/login');
   }
 /**
+ * Hides the snackbar
+ */
+  handleRequestClose() {
+    this.setState({
+      errorMessage: {
+        open: false,
+        message: '',
+      },
+    });
+  }
+/**
 * Render all blogs and autoComplete field
 * @return {String} Blog list
 */
   render() {
+    const snackBarStyleMap = {
+      success: {
+        bodyStyle: {
+          'background-color': '#66BB6A',
+        },
+        contentStyle: {
+          color: 'black',
+        },
+      },
+      error: {
+        bodyStyle: {
+          'background-color': '#C62828',
+        },
+        contentStyle: {
+          color: 'black',
+        },
+      },
+      warning: {
+        bodyStyle: {
+          'background-color': '#FFF176',
+        },
+        contentStyle: {
+          color: 'black',
+        },
+      },
+    };
+    const snackBarStyle = {
+      marginBottom: '20px',
+      left: '20%',
+    };
+
     const onAddComment = this.onAddComment.bind(this);
     const onChange = this.onChange.bind(this);
+    const handleRequestClose = this.handleRequestClose.bind(this);
     let addAction = null;
     const authenticated = getSession().authenticated;
     if (authenticated) {
       addAction = <div>
-        <TextField floatingLabelText="Comment" value={this.state.comment} onChange={onChange} />
+        <TextField floatingLabelText="Comment" value={this.state.comment} onChange={onChange} style={{width: '85%'}}/>
          <FlatButton label="Save" onClick={onAddComment} />
         </div>;
     } else {
@@ -79,7 +136,18 @@ class CommentForm extends Component {
     }
     return (
       <div>
-        {addAction}
+        <Snackbar
+         open={this.state.errorMessage.open}
+         message={this.state.errorMessage.message}
+         autoHideDuration={4000}
+         onRequestClose={handleRequestClose}
+         style={snackBarStyle}
+         bodyStyle={snackBarStyleMap.error.bodyStyle}
+         contentStyle={snackBarStyleMap.error.contentStyle}
+       />
+       <div>
+         {addAction}
+       </div>
       </div>
     );
   }

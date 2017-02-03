@@ -47,7 +47,6 @@ class Home extends Component {
  * Navigate to the blogs page
  */
   navaigateBlogs() {
-    console.log('clicked');
     browserHistory.push('blogs');
   }
 /**
@@ -55,11 +54,7 @@ class Home extends Component {
 * @return {String} HTML elements
 */
   render() {
-    const logout = this.logout.bind(this);
     const navaigateBlogs = this.navaigateBlogs.bind(this);
-    const authButton = this.state.isAuthenticated ?
-      <FlatButton label="LOGOUT" onClick={logout} /> :
-      <FlatButton label="LOGIN" onClick={Home.login} />;
     return (
       <div className="home-container">
         <Card>
@@ -80,21 +75,21 @@ class Home extends Component {
             </Card>
           </div>
         <Card></Card>
-      <Card>
-        <section id="feature">
-          <div className="container">
-            <div className="row">
-              <div className="col-12">
-                <h2>Choose the perfect design</h2>
-                <p>Create a beautiful blog that fits your style. Choose from a</p>
-                <p>selection of easy-to-use templates – all with flexible layouts and </p>
-                <p>hundreds of background images – or design something new.</p>
+        <Card>
+          <section id="feature">
+            <div className="container">
+              <div className="row">
+                <div className="col-12">
+                  <h2>Choose the perfect design</h2>
+                    <p>Create a beautiful blog that fits your style. Choose from a</p>
+                    <p>selection of easy-to-use templates – all with flexible layouts and </p>
+                    <p>hundreds of background images – or design something new.</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </section>
-      </Card>
-        <Card></Card>
+            </section>
+          </Card>
+          <Card></Card>
           <Card>
             <section id="call-to-action">
               <div className="container">
@@ -102,34 +97,18 @@ class Home extends Component {
                   <div className="col-md-12">
                     <div className="block">
                       <h2>We design delightful digital experiences.</h2>
-                      <p>Read more about what we do and our philosophy of design.</p>
-                      <p>Judge for yourself The work and results we’ve achieved for other clients,</p>
-                      <p> and meet our highly experienced Team who just love to design.</p>
-                      <RaisedButton label="Create your blog" style onClick={navaigateBlogs} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
+                        <p>Read more about what we do and our philosophy of design.</p>
+                        <p>Judge for yourself The work and results we’ve achieved for other clients,</p>
+                        <p> and meet our highly experienced Team who just love to design.</p>
+                          <RaisedButton label="Create your blog" style onClick={navaigateBlogs} />
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </section>
+           </Card>
           </Card>
-            <footer>
-              <div className="container">
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="footer-manu">
-                      <ul>
-                        <li><Link to="/home">Home</Link></li>
-                        <li><Link to="/blogs">Blogs</Link></li>
-                        <li><Link to="/aboutUs">About Us</Link></li>
-                      </ul>
-                    </div>
-                      <p>Copyright &copy; Crafted by <a href="home">Blogger</a>.</p>
-                    </div>
-                  </div>
-                </div>
-              </footer>
-          </Card>
-      </div>
+        </div>
     );
   }
 

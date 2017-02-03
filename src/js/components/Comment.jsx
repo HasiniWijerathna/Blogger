@@ -77,7 +77,10 @@ class Comment extends Component {
     const onSave = this.onSave.bind(this, this.props.comment);
     const onCancel = this.onCancel.bind(this);
     const onChange = this.onChange.bind(this);
-    // console.log(this.props.username);
+
+    const label = {
+      minWidth: '90%',
+    };
     let body = null;
 
     if (this.state.editMode) {
@@ -87,6 +90,7 @@ class Comment extends Component {
             floatingLabelText="Edit comment"
             value={this.state.editingComment}
             onChange={onChange}
+             style={{width: '90%'}}
           />
           <IconMenu
             iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
@@ -101,7 +105,7 @@ class Comment extends Component {
     } else {
       body = (
         <div>
-          <label htmlFor="commment">{this.props.comment.comment}</label>
+          <label className= "commentLabel" htmlFor="commment">{this.props.comment.comment}</label>
           <IconMenu
             iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
             anchorOrigin={{horizontal: 'right', vertical: 'top'}}

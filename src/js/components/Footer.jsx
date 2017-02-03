@@ -4,10 +4,10 @@ import {Link} from 'react-router';
  * Representing the header bar
  */
 class Footer extends Component {
-/**
- * [render description]
- * @return {[type]} [description]
- */
+  /**
+  * Describes the elements on the footer
+  * @return {String} HTML elements
+  */
   render() {
     return (
       <div>

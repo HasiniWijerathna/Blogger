@@ -28,4 +28,10 @@ const modelURL = (modelName, resourceId) => {
   return modelURL;
 };
 
-export {loginURL, registerURL, modelURL};
+const modelLikeURL = (modelURL) => {
+  const modelLikeURL = url(modelURL, 'like');
+
+  return modelLikeURL;
+};
+
+export {loginURL, registerURL, modelURL, modelLikeURL};

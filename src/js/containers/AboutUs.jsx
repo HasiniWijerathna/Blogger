@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import {Card} from 'material-ui/Card';
-import {Link} from 'react-router';
 /**
 * Represents the view logic of adding new blogs functionality
 */
 class AboutUs extends Component {
   /**
-   * [render description]
-   * @return {[type]} [description]
-   */
+  * Describes the elements on the About Us page
+  * @return {String} HTML elements
+  */
   render() {
     return (
       <div>
@@ -34,39 +33,23 @@ class AboutUs extends Component {
                 <div className="block">
                   <div className="section-title">
                     <h2>About Us</h2>
-                    <p>Promote your business, showcase your art,set up an online shop or just test out new ideas</p>
+                      <p>Promote your business, showcase your art,set up an online shop or just test out new ideas</p>
                   </div>
                     <p>It’s time to get more from what you read.Share perspectives about topics that matter today </p>
                 </div>
               </div>
-            <div className="col-md-5 col-sm-12">
-              <div className="block">
-                <img src="img/wrapper-img.gif" alt="Img"/>
+                <div className="col-md-5 col-sm-12">
+                  <div className="block">
+                    <img src="img/wrapper-img.gif" alt="Img"/>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-    </Card>
-      <footer>
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="footer-manu">
-                <ul>
-                  <li><Link to="/home">Home</Link></li>
-                  <li><Link to="/blogs">Blogs</Link></li>
-                  <li><Link to="/aboutUs">About Us</Link></li>
-                </ul>
-              </div>
-              <p>Copyright &copy; Crafted by <a href="home">Blogger</a>.</p>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
+          </section>
+        </Card>
+      </div>
     );
   }
-  }
+}
 
 export default AboutUs;

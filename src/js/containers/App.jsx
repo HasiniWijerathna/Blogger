@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import HeaderBar from '../components/HeaderBar';
 import Footer from '../components/Footer';

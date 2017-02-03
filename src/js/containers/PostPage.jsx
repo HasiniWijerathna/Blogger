@@ -1,23 +1,19 @@
 import React, {Component} from 'react';
-
 import {findIndex} from 'lodash';
-import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
-
+import {browserHistory} from 'react-router';
+import ReactMarkdown from 'react-markdown';
+import {Card, CardTitle, CardText} from 'material-ui/Card';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
-import {browserHistory} from 'react-router';
 
 import {get, post, put, httDelete} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
 import {getSession} from '../services/SessionService';
-import {Card} from 'material-ui/Card';
-import {Link} from 'react-router';
+
 /**
  * Representing the logic of adding new posts
  */
 class PostPage extends Component {
-
 /**
 * Class constructor
 * @param {Object} props User define component
@@ -26,7 +22,6 @@ class PostPage extends Component {
     super(props);
 
     this.state = {
-      // post: getPostById(parseInt(props.params.blogId), parseInt(props.params.postId)),
       post: {},
       dataLoading: true,
     };
@@ -35,9 +30,9 @@ class PostPage extends Component {
     this.fetchPost(this.props.params.postId);
   }
 /**
-* [fetchPost description]
-* @param  {[type]} postId [description]
-* @return {[type]}        [description]
+* Fetches the post by it's ID
+* @param  {Integer} postId [description]
+* @return {Requests}        [description]
 */
   fetchPost(postId) {
     const url = modelURL('post', postId);
@@ -49,7 +44,6 @@ class PostPage extends Component {
        });
      })
      .catch((error) => {
-       console.log(error);
        this.setState({
          post: {},
          dataLoading: false,
@@ -63,7 +57,6 @@ class PostPage extends Component {
 */
   onCommentDelete(comment) {
     const commentId = comment.id;
-    console.log(commentId);
     const url = modelURL('comment', commentId);
     httDelete(url)
       .then((response) => {
@@ -72,10 +65,8 @@ class PostPage extends Component {
           dataLoading: true,
         });
         this.fetchPost(this.props.params.postId);
-        // refresh
       })
       .catch((error) => {
-        console.log(error);
         this.setState({
           blog: {},
           dataLoading: false,
@@ -89,9 +80,6 @@ class PostPage extends Component {
 * @param  {string} newValue       New comment
 */
   onCommentEdit(editingComment, newValue) {
-    // console.log('onEdit');
-    // console.log(editingComment.comment);
-    // console.log(newValue);
     const post = this.state.post;
     const comments = post.Comments;
     const index = findIndex(comments, (comment) => editingComment.id === comment.id);
@@ -104,8 +92,7 @@ class PostPage extends Component {
       };
       put(url, data)
       .then((response) => {
-        console.log(response.data);
-        browserHistory.push('/home');
+        browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
       })
       .catch((error) =>{
         console.log(error);
@@ -119,7 +106,6 @@ class PostPage extends Component {
 */
   onCommentAdd(value) {
     const authenticated = getSession().authenticated;
-    console.log(authenticated);
     if (authenticated) {
       const url = modelURL('comment');
       const data = {
@@ -133,7 +119,6 @@ class PostPage extends Component {
           dataLoading: true,
         });
         this.fetchPost(this.props.params.postId);
-        // browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
       })
       .catch((error) =>{
         this.setState({
@@ -145,26 +130,7 @@ class PostPage extends Component {
     } else {
       browserHistory.push('/login');
     }
-
-    // const post = this.state.post;
-    // const comments = post.comments;
-    // let commentId = 1;
-    //
-    // if (comments && comments.length) {
-    //   commentId = comments[comments.length - 1].id + 1;
-    // }
-    //
-    // comments.push({
-    //   id: commentId,
-    //   comment: value,
-    // });
-    //
-    // this.setState({
-    //   post,
-    // });
-    // this.setState({comments: comments});
   }
-
 /**
 * Render the elements on the Post page
 * @return {String} HTML elements
@@ -186,27 +152,19 @@ class PostPage extends Component {
         />
     );
     }
+    const postContent = <div> <ReactMarkdown source={post.content} /></div>;
     return (
-      <div>
-      <Card>
-        <List>
-          <ListItem
-            key={post.id}
-            primaryText={post.title}
-            secondaryText={post.content}
-          />
-          <Subheader>Comments</Subheader>
-          <List>
-            {comments}
-          </List>
-        </List>
-      </Card>
-      <div className="addButton">
-        <CommentForm onAdd={onCommentAdd} post={this.state.post} />
-      </div>
         <div>
-          </div>
-      </div>
+          <Card key={post.id}>
+            <CardTitle>{post.title}</CardTitle>
+              <CardText>{postContent}</CardText>
+          </Card>
+            <CardTitle>Comments</CardTitle>
+              <div>{comments}</div>
+                <div>
+                  <CommentForm onAdd={onCommentAdd} post={this.state.post} />
+                </div>
+            </div>
     );
   }
 }

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import RichTextEditor from 'react-rte';
 
 import {browserHistory} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -6,8 +7,6 @@ import TextField from 'material-ui/TextField';
 
 import {post} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
-import ReactMarkdown from 'react-markdown';
-import {Card, CardText} from 'material-ui/Card';
 /**
  * Representing the logic of adding new posts functionality
  */
@@ -23,6 +22,7 @@ class AddNewPost extends Component {
       post: {
         title: '',
         content: '',
+        rteContent: RichTextEditor.createEmptyValue(),
       },
     };
   }
@@ -35,7 +35,7 @@ class AddNewPost extends Component {
     const data = {
       blogId: this.props.routeParams.blogId,
       title: this.state.post.title,
-      content: this.state.post.content,
+      content: this.state.post.rteContent.toString('markdown'),
     };
     post(url, data)
     .then(() => {
@@ -61,21 +61,17 @@ class AddNewPost extends Component {
       post,
     });
   }
-
 /**
-* Updates the state according to the change event of new content of the post
-* @param  {Event} changeEvent The change event of the post content
-*/
-  onChangeContent(changeEvent) {
-    const newContent = changeEvent.target.value;
+ * [contentOnChange description]
+ * @param  {[type]} value [description]
+ */
+  contentOnChange(value) {
     const post = this.state.post;
-
-    post.content = newContent;
-
+    post.rteContent = value;
     this.setState({
       post,
     });
-  }
+  };
 /**
 * Describes the elements on the Add new post page
 * @return {String} HTML elements
@@ -83,48 +79,25 @@ class AddNewPost extends Component {
   render() {
     const onAddPost = this.onAddPost.bind(this);
     const onChangeTitle = this.onChangeTitle.bind(this);
-    const onChangeContent = this.onChangeContent.bind(this);
+    const contentOnChange =this.contentOnChange.bind(this);
 
-    const contentCardStyle = {
-      position: 'right',
-      display: 'block',
-      width: '52%',
-      paddingBottom: '100px',
-      transitionDuration: '0.3s',
-      float: 'left',
-      height: '560px',
-    };
-    const previewCardStyle = {
-      position: 'right',
-      display: 'block',
-      width: '47%',
-      paddingBottom: '665px',
-      transitionDuration: '0.3s',
-      float: 'right',
-      height: '480px',
+    const buttonStyle = {
+      position: 'fixed',
+      bottom: 0,
+      right: 0,
+      marginBottom: '205px',
+      marginRight: '60px',
     };
 
     return (
-      <div>
-        <Card style={contentCardStyle}>
-        <div>
+      <div className="col-md-12">
+        <div className="floatingLabelText">
         <TextField floatingLabelText="Title" value={this.state.post.title} onChange={onChangeTitle} fullWidth/>
         </div>
-        <div className="col-md-6">
-          <TextField
-            floatingLabelText="Post content"
-            multiLine={true}
-            rows={20}
-            value={this.state.post.content}
-            onChange={onChangeContent}
-            fullWidth
-          />
-          <RaisedButton label="Save" primary onClick={onAddPost} />
+        <div>
+          <RichTextEditor value={this.state.post.rteContent} onChange={contentOnChange}/>
+          <RaisedButton label="Save" primary onClick={onAddPost} style={buttonStyle} />
         </div>
-        </Card>
-        <Card style={previewCardStyle}>
-          <ReactMarkdown source={this.state.post.content} />
-        </Card>
       </div>
     );
   }
