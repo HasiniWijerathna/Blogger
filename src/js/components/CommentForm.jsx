@@ -88,7 +88,7 @@ class CommentForm extends Component {
     const snackBarStyleMap = {
       success: {
         bodyStyle: {
-          'background-color': '#66BB6A',
+          'backgroundColor': '#66BB6A',
         },
         contentStyle: {
           color: 'black',
@@ -96,7 +96,7 @@ class CommentForm extends Component {
       },
       error: {
         bodyStyle: {
-          'background-color': '#C62828',
+          'backgroundColor': '#C62828',
         },
         contentStyle: {
           color: 'black',
@@ -104,7 +104,7 @@ class CommentForm extends Component {
       },
       warning: {
         bodyStyle: {
-          'background-color': '#FFF176',
+          'backgroundColor': '#FFF176',
         },
         contentStyle: {
           color: 'black',
