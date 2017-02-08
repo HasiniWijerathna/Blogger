@@ -4,18 +4,35 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import {browserHistory} from 'react-router';
 import {List} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
-import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardActions, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import ReactMarkdown from 'react-markdown';
 import Snackbar from 'material-ui/Snackbar';
 import {SocialIcon} from 'react-social-icons';
 import IconButton from 'material-ui/IconButton';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
+import ActionStar from 'material-ui/svg-icons/toggle/star-border';
+
 
 import {get, httDelete} from '../services/Requests';
 import {modelURL, modelLikeURL} from '../services/urlFactory';
 import {getSession} from '../services/SessionService';
 import {post} from '../services/Requests';
+
+const hasUserLiked = (user, blog) => {
+  let userLiked = false;
+
+  if (blog && blog.BlogCounts) {
+    userLiked = blog.BlogCounts
+      .filter((favourite) => {
+        return favourite.UserId === user.id;
+      })
+      .length > 0;
+  }
+
+  return userLiked;
+};
+
 /**
  * Representing the logic of presenting existing posts belogs to the blog
  */
@@ -57,13 +74,11 @@ class BlogPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // blog: getBlogById(parseInt(props.params.blogId))
-      // blog: existingBlog,
       dataLoading: true,
       blog: {},
       open: false,
       errorMessage: '',
-      count: null,
+      count: false,
     };
 
     this.fetchBlog = this.fetchBlog.bind(this);
@@ -128,23 +143,71 @@ class BlogPage extends Component {
   /**
    * Gets the count of the likes
    */
-  getCount() {
+  toggleFavourite() {
+    // const loggedUser = getSession().user.id;
     const blogId = this.state.blog.id;
     const baseURL = modelURL('blog', blogId, 'like');
     const url = modelLikeURL(baseURL);
-    post(url)
-    .then(() => {
-      console.log('count');
+
+    const method = hasUserLiked(getSession().user, this.state.blog) ? httDelete: post;
+    method(url)
+    .then((response) => {
       this.setState({
-        count: 1,
+        blog: response.data,
       });
+      this.fetchBlog(blogId);
+      // const userIikes = this.s
+      // const blogCount = this.state.blog.BlogCounts.map((count) => {
+      //   if (loggedUser === this.state.blog.UserId) {
+      //     this.setState({
+      //       count: true,
+      //     });
+      //   }
+      // });
     })
     .catch((error) =>{
       console.log('error');
+      this.fetchBlog(blogId);
     });
-    // this.setState({
-    //   count: this.state.count + 1,
-    // });
+  }
+  /**
+   * Sends a POST request when the button get clicked
+   */
+  toggleUp() {
+    const blogId = this.state.blog.id;
+    const baseURL = modelURL('blog', blogId, 'like');
+    const url = modelLikeURL(baseURL);
+
+    post(url)
+    .then((response) => {
+      this.setState({
+        blog: response.data,
+      });
+      this.fetchBlog(blogId);
+    })
+    .catch((error) => {
+      console.log('error!');
+    });
+  }
+  /**
+   * Sends a DELETE request when the button get clicked
+   */
+  toggleDown() {
+    const blogId = this.state.blog.id;
+    const baseURL = modelURL('blog', blogId, 'like');
+    const url = modelLikeURL(baseURL);
+
+    httDelete(url)
+    .then((response) => {
+      this.setState({
+        blog: response.data,
+      });
+      this.fetchBlog(blogId);
+    })
+    .catch((error) => {
+      console.log('error!');
+      this.fetchBlog(blogId);
+    });
   }
 /**
 * Describes the elements on the Blog page
@@ -155,7 +218,66 @@ class BlogPage extends Component {
     const addNewPost = BlogPage.addNewPost.bind(this, blog.id);
     const onDeleteBlog = this.onDeleteBlog.bind(this);
     const handleRequestClose = this.handleRequestClose.bind(this);
-    const getCount = this.getCount.bind(this);
+    const toggleUp = this.toggleUp.bind(this);
+    const toggleDown = this.toggleDown.bind(this);
+
+    const iconButton = {
+      marginLeft: '700px',
+    };
+
+    const userLikedBlog = hasUserLiked(getSession().user, blog);
+    let favouriteButton = null;
+
+    if (userLikedBlog) {
+      favouriteButton = (
+        <div>
+          <IconButton
+            tooltip={this.state.count}
+            touch={true}
+            style={iconButton}
+            onClick={toggleDown} >
+            <ActionGrade />
+          </IconButton>
+        </div>
+      );
+    } else {
+      favouriteButton = (
+        <div>
+          <IconButton
+            tooltip={this.state.count}
+            touch={true}
+            style={iconButton}
+            onClick={toggleUp} >
+            <ActionStar />
+          </IconButton>
+        </div>
+      );
+    }
+
+    // let favourite = (
+    //   <div>
+    //     <IconButton
+    //       tooltip={this.state.count}
+    //       touch={true}
+    //       style={iconButton}
+    //       onClick={toggleDown} >
+    //       <ActionGrade />
+    //     </IconButton>
+    //   </div>
+    // );
+    // if (hasUserLiked(getSession().user, blog) === true) {
+    //   favourite =
+    //     <div>
+    //       <IconButton
+    //         tooltip={this.state.count}
+    //         touch={true}
+    //         style={iconButton}
+    //         onClick={toggleUp} >
+    //         <ActionStar />
+    //       </IconButton>
+    //     </div>;
+    // }
+
     let posts = [];
 
     const buttonStyle = {
@@ -170,9 +292,6 @@ class BlogPage extends Component {
       marginLeft: '100px',
     };
 
-    const iconButton = {
-      marginLeft: '550px',
-    };
 
     if(blog.Posts && blog.Posts.length) {
       posts = blog.Posts.map((post) => {
@@ -203,21 +322,6 @@ class BlogPage extends Component {
         deleteAction = <RaisedButton label="Delete Blog" onClick={onDeleteBlog} style={deleteButtonStyle}/>;
       }
     }
-    let count = <div> <IconButton tooltip={this.state.count}
-     touch={true} style={iconButton} onClick={getCount} >
-                   <ActionGrade />
-                 </IconButton>
-
-    </div>;
-    if(this.state.count ==1) {
-      console.log('cliked');
-      count = <div> <IconButton tooltip={this.state.count}
-       touch={true} style={iconButton} onClick={getCount} disabled >
-                     <ActionGrade />
-                   </IconButton>
-
-      </div>;
-    }
 
     return (
       <div>
@@ -232,7 +336,9 @@ class BlogPage extends Component {
             {this.state.blog.name}
             {deleteAction}
             <div>
-              {count}
+              <div>
+              {favouriteButton}
+              </div>
             </div>
           </header>
             <Subheader>Postes</Subheader>
