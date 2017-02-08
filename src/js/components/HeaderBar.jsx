@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import {browserHistory} from 'react-router';
 import {getSession, isAuthenticated, resetSession} from '../services/SessionService';
 import {Link} from 'react-router';
-
-
 /**
  * Representing the header bar
  */
@@ -94,9 +92,7 @@ class HeaderBar extends Component {
                       <li><Link to="/blogs">Blogs</Link></li>
                       <li><Link to="/aboutUs">About Us</Link></li>
                       <li><a onClick={signOut} >Sign out</a></li>
-
                       <li></li>
-
                     </ul>
                   </div>
                  </div>

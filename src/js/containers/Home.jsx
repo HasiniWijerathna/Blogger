@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {Card} from 'material-ui/Card';
 import {browserHistory} from 'react-router';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import {isAuthenticated, resetSession} from '../services/SessionService';
-import {Link} from 'react-router';
+
 /**
 * Representing the login sign up functionalities
 */
@@ -100,7 +99,7 @@ class Home extends Component {
                         <p>Read more about what we do and our philosophy of design.</p>
                         <p>Judge for yourself The work and results we’ve achieved for other clients,</p>
                         <p> and meet our highly experienced Team who just love to design.</p>
-                          <RaisedButton label="Create your blog" style onClick={navaigateBlogs} />
+                          <RaisedButton label="Create your blog" onClick={navaigateBlogs} />
                      </div>
                    </div>
                  </div>

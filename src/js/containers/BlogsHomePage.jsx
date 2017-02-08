@@ -37,9 +37,16 @@ class BlogsHomePage extends Component {
       message: '',
     },
 
-    this.requestData();
     this.addNewBlog = this.addNewBlog.bind(this);
   }
+
+  /**
+   * Called after the component is mounted
+   */
+  componentDidMount() {
+    this.requestData();
+  }
+
 /**
  * Request all data from the API
  */
@@ -99,10 +106,17 @@ class BlogsHomePage extends Component {
     this.state.blogsData.map((blog) =>
       blogName.push(blog.name)
     );
-
     const blogs = this.state.blogsData.map((blog) => {
       const onBlogClick = BlogsHomePage.onBlogClick.bind(this, blog.id);
       const noOfPosts = blog.Posts.length;
+      // const blogsCount = blog.BlogCounts;
+      // const blogCount = blogsCount.map((count) => {
+      //   if(loggedUser === count.UserId) {
+      //       console.log('found');
+      //   }
+      // });
+      // console.log(blog.BlogCounts);
+
       return (
         <div key={blog.id}>
           <Card>

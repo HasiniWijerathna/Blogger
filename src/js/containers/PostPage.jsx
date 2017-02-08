@@ -152,7 +152,9 @@ class PostPage extends Component {
         />
     );
     }
-    const postContent = <div> <ReactMarkdown source={post.content} /></div>;
+    const reactSource = '';
+    this.reactSurce = post.content;
+    const postContent = <div> <ReactMarkdown source={reactSource} /></div>;
     return (
         <div>
           <Card key={post.id}>

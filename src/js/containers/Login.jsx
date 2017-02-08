@@ -14,7 +14,7 @@ import {loginURL} from '../services/urlFactory';
 const snackBarStyleMap = {
   success: {
     bodyStyle: {
-      'background-color': '#66BB6A',
+      'backgroundColor': '#66BB6A',
     },
     contentStyle: {
       color: 'black',
@@ -22,7 +22,7 @@ const snackBarStyleMap = {
   },
   error: {
     bodyStyle: {
-      'background-color': '#C62828',
+      'backgroundColor': '#C62828',
     },
     contentStyle: {
       color: 'black',
@@ -30,7 +30,7 @@ const snackBarStyleMap = {
   },
   warning: {
     bodyStyle: {
-      'background-color': '#FFF176',
+      'backgroundColor': '#FFF176',
     },
     contentStyle: {
       color: 'black',
@@ -212,7 +212,7 @@ class Login extends Component {
                       <p>Read more about what we do and our philosophy of design.</p>
                       <p>Judge for yourself The work and results we’ve achieved for other clients,</p>
                       <p> and meet our highly experienced Team who just love to design.</p>
-                        <RaisedButton label="Create your blog" style />
+                        <RaisedButton label="Create your blog" />
                     </div>
                   </div>
                 </div>
