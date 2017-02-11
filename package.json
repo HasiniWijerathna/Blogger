@@ -4,10 +4,7 @@
   "description": "A React app in ES6 and built using webpack",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "webpack-server": "webpack-dev-server --hot --progress --colors --history-api-fallback",
-    "web-server": "http-server -p 3000 .",
-    "start": "npm run webpack-server & npm run web-server",
+    "start": "NODE_ENV=development npm run dev",
     "dev": "node ./webpack/dev-server.js",
     "build": "node ./webpack/build.js"
   },
