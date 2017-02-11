@@ -3,8 +3,6 @@ import url from 'url-join';
 const API = process.env.api;
 const BASE = url(`${API.protocol + API.baseURL}`, API.prefix, API.version);
 
-console.log(BASE);
-
 /* URL for login page */
 const loginURL = () => url(BASE, 'auth/login');
 

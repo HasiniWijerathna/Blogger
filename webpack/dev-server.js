@@ -1,9 +1,7 @@
 'use strict';
-const path = require('path');
-const express = require('express');
 const webpack = require('webpack');
 const opn = require('opn');
-const proxyMiddleware = require('http-proxy-middleware');
+const WebpackDevServer = require('webpack-dev-server');
 
 const config = require('../config')('development');
 const webpackConfig = require('./webpack.dev.conf');
@@ -15,72 +13,43 @@ if (!process.env.NODE_ENV) {
 // default port where dev server listens for incoming traffic
 const port = process.env.port || config.dev.port;
 
-// Define HTTP proxies to your custom API backend
-// https://github.com/chimurai/http-proxy-middleware
-const proxyTable = config.dev.proxyTable;
-
-const app = express();
 const compiler = webpack(webpackConfig);
 
-const devMiddleware = require('webpack-dev-middleware')(compiler, {
-  publicPath: webpackConfig.output.publicPath,
-  quiet: true,
+const server = new WebpackDevServer(compiler, {
+  hot: true,
+  // Enable special support for Hot Module Replacement
+  // Page is no longer updated, but a "webpackHotUpdate" message is sent to the content
+  // Use "webpack/hot/dev-server" as additional module in your entry point
+  // Note: this does _not_ add the `HotModuleReplacementPlugin` like the CLI option does.
+
+  historyApiFallback: true,
+  // Set this as true if you want to access dev server from arbitrary url.
+  // This is handy if you are using a html5 router.
+
+  clientLogLevel: 'info',
+  // Control the console log messages shown in the browser when using inline mode.
+  // Can be `error`, `warning`, `info` or `none`.
+
+  // webpack-dev-middleware options
+  quiet: false,
+  noInfo: false,
+
+  stats: {
+    colors: true,
+  },
 });
 
-const hotMiddleware = require('webpack-hot-middleware')(compiler, {
-  log: () => {},
+server.listen(port, 'localhost', (err) => {
+  if (err) console.error(err); // eslint-disable-line
+  console.log('=> Webpack development server is running on port %s', port); // eslint-disable-line
 });
 
-// force page reload when html-webpack-plugin template changes
-compiler.plugin('compilation', (compilation) => {
-  compilation.plugin('html-webpack-plugin-after-emit', (data, cb) => {
-    hotMiddleware.publish({
-      action: 'reload',
-    });
+let initialCompile = true;
 
-    cb();
-  });
-});
-
-// proxy api requests
-Object.keys(proxyTable).forEach((context) => {
-  const options = proxyTable[context];
-
-  if (typeof options === 'string') {
-    options = {target: options};
-  }
-
-  app.use(proxyMiddleware(context, options));
-});
-
-// handle fallback for HTML5 history API
-app.use(require('connect-history-api-fallback')());
-
-// serve webpack bundle output
-app.use(devMiddleware);
-
-// enable hot-reload and state-preserving
-// compilation error display
-app.use(hotMiddleware);
-
-// serve pure static assets
-const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory);
-app.use(staticPath, express.static('./static'));
-
-const uri = 'http://localhost:' + port;
-
-devMiddleware.waitUntilValid(() => {
-  console.log('> Listening at ' + uri + '\n'); // eslint-disable-line
-});
-
-module.exports = app.listen(port, (err) => {
-  if (err) {
-    console.log(err); // eslint-disable-line
-    return;
-  }
-
-  // when env is testing, don't need open it
-  if (process.env.NODE_ENV !== 'testing') {
-    opn(uri);
+compiler.plugin('done', function() {
+  if (initialCompile) {
+    initialCompile = false;
+    process.stdout.write('Webpack: Done!');
+    opn('http://localhost:' + port);
   }
 });
