@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack-server": "webpack-dev-server --hot --progress --colors --history-api-fallback",
     "web-server": "http-server -p 3000 .",
-    "start": "npm run webpack-server & npm run web-server"
+    "start": "npm run webpack-server & npm run web-server",
+
+    "build": "node ./webpack/build.js"
   },
   "keywords": [
     "React",
@@ -42,6 +44,7 @@
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
+    "compression-webpack-plugin": "^0.3.2",
     "css-loader": "^0.23.0",
     "eslint": "^3.13.0",
     "eslint-config-airbnb": "^14.0.0",
@@ -54,6 +57,7 @@
     "img-loader": "^1.2.0",
     "json-loader": "^0.5.4",
     "node-sass": "^3.2.0",
+    "path": "^0.12.7",
     "postcss-loader": "^0.8.0",
     "react-hot-loader": "^1.2.8",
     "react-social-icons": "^2.5.1",

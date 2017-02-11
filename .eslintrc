@@ -15,6 +15,7 @@
   ],
   "env": {
       "browser": true,
+      "node": true,
       "mocha": true,
       "es6": true
   },
@@ -34,7 +35,8 @@
           "always"
       ],
       "no-console": "warn",
-      "max-len": ["error", 120, 4]
+      "max-len": ["error", 120, 4],
+      "no-undef": "error"
   },
   "extends": ["google", "plugin:react/recommended"]
 }

@@ -1,8 +1,0 @@
-{
-  "environment": "production",
-
-  "api": {
-    "baseURL": "https://hasini.me",
-    "apiPrefix": "api/v1"
-  }
-}
