@@ -18,10 +18,14 @@ module.exports = (config) => {
     chunkFilename: utils.assetsPath(config, 'js/[id].[chunkhash].js'),
   };
 
+  const env = config.build.env;
+
+  console.log(env);
+
   // Plugins
   const plugins = [
     new webpack.DefinePlugin({
-      'process.env': config.env,
+      'process.env': env,
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {

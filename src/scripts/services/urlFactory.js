@@ -1,10 +1,9 @@
 import url from 'url-join';
 
-import config from '../../../config';
+const API = process.env.api;
+const BASE = url(`${API.protocol + API.baseURL}`, API.prefix, API.version);
 
-const API_BASE = config.api.baseURL;
-const API_PREFIX = config.api.apiPrefix;
-const BASE = url(API_BASE, API_PREFIX);
+console.log(BASE);
 
 /* URL for login page */
 const loginURL = () => url(BASE, 'auth/login');
