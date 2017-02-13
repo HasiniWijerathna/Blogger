@@ -91,7 +91,7 @@ class HeaderBar extends Component {
             <div className="container-fluid">
               <div className="navbar-header">
                 <a className="navbar-brand">
-                  <img src="http://localhost:8000/img/logo.png" alt="Logo"/>
+                  <img src={this.props.logo} alt="Logo"/>
                 </a>
               </div>
               <div className="navbar-collapse" id="bs-example-navbar-collapse-1">

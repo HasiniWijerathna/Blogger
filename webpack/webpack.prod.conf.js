@@ -20,8 +20,6 @@ module.exports = (config) => {
 
   const env = config.build.env;
 
-  console.log(env);
-
   // Plugins
   const plugins = [
     new webpack.DefinePlugin({

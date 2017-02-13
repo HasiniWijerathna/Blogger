@@ -168,18 +168,7 @@ class Login extends Component {
           contentStyle={snackBarStyleMap.error.contentStyle}
           />
         <Card>
-          <section id="global-header">
-            <div className="container">
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="block">
-                    <h1>It’s time to get more from what you read.</h1>
-                    <p>Find and share real perspectives about topics that matter today</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          <CardText></CardText>
           <form>
             <formgroup>
               <hgroup>
