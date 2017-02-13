@@ -2,9 +2,9 @@ module.exports = {
   NODE_ENV: '"production"',
 
   api: {
-    protocol: '"https://"',
-    baseURL: '"hasini.me"',
+    protocol: '"http://"',
+    baseURL: '"54.187.226.60/bloggger"',
     prefix: '"api"',
-    version: '"v1"',
+    version: '""',
   },
 };
