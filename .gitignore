@@ -23,3 +23,4 @@ node_modules
 __MACOSX/
 
 .idea
+dist

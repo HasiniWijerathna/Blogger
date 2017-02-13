@@ -1,11 +1,43 @@
 {
-  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "ecmaFeatures": {
+          "jsx": true,
+      }
+  },
+  "globals": {
+      "React": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "env": {
+      "browser": true,
+      "node": true,
+      "mocha": true,
+      "es6": true
+  },
   "rules": {
-    "comma-dangle": [2, "never"],
-    "max-len": [2, { "code": 120 }],
-    "no-param-reassign": ["error", { "props": false }],
-    "radix": [0],
-    "linebreak-style": [0],
-    "react/jsx-no-bind": "off"
-  }
+      "linebreak-style": [0],
+      "prefer-const": "error",
+      "indent": [
+          2,
+          2
+      ],
+      "quotes": [
+          2,
+          "single"
+      ],
+      "semi": [
+          2,
+          "always"
+      ],
+      "no-console": "warn",
+      "max-len": ["error", 120, 4],
+      "no-undef": "error",
+      "react/jsx-indent": [2, 2]
+  },
+  "extends": ["google", "plugin:react/recommended"]
 }
