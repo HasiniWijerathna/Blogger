@@ -156,17 +156,17 @@ class PostPage extends Component {
     this.reactSurce = post.content;
     const postContent = <div> <ReactMarkdown source={reactSource} /></div>;
     return (
+      <div>
+        <Card key={post.id}>
+          <CardTitle>{post.title}</CardTitle>
+          <CardText>{postContent}</CardText>
+        </Card>
+        <CardTitle>Comments</CardTitle>
+        <div>{comments}</div>
         <div>
-          <Card key={post.id}>
-            <CardTitle>{post.title}</CardTitle>
-              <CardText>{postContent}</CardText>
-          </Card>
-            <CardTitle>Comments</CardTitle>
-              <div>{comments}</div>
-                <div>
-                  <CommentForm onAdd={onCommentAdd} post={this.state.post} />
-                </div>
-            </div>
+          <CommentForm onAdd={onCommentAdd} post={this.state.post} />
+        </div>
+      </div>
     );
   }
 }

@@ -165,7 +165,7 @@ class BlogsHomePage extends Component {
         <FloatingActionButton onClick={this.addNewBlog} style={buttonStyle}>
           <ContentAdd />
         </FloatingActionButton>
-    </div>
+      </div>
     );
   }
 }

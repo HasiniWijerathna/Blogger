@@ -124,15 +124,15 @@ class CommentForm extends Component {
     if (authenticated) {
       addAction = <div>
         <TextField floatingLabelText="Comment" value={this.state.comment} onChange={onChange} style={{width: '85%'}}/>
-         <FlatButton label="Save" onClick={onAddComment} />
-        </div>;
+        <FlatButton label="Save" onClick={onAddComment} />
+      </div>;
     } else {
       addAction =<div>
-          <hgroup>
-            <h3>Please login to add comments</h3>
-            <FlatButton label="Login" onClick={this.login} />
-         </hgroup>
-        </div>;
+        <hgroup>
+          <h3>Please login to add comments</h3>
+          <FlatButton label="Login" onClick={this.login} />
+        </hgroup>
+      </div>;
     }
     return (
       <div>
@@ -145,9 +145,9 @@ class CommentForm extends Component {
          bodyStyle={snackBarStyleMap.error.bodyStyle}
          contentStyle={snackBarStyleMap.error.contentStyle}
        />
-       <div>
-         {addAction}
-       </div>
+        <div>
+          {addAction}
+        </div>
       </div>
     );
   }

@@ -156,17 +156,8 @@ class BlogPage extends Component {
         blog: response.data,
       });
       this.fetchBlog(blogId);
-      // const userIikes = this.s
-      // const blogCount = this.state.blog.BlogCounts.map((count) => {
-      //   if (loggedUser === this.state.blog.UserId) {
-      //     this.setState({
-      //       count: true,
-      //     });
-      //   }
-      // });
     })
     .catch((error) =>{
-      console.log('error');
       this.fetchBlog(blogId);
     });
   }
@@ -205,7 +196,6 @@ class BlogPage extends Component {
       this.fetchBlog(blogId);
     })
     .catch((error) => {
-      console.log('error!');
       this.fetchBlog(blogId);
     });
   }
@@ -253,31 +243,6 @@ class BlogPage extends Component {
         </div>
       );
     }
-
-    // let favourite = (
-    //   <div>
-    //     <IconButton
-    //       tooltip={this.state.count}
-    //       touch={true}
-    //       style={iconButton}
-    //       onClick={toggleDown} >
-    //       <ActionGrade />
-    //     </IconButton>
-    //   </div>
-    // );
-    // if (hasUserLiked(getSession().user, blog) === true) {
-    //   favourite =
-    //     <div>
-    //       <IconButton
-    //         tooltip={this.state.count}
-    //         touch={true}
-    //         style={iconButton}
-    //         onClick={toggleUp} >
-    //         <ActionStar />
-    //       </IconButton>
-    //     </div>;
-    // }
-
     let posts = [];
 
     const buttonStyle = {
@@ -299,15 +264,15 @@ class BlogPage extends Component {
         const postContent = <div> <ReactMarkdown source={post.content || ''} /></div>;
         return (
           <div key={`${blog.id}-${post.id}`}>
-              <Card key={`${blog.id}-${post.id}`}>>
+            <Card key={`${blog.id}-${post.id}`}>>
                 <CardTitle>
                   {post.title}
                   {postContent}
                 </CardTitle>
-                  <CardActions>
-                    <RaisedButton label="View Post" onClick={onPostClick} />
-                  </CardActions>
-              </Card>
+              <CardActions>
+                <RaisedButton label="View Post" onClick={onPostClick} />
+              </CardActions>
+            </Card>
           </div>
         );
       });
@@ -337,13 +302,13 @@ class BlogPage extends Component {
             {deleteAction}
             <div>
               <div>
-              {favouriteButton}
+                {favouriteButton}
               </div>
             </div>
           </header>
-            <Subheader>Postes</Subheader>
-              {posts}
-          </List>
+          <Subheader>Postes</Subheader>
+          {posts}
+        </List>
         <FloatingActionButton
           style={buttonStyle}
           onClick={addNewPost}

@@ -73,13 +73,13 @@ class Home extends Component {
               </section>
             </Card>
           </div>
-        <Card></Card>
-        <Card>
-          <section id="feature">
-            <div className="container">
-              <div className="row">
-                <div className="col-12">
-                  <h2>Choose the perfect design</h2>
+          <Card></Card>
+          <Card>
+            <section id="feature">
+              <div className="container">
+                <div className="row">
+                  <div className="col-12">
+                    <h2>Choose the perfect design</h2>
                     <p>Create a beautiful blog that fits your style. Choose from a</p>
                     <p>selection of easy-to-use templates – all with flexible layouts and </p>
                     <p>hundreds of background images – or design something new.</p>
@@ -96,18 +96,18 @@ class Home extends Component {
                   <div className="col-md-12">
                     <div className="block">
                       <h2>We design delightful digital experiences.</h2>
-                        <p>Read more about what we do and our philosophy of design.</p>
-                        <p>Judge for yourself The work and results we’ve achieved for other clients,</p>
-                        <p> and meet our highly experienced Team who just love to design.</p>
-                          <RaisedButton label="Create your blog" onClick={navaigateBlogs} />
-                     </div>
-                   </div>
-                 </div>
-               </div>
-             </section>
-           </Card>
+                      <p>Read more about what we do and our philosophy of design.</p>
+                      <p>Judge for yourself The work and results we’ve achieved for other clients,</p>
+                      <p> and meet our highly experienced Team who just love to design.</p>
+                      <RaisedButton label="Create your blog" onClick={navaigateBlogs} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
           </Card>
-        </div>
+        </Card>
+      </div>
     );
   }
 

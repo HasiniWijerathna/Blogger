@@ -34,7 +34,8 @@
           "always"
       ],
       "no-console": "warn",
-      "max-len": ["error", 120, 4]
+      "max-len": ["error", 120, 4],
+      "react/jsx-indent": [2, 2]
   },
   "extends": ["google", "plugin:react/recommended"]
 }

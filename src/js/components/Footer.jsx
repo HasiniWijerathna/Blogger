@@ -22,11 +22,11 @@ class Footer extends Component {
                     <li><Link to="/aboutUs">About Us</Link></li>
                   </ul>
                 </div>
-                  <p>Copyright &copy; Crafted by <a href="home">Blogger</a>.</p>
-                </div>
+                <p>Copyright &copy; Crafted by <a href="home">Blogger</a>.</p>
               </div>
             </div>
-          </footer>
+          </div>
+        </footer>
       </div>
     );
   }

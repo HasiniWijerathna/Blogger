@@ -24,20 +24,20 @@ class AboutUs extends Component {
               </div>
             </div>
           </section>
-      </Card>
-       <Card>
-        <section id="intro">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-7 col-sm-12">
-                <div className="block">
-                  <div className="section-title">
-                    <h2>About Us</h2>
+        </Card>
+        <Card>
+          <section id="intro">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-7 col-sm-12">
+                  <div className="block">
+                    <div className="section-title">
+                      <h2>About Us</h2>
                       <p>Promote your business, showcase your art,set up an online shop or just test out new ideas</p>
-                  </div>
+                    </div>
                     <p>It’s time to get more from what you read.Share perspectives about topics that matter today </p>
+                  </div>
                 </div>
-              </div>
                 <div className="col-md-5 col-sm-12">
                   <div className="block">
                     <img src="img/wrapper-img.gif" alt="Img"/>

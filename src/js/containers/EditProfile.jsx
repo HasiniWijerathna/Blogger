@@ -1,19 +1,15 @@
 import React, {Component} from 'react';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import {browserHistory} from 'react-router';
-import Popup from 'react-popup';
-import Snackbar from 'material-ui/Snackbar';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
+import Snackbar from 'material-ui/Snackbar';
 
-import {setSession} from '../services/SessionService';
-import {post} from '../services/Requests';
-import {registerURL} from '../services/urlFactory';
-
+import {put} from '../services/Requests';
+import {modelURL} from '../services/urlFactory';
 /**
- * Representing the logic of user registration
+ * Represents the Edit profile components
  */
-class Registration extends Component {
+class EditProfile extends Component {
 /**
 * Validate username
 * @param  {String} name The username
@@ -72,10 +68,10 @@ class Registration extends Component {
     return {passwordError, confirmPasswordError};
   }
 
-/**
-* Class constructor
-* @param {Object} props User define component
-*/
+  /**
+  * Class constructor
+  * @param {Object} props User define component
+  */
   constructor(props) {
     super(props);
 
@@ -89,10 +85,10 @@ class Registration extends Component {
       },
       formValid: false,
       error: {
-        name: Registration.validateName(),
-        email: Registration.validateEmail(),
-        password: Registration.validatePassword().passwordError,
-        confirmPassword: Registration.validatePassword().confirmPasswordError,
+        name: EditProfile.validateName(),
+        email: EditProfile.validateEmail(),
+        password: EditProfile.validatePassword().passwordError,
+        confirmPassword: EditProfile.validatePassword().confirmPasswordError,
       },
       focused: {
         name: false,
@@ -105,50 +101,8 @@ class Registration extends Component {
         message: '',
       },
     };
-
     this.validateAll = this.validateAll.bind(this);
   }
-
-/**
-* Event changer for the username
-* @param  {String} changeEvent Changer event of the username
-*/
-  onChangeUsername(changeEvent) {
-    const username = `${changeEvent.target.value}`;
-    const user = this.state.user;
-    const error = this.state.error;
-    const nameError = Registration.validateName(username);
-
-    user.username = username;
-    error.name = nameError;
-
-    this.setState({
-      formValid: this.validateAll(),
-      user,
-      error,
-    });
-  }
-
-  /**
-  * Event changer for the name
-  * @param  {String} changeEvent Changer event of the username
-  */
-  onChangeName(changeEvent) {
-    const newName = `${changeEvent.target.value}`;
-    const user = this.state.user;
-    const error = this.state.error;
-    const nameError = Registration.validateName(newName);
-
-    user.name = newName;
-    error.name = nameError;
-
-    this.setState({
-      formValid: this.validateAll(),
-      user,
-      error,
-    });
-  }
-
 /**
 * Event changer for the email
 * @param  {String} changeEvent Changer event of the email
@@ -157,7 +111,7 @@ class Registration extends Component {
     const newEmail = `${changeEvent.target.value}`;
     const user = this.state.user;
     const error = this.state.error;
-    const emailError = Registration.validateEmail(newEmail);
+    const emailError = EditProfile.validateEmail(newEmail);
 
     user.email = newEmail;
     error.email = emailError;
@@ -168,7 +122,25 @@ class Registration extends Component {
       error,
     });
   }
+  /**
+  * Event changer for the name
+  * @param  {String} changeEvent Changer event of the username
+  */
+  onChangeName(changeEvent) {
+    const newName = `${changeEvent.target.value}`;
+    const user = this.state.user;
+    const error = this.state.error;
+    const nameError = EditProfile.validateName(newName);
 
+    user.name = newName;
+    error.name = nameError;
+
+    this.setState({
+      formValid: this.validateAll(),
+      user,
+      error,
+    });
+  }
 /**
 * Event changer for the password
 * @param  {String} changeEvent Changer event of the password
@@ -178,7 +150,7 @@ class Registration extends Component {
     const user = this.state.user;
     const confirmPassword = `${user.confirmPassword}`;
     const error = this.state.error;
-    const validationErrors = Registration.validatePassword(password, confirmPassword);
+    const validationErrors = EditProfile.validatePassword(password, confirmPassword);
 
     user.password = password;
     error.password = validationErrors.passwordError;
@@ -192,50 +164,6 @@ class Registration extends Component {
   }
 
 /**
-* Sends a POST Request to register the user
-*/
-  onConfirm() {
-    const data = {
-      username: this.state.user.username,
-      name: this.state.user.name,
-      email: this.state.user.email,
-      password: this.state.user.password,
-    };
-    post(registerURL(), data)
-      .then((response) => {
-        const session = {
-          authenticated: true,
-          token: response.data.token,
-        };
-        setSession(session);
-        browserHistory.push('/home');
-      })
-      .catch((error) =>{
-        this.setState({
-          errorMessage: {
-            open: true,
-            message: 'Email already exist!',
-          },
-        });
-      });
-  }
-
-/**
-* Checks if the mandotory fields are empty
-* @param {String} elementName The selected text field
-*/
-  setFocus(elementName) {
-    const focused = this.state.focused;
-
-    if (!focused[elementName]) {
-      focused[elementName] = true;
-      this.setState({
-        focused,
-      });
-    }
-  }
-
-/**
 * Checks the password with the confirmPassword
 * @param {Event} changeEvent The confirm password
 */
@@ -244,7 +172,7 @@ class Registration extends Component {
     const user = this.state.user;
     const password = user.password;
     const error = this.state.error;
-    const validationErrors = Registration.validatePassword(password, confirmPassword);
+    const validationErrors = EditProfile.validatePassword(password, confirmPassword);
 
     user.confirmPassword = confirmPassword;
     error.password = validationErrors.passwordError;
@@ -277,14 +205,45 @@ class Registration extends Component {
       },
     });
   }
+/**
+ * Sends a PUT request
+ */
+  onConfirm() {
+    const url = modelURL('user');
+    const data = {
+      name: this.state.user.name,
+      email: this.state.user.email,
+      password: this.state.user.password,
+    };
+    put(url, data)
+    .then((user) => {
+      console.log(user);
+    })
+    .catch((error) => {
+      console.log('error');
+    });
+  }
+/**
+* Checks if the mandotory fields are empty
+* @param {String} elementName The selected text field
+*/
+  setFocus(elementName) {
+    const focused = this.state.focused;
+
+    if (!focused[elementName]) {
+      focused[elementName] = true;
+      this.setState({
+        focused,
+      });
+    }
+  }
 
 /**
-* Describes the elements on the registration page
-* @return {String} HTML elements
-*/
+ * Describes the HTML elements
+ * @return {String} HTML elements
+ */
   render() {
     const onChangeName = this.onChangeName.bind(this);
-    const onChangeUsername = this.onChangeUsername.bind(this);
     const onChangeEmail = this.onChangeEmail.bind(this);
     const onChangePassword = this.onChangePassword.bind(this);
     const OnConfirmPassword = this.OnConfirmPassword.bind(this);
@@ -298,44 +257,32 @@ class Registration extends Component {
 
     return (
       <div>
-        <Snackbar
-         open={this.state.errorMessage.open}
-         message={this.state.errorMessage.message}
-         autoHideDuration={4000}
-         onRequestClose={handleRequestClose}
-       />
-        <Popup />
         <div>
-          <section id="global-header">
-            <div className="container">
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="block">
-                    <h1>It’s time to get more from what you read.</h1>
-                    <p>Find and share real perspectives about topics that matter today</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          <Snackbar
+            open={this.state.errorMessage.open}
+            message={this.state.errorMessage.message}
+            autoHideDuration={4000}
+            onRequestClose={handleRequestClose}
+            />
           <hgroup>
             <Card>
+              <section id="global-header">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <div className="block">
+                        <h1>It’s time to get more from what you read.</h1>
+                        <p>Find and share real perspectives about topics that matter today</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
               <CardHeader/>
-              <hgroup>
-                <h1>Create your Account</h1>
-              </hgroup>
               <form>
+                <h3>Edit your basic account information</h3>
                 <img src="img/login.png" alt="loginlogo"/>
                 <CardActions>
-                  <div>
-                    <TextField
-                      floatingLabelText="Username"
-                      value={this.state.user.username}
-                      errorText={this.state.focused.name && this.state.error.name}
-                      onChange={onChangeUsername}
-                      onBlur={onNameFocusOut}
-                      />
-                  </div>
                   <div>
                     <TextField
                       floatingLabelText="Name"
@@ -343,30 +290,30 @@ class Registration extends Component {
                       errorText={this.state.focused.name && this.state.error.name}
                       onChange={onChangeName}
                       onBlur={onNameFocusOut}
-                      />
+                    />
                   </div>
                   <div>
                     <TextField
-                      floatingLabelText="Email"
+                      floatingLabelText="Change your Email"
                       value={this.state.user.email}
                       errorText={this.state.focused.email && this.state.error.email}
                       onChange={onChangeEmail}
                       onBlur={onEmailFocusOut}
-                      />
+                    />
                   </div>
                   <div>
                     <TextField
-                      floatingLabelText="Password"
+                      floatingLabelText="Change your password"
                       value={this.state.user.password}
                       errorText={this.state.focused.password && this.state.error.password}
                       type="password"
                       onChange={onChangePassword}
                       onBlur={onPasswordFocusOut}
-                      />
+                    />
                   </div>
                   <div>
                     <TextField
-                      floatingLabelText="Confirm Password"
+                      floatingLabelText="Confirm new Password"
                       value={this.state.user.confirmPassword}
                       errorText={this.state.focused.confirmPassword && this.state.error.confirmPassword}
                       type="password"
@@ -377,7 +324,7 @@ class Registration extends Component {
                 </CardActions>
                 <div>
                   <RaisedButton
-                    label="Create Account"
+                    label="Submit changes"
                     disabled={!this.state.formValid}
                     onClick={onConfirm} /></div>
               </form>
@@ -389,4 +336,4 @@ class Registration extends Component {
     );
   }
 }
-export default Registration;
+export default EditProfile;
