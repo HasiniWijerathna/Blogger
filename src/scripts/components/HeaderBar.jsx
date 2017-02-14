@@ -91,7 +91,7 @@ class HeaderBar extends Component {
             <div className="container-fluid">
               <div className="navbar-header">
                 <a className="navbar-brand">
-                  <img src={this.props.logo} alt="Logo"/>
+                  <img className="logo" alt="Logo"/>
                 </a>
               </div>
               <div className="navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -115,7 +115,7 @@ class HeaderBar extends Component {
               <div className="container-fluid">
                 <div className="navbar-header">
                   <a className="navbar-brand">
-                    <img src={this.props.logo} alt="Logo"/>
+                    <img className="logo" alt="Logo"/>
                   </a>
                 </div>
                 <div className="navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -150,8 +150,5 @@ class HeaderBar extends Component {
     );
   }
 }
-HeaderBar.propTypes = {
-  logo: React.PropTypes.string.isRequired,
-};
 
 export default HeaderBar;

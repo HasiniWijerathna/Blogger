@@ -172,7 +172,7 @@ class Login extends Component {
           <form>
             <formgroup>
               <hgroup>
-                <img src="img/login.png" alt="loginlogo"/>
+                <img className="logo" alt="loginlogo"/>
                 <h2>
                   <FlatButton label="Create your account" onClick={signUp}/>
                 </h2>

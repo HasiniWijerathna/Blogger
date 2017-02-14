@@ -3,8 +3,6 @@ import {render} from 'react-dom';
 import {Router, Route, IndexRoute, browserHistory} from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-// import 'bootstrap/dist/css/bootstrap.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/master.scss';
 
 import {isAuthenticated} from './services/SessionService';

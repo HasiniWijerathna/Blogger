@@ -11,7 +11,7 @@ const muiTheme = getMuiTheme({
 const App = ({children}) => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <div>
-      <HeaderBar logo="/img/logo.png"/>
+      <HeaderBar/>
       <section>
         {children || 'Blogger App loading...'}
       </section>
