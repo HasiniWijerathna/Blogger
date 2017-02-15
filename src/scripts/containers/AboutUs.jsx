@@ -40,7 +40,7 @@ class AboutUs extends Component {
                 </div>
                 <div className="col-md-5 col-sm-12">
                   <div className="block">
-                    <img src="img/wrapper-img.gif" alt="Img"/>
+                    <img className="wrapper" alt="Img"/>
                   </div>
                 </div>
               </div>

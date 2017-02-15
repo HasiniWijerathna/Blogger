@@ -14,8 +14,24 @@ import {registerURL} from '../services/urlFactory';
  * Representing the logic of user registration
  */
 class Registration extends Component {
+  /**
+  * Validate username
+  * @param  {String} username The username
+  * @return {String}      Relevent error of the incorrect username
+  */
+  static validateUsername(username = '') {
+    let error = null;
+
+    if (!username || username.length === 0) {
+      error = 'username is required';
+    } else if (username.length < 6) {
+      error = 'username should be atleast with 6 characters';
+    }
+
+    return error;
+  }
 /**
-* Validate username
+* Validate name
 * @param  {String} name The username
 * @return {String}      Relevent error of the incorrect username
 */
@@ -89,12 +105,14 @@ class Registration extends Component {
       },
       formValid: false,
       error: {
+        username: Registration.validateUsername(),
         name: Registration.validateName(),
         email: Registration.validateEmail(),
         password: Registration.validatePassword().passwordError,
         confirmPassword: Registration.validatePassword().confirmPasswordError,
       },
       focused: {
+        username: false,
         name: false,
         email: false,
         password: false,
@@ -117,11 +135,11 @@ class Registration extends Component {
     const username = `${changeEvent.target.value}`;
     const user = this.state.user;
     const error = this.state.error;
-    const nameError = Registration.validateName(username);
+    const usernameError = Registration.validateUsername(username);
 
     user.username = username;
-    error.name = nameError;
-
+    error.username = usernameError;
+    console.log(usernameError);
     this.setState({
       formValid: this.validateAll(),
       user,
@@ -291,6 +309,7 @@ class Registration extends Component {
     const handleRequestClose = this.handleRequestClose.bind(this);
     const onConfirm = this.onConfirm.bind(this);
 
+    const onUsernameFocusOut = this.setFocus.bind(this, 'username');
     const onNameFocusOut = this.setFocus.bind(this, 'name');
     const onEmailFocusOut = this.setFocus.bind(this, 'email');
     const onPasswordFocusOut = this.setFocus.bind(this, 'password');
@@ -319,9 +338,9 @@ class Registration extends Component {
                     <TextField
                       floatingLabelText="Username"
                       value={this.state.user.username}
-                      errorText={this.state.focused.name && this.state.error.name}
+                      errorText={this.state.focused.username && this.state.error.username}
                       onChange={onChangeUsername}
-                      onBlur={onNameFocusOut}
+                      onBlur={onUsernameFocusOut}
                       />
                   </div>
                   <div>
