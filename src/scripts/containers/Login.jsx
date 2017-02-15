@@ -174,7 +174,7 @@ class Login extends Component {
               <hgroup>
                 <img className="logo" alt="loginlogo"/>
                 <h2>
-                  <FlatButton label="Create your account" onClick={signUp}/>
+                  <RaisedButton label="Create your account" onClick={signUp}/>
                 </h2>
                 <TextField
                   floatingLabelText="Username"
@@ -185,7 +185,7 @@ class Login extends Component {
                   value={this.state.user.password}
                   type="password"
                   onChange={onChangePassword} />
-                <FlatButton label="Login" onClick={onConfirm} />
+                <RaisedButton label="Login" onClick={onConfirm} />
               </hgroup>
             </formgroup>
           </form>

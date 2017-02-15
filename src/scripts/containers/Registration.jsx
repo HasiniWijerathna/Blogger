@@ -139,7 +139,6 @@ class Registration extends Component {
 
     user.username = username;
     error.username = usernameError;
-    console.log(usernameError);
     this.setState({
       formValid: this.validateAll(),
       user,
