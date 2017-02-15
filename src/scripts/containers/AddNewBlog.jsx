@@ -30,7 +30,15 @@ class AddNewBlog extends Component {
    */
   addNewBlog() {
     const loggedUser = getSession().user.id;
-    if (loggedUser) {
+    if(!this.state.blog.name) {
+      this.setState({
+        blog: {
+          name: '',
+        },
+        open: true,
+        message: 'Empty blog name',
+      });
+    } else if (loggedUser) {
       const url = modelURL('blog');
       const data = {
         name: this.state.blog.name,
