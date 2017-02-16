@@ -3,8 +3,12 @@ import TextField from 'material-ui/TextField';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import {browserHistory} from 'react-router';
+import {getSession} from '../services/SessionService';
 
-import {put} from '../services/Requests';
+import {put, get} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
 /**
  * Represents the Edit profile components
@@ -76,6 +80,10 @@ class EditProfile extends Component {
     super(props);
 
     this.state = {
+      // userInfo: {
+      //   name: '',
+      //   email: '',
+      // },
       user: {
         username: '',
         name: '',
@@ -100,8 +108,11 @@ class EditProfile extends Component {
         open: false,
         message: '',
       },
+      open: false,
     };
     this.validateAll = this.validateAll.bind(this);
+    this.editProfileInfo = this.editProfileInfo.bind(this);
+    this.editProfileInfo();
   }
 /**
 * Event changer for the email
@@ -193,7 +204,6 @@ class EditProfile extends Component {
     return this.state.error.name === null && this.state.error.email === null &&
       this.state.error.password === null && this.state.error.confirmPassword === null;
   }
-
   /**
    * Hides the snackbar
    */
@@ -203,24 +213,6 @@ class EditProfile extends Component {
         open: false,
         message: '',
       },
-    });
-  }
-/**
- * Sends a PUT request
- */
-  onConfirm() {
-    const url = modelURL('user');
-    const data = {
-      name: this.state.user.name,
-      email: this.state.user.email,
-      password: this.state.user.password,
-    };
-    put(url, data)
-    .then((user) => {
-      console.log(user);
-    })
-    .catch((error) => {
-      console.log('error');
     });
   }
 /**
@@ -237,7 +229,60 @@ class EditProfile extends Component {
       });
     }
   }
+  /**
+   * Handles the alert open
+   */
+  handleOpenAlert() {
+    this.setState({open: true});
+  };
+ /**
+  * Handles the alert close
+  */
+  handleCloseAlert() {
+    this.setState({open: false});
+  };
+  /**
+   * Handles the alert close
+   */
+  confirmChanges() {
+    this.setState({open: false});
+    const url = modelURL('user');
+    const data = {
+      name: this.state.user.name,
+      email: this.state.user.email,
+      password: this.state.user.password,
+    };
+    put(url, data)
+    .then((user) => {
+      browserHistory.push('login');
+    })
+    .catch((error) => {
+      console.log('error');
+    });
+  };
+/**
+ * Sends a GET request to user.js
+ * @return {[type]} [description]
+ */
+  editProfileInfo() {
+    console.log( getSession().user.id);
 
+    const userId = getSession().user.id;
+    const url = modelURL('user', userId);
+
+    return get(url)
+      .then((response) => {
+        this.setState({
+          user: {
+            name: response.data.name,
+            email: response.data.email,
+          },
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 /**
  * Describes the HTML elements
  * @return {String} HTML elements
@@ -248,15 +293,39 @@ class EditProfile extends Component {
     const onChangePassword = this.onChangePassword.bind(this);
     const OnConfirmPassword = this.OnConfirmPassword.bind(this);
     const handleRequestClose = this.handleRequestClose.bind(this);
-    const onConfirm = this.onConfirm.bind(this);
+    const confirmChanges = this.confirmChanges.bind(this);
+    const handleOpenAlert = this.handleOpenAlert.bind(this);
+    const handleCloseAlert = this.handleCloseAlert.bind(this);
 
     const onNameFocusOut = this.setFocus.bind(this, 'name');
     const onEmailFocusOut = this.setFocus.bind(this, 'email');
     const onPasswordFocusOut = this.setFocus.bind(this, 'password');
     const OnConfirmPasswordFocusOut = this.setFocus.bind(this, 'confirmPassword');
 
+    const actions = [
+      <FlatButton
+        label="Confirm"
+        primary={true}
+        onTouchTap={confirmChanges}
+      />,
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={handleCloseAlert}
+      />,
+    ];
+
     return (
       <div>
+        <div>
+          <Dialog
+            actions={actions}
+            modal={true}
+            open={this.state.open}
+            >
+         Confirm profile changes
+       </Dialog>
+        </div>
         <div>
           <Snackbar
             open={this.state.errorMessage.open}
@@ -275,7 +344,6 @@ class EditProfile extends Component {
                 <CardActions>
                   <div>
                     <TextField
-                      floatingLabelText="Name"
                       value={this.state.user.name}
                       errorText={this.state.focused.name && this.state.error.name}
                       onChange={onChangeName}
@@ -284,7 +352,6 @@ class EditProfile extends Component {
                   </div>
                   <div>
                     <TextField
-                      floatingLabelText="Change your Email"
                       value={this.state.user.email}
                       errorText={this.state.focused.email && this.state.error.email}
                       onChange={onChangeEmail}
@@ -316,7 +383,7 @@ class EditProfile extends Component {
                   <RaisedButton
                     label="Submit changes"
                     disabled={!this.state.formValid}
-                    onClick={onConfirm} /></div>
+                    onClick={handleOpenAlert} /></div>
               </form>
               <CardText ></CardText>
               <section id="global-header">
