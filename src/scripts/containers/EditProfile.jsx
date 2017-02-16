@@ -265,8 +265,6 @@ class EditProfile extends Component {
  * @return {[type]} [description]
  */
   editProfileInfo() {
-    console.log( getSession().user.id);
-
     const userId = getSession().user.id;
     const url = modelURL('user', userId);
 
@@ -278,6 +276,7 @@ class EditProfile extends Component {
             email: response.data.email,
           },
         });
+        console.log(this.state.user);
       })
       .catch((error) => {
         console.log(error);

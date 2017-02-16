@@ -49,6 +49,14 @@ class BlogPage extends Component {
     browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
   }
 /**
+ * Navigates to the edit opst page
+ * @param  {[type]} blogId [description]
+ * @param  {[type]} postId [description]
+ */
+  static navigateEditPost(blogId, postId) {
+    browserHistory.push(`/blogs/${blogId}/posts/${postId}/editPost`);
+  }
+/**
 * Navigates to the new post of the selcted blog
 * @param {Integer} blogId The blog ID
 */
@@ -219,9 +227,9 @@ class BlogPage extends Component {
       alertOpen: false,
     });
   };
-/**
- * Navigates to the registration page
- */
+  /**
+   * Navigates to the registration page
+   */
   signUp() {
     browserHistory.push('registration');
   }
@@ -324,6 +332,7 @@ class BlogPage extends Component {
     if(blog.Posts && blog.Posts.length) {
       posts = blog.Posts.map((post) => {
         const onPostClick = BlogPage.onPostClick.bind(this, blog.id, post.id);
+        const navigateEditPost = BlogPage.navigateEditPost.bind(this, blog.id, post.id);
         const postContent = <div> <ReactMarkdown source={post.content || ''} /></div>;
         return (
           <div key={`${blog.id}-${post.id}`}>
@@ -334,6 +343,7 @@ class BlogPage extends Component {
                 </CardTitle>
               <CardActions>
                 <RaisedButton label="View Post" onClick={onPostClick} />
+                <RaisedButton label="Edit Post" onClick={navigateEditPost}/>
               </CardActions>
             </Card>
           </div>

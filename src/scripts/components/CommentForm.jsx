@@ -4,6 +4,7 @@ import {browserHistory} from 'react-router';
 import {getSession} from '../services/SessionService';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
+import FlatButton from 'material-ui/FlatButton';
 /**
 * Represents the comment form functionality
 */
@@ -129,7 +130,9 @@ class CommentForm extends Component {
     } else {
       addAction =<div>
         <hgroup>
-          <h3>Please login to add comments</h3>
+          <formgroup>
+            <h3>Please login to add comments</h3>
+          </formgroup>
           <RaisedButton label="Login" onClick={this.login} />
         </hgroup>
       </div>;

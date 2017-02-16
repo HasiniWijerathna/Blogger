@@ -19,6 +19,7 @@ import Registration from './containers/Registration';
 import AboutUs from './containers/AboutUs';
 import EditProfile from './containers/EditProfile';
 import Settings from './containers/Settings';
+import EditPost from './containers/EditPost';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -58,6 +59,7 @@ render(
       <Route path="blogs/new" component={AddNewBlog} onEnter={requireAuth} />
       <Route path="blogs/:blogId" component={BlogPage} />
       <Route path="blogs/:blogId/posts/new" component={AddNewPost} onEnter={requireAuth} />
+      <Route path="blogs/:blogId/posts/:postId/editPost" component={EditPost} />
       <Route path="blogs/:blogId/posts/:postId" component={PostPage} />
     </Route>
   </Router>), document.getElementById('root')
