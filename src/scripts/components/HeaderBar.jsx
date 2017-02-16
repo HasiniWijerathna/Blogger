@@ -130,7 +130,7 @@ class HeaderBar extends Component {
                          targetOrigin={{horizontal: 'left', vertical: 'top'}}
                     >
                       <MenuItem primaryText="Edit Profile" onClick={navigateEditProfile} />
-                      <MenuItem primaryText="Settings" onClick={navigateSettings}/>
+                      <MenuItem primaryText="Settings" onClick={navigateSettings} disabled/>
                     </IconMenu>
                     </li>
                   </ul>
