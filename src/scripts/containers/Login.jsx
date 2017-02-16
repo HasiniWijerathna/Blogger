@@ -3,7 +3,6 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {browserHistory} from 'react-router';
 import Snackbar from 'material-ui/Snackbar';
-import FlatButton from 'material-ui/FlatButton';
 import {Card, CardText} from 'material-ui/Card';
 
 import {setSession} from '../services/SessionService';
@@ -173,9 +172,6 @@ class Login extends Component {
             <formgroup>
               <hgroup>
                 <img className="logo" alt="loginlogo"/>
-                <h2>
-                  <RaisedButton label="Create your account" onClick={signUp}/>
-                </h2>
                 <TextField
                   floatingLabelText="Username"
                   value={this.state.user.name}
@@ -185,7 +181,11 @@ class Login extends Component {
                   value={this.state.user.password}
                   type="password"
                   onChange={onChangePassword} />
+
                 <RaisedButton label="Login" onClick={onConfirm} />
+                <h2>
+                  <RaisedButton label="Create your account" onClick={signUp}/>
+                </h2>
               </hgroup>
             </formgroup>
           </form>

@@ -12,6 +12,8 @@ import {SocialIcon} from 'react-social-icons';
 import IconButton from 'material-ui/IconButton';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
 import ActionStar from 'material-ui/svg-icons/toggle/star-border';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 
 import {get, httDelete} from '../services/Requests';
@@ -79,6 +81,7 @@ class BlogPage extends Component {
       open: false,
       errorMessage: '',
       count: false,
+      alertOpen: false,
     };
 
     this.fetchBlog = this.fetchBlog.bind(this);
@@ -197,7 +200,30 @@ class BlogPage extends Component {
     })
     .catch((error) => {
       this.fetchBlog(blogId);
+      console.log('error');
     });
+  }
+/**
+ * Alert handle alert
+ */
+  handleOpen() {
+    this.setState({
+      alertOpen: true,
+    });
+  };
+/**
+ * Alert handle alert
+ */
+  handleClose() {
+    this.setState({
+      alertOpen: false,
+    });
+  };
+/**
+ * Navigates to the registration page
+ */
+  signUp() {
+    browserHistory.push('registration');
   }
 /**
 * Describes the elements on the Blog page
@@ -210,39 +236,76 @@ class BlogPage extends Component {
     const handleRequestClose = this.handleRequestClose.bind(this);
     const toggleUp = this.toggleUp.bind(this);
     const toggleDown = this.toggleDown.bind(this);
+    const handleOpen = this.handleOpen.bind(this);
+    const handleClose = this.handleClose.bind(this);
+    const signUp = this.signUp.bind(this);
 
     const iconButton = {
       marginLeft: '700px',
     };
-
+    const actions = [
+      <FlatButton
+      label="Sign up"
+      primary={true}
+      onTouchTap={signUp}
+      />,
+      <FlatButton
+      label="Cancel"
+      primary={true}
+      onTouchTap={handleClose}
+      />,
+    ];
     const userLikedBlog = hasUserLiked(getSession().user, blog);
     let favouriteButton = null;
-
-    if (userLikedBlog) {
-      favouriteButton = (
-        <div>
-          <IconButton
-            tooltip={this.state.count}
-            touch={true}
-            style={iconButton}
-            onClick={toggleDown} >
-            <ActionGrade />
-          </IconButton>
-        </div>
-      );
+    const authenticated = getSession().authenticated;
+    if(authenticated) {
+      if (userLikedBlog) {
+        favouriteButton = (
+          <div>
+            <IconButton
+              tooltip={this.state.count}
+              touch={true}
+              style={iconButton}
+              onClick={toggleDown} >
+              <ActionGrade />
+            </IconButton>
+          </div>
+        );
+      } else {
+        favouriteButton = (
+          <div>
+            <IconButton
+              tooltip={this.state.count}
+              touch={true}
+              style={iconButton}
+              onClick={toggleUp} >
+              <ActionStar />
+            </IconButton>
+          </div>
+        );
+      }
     } else {
       favouriteButton = (
         <div>
-          <IconButton
-            tooltip={this.state.count}
-            touch={true}
-            style={iconButton}
-            onClick={toggleUp} >
-            <ActionStar />
-          </IconButton>
+          <div>
+            <IconButton
+              tooltip={this.state.count}
+              touch={true}
+              style={iconButton}
+              onClick={handleOpen} >
+              <ActionStar />
+            </IconButton>
+            <Dialog actions={actions}
+              modal={false}
+              open={this.state.alertOpen}
+              onRequestClose={handleClose}>
+              Sign up to Bloggger to connect with voices and perspectives that matter
+            </Dialog>
+          </div>
         </div>
       );
     }
+
     let posts = [];
 
     const buttonStyle = {
@@ -279,8 +342,8 @@ class BlogPage extends Component {
     }
 
     let deleteAction = null;
-    const authenticated = getSession().authenticated;
-    if (authenticated) {
+    const auth = getSession().authenticated;
+    if (auth) {
       const loggedUser = getSession().user.id;
       const blogAddedUser = this.state.blog.UserId;
       if(loggedUser == blogAddedUser) {

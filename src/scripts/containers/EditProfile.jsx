@@ -266,22 +266,12 @@ class EditProfile extends Component {
             />
           <hgroup>
             <Card>
-              <section id="global-header">
-                <div className="container">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <div className="block">
-                        <h1>It’s time to get more from what you read.</h1>
-                        <p>Find and share real perspectives about topics that matter today</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
               <CardHeader/>
               <form>
-                <h3>Edit your basic account information</h3>
-                <img src="img/login.png" alt="loginlogo"/>
+                <formgroup>
+                  <h3>Edit your basic account information</h3>
+                </formgroup>
+                <img className="logo" alt="loginlogo"/>
                 <CardActions>
                   <div>
                     <TextField
@@ -329,6 +319,17 @@ class EditProfile extends Component {
                     onClick={onConfirm} /></div>
               </form>
               <CardText ></CardText>
+              <section id="global-header">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-md-11">
+                      <div className="block">
+                        <h3>Find and share real perspectives about topics that matter today</h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
             </Card>
           </hgroup>
         </div>

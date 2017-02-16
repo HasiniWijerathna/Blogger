@@ -73,13 +73,12 @@ class Settings extends Component {
           <CardText></CardText>
           <form>
             <formgroup>
-              <h4>Permanently delete your account and all of your content</h4>
+              <h3>Permanently delete your account and all of your content</h3>
               <p>We’re sorry to see you go. Once your account is deleted,
                  all of your content will be permanently gone, including your profile,
                  stories, publications, notes, and responses. If you’re not sure about that,
                 we suggest you to confirm deletion, type your password below:</p>
               <hgroup>
-                <img src="img/login.png" alt="loginlogo"/>
                 <h2>
                 </h2>
                 <TextField

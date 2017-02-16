@@ -8,6 +8,8 @@ import {List} from 'material-ui/List';
 import {Card, CardActions, CardHeader, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
+import {grey700} from 'material-ui/styles/colors';
+
 
 import {get} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
@@ -109,14 +111,6 @@ class BlogsHomePage extends Component {
     const blogs = this.state.blogsData.map((blog) => {
       const onBlogClick = BlogsHomePage.onBlogClick.bind(this, blog.id);
       const noOfPosts = blog.Posts.length;
-      // const blogsCount = blog.BlogCounts;
-      // const blogCount = blogsCount.map((count) => {
-      //   if(loggedUser === count.UserId) {
-      //       console.log('found');
-      //   }
-      // });
-      // console.log(blog.BlogCounts);
-
       return (
         <div key={blog.id}>
           <Card>
@@ -140,7 +134,14 @@ class BlogsHomePage extends Component {
       marginBottom: '10px',
       zIndex: 99999,
     };
-
+    const styles = {
+      underlineStyle: {
+        borderColor: grey700,
+      },
+      floatingLabelStyle: {
+        color: grey700,
+      },
+    };
     return (
       <div className =".app.blogList">
         <Snackbar
@@ -151,11 +152,14 @@ class BlogsHomePage extends Component {
        />
         <div>
           <AutoComplete
-            floatingLabelText="Search Blogs"
+           floatingLabelText="Search Blogs"
+           floatingLabelStyle = {styles.floatingLabelStyle}
+           underlineFocusStyle={styles.underlineStyle}
             filter={AutoComplete.caseInsensitiveFilter}
             dataSource={blogName}
             onNewRequest={this.addNewBlog}
             fullWidth
+
           />
         </div>
         <List>

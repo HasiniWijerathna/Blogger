@@ -62,7 +62,7 @@ class Home extends Component {
               <section id="slider">
                 <div className="container">
                   <div className="row">
-                    <div className="col-md-10 col-md-offset-2">
+                    <div className="col-md-10 col-md-offset-1">
                       <div className="block">
                         <h1 className="animated fadeInUp">Publish your passions, your way</h1>
                         <p className="animated fadeInUp">Create a unique and beautiful blog. It’s easy and free</p>

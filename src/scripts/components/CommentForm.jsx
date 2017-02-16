@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import TextField from 'material-ui/TextField';
 import {browserHistory} from 'react-router';
 import {getSession} from '../services/SessionService';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 /**
 * Represents the comment form functionality
@@ -130,7 +130,7 @@ class CommentForm extends Component {
       addAction =<div>
         <hgroup>
           <h3>Please login to add comments</h3>
-          <FlatButton label="Login" onClick={this.login} />
+          <RaisedButton label="Login" onClick={this.login} />
         </hgroup>
       </div>;
     }

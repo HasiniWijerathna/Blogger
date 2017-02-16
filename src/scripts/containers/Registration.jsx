@@ -328,10 +328,12 @@ class Registration extends Component {
             <Card>
               <CardHeader/>
               <hgroup>
-                <h1>Create your Account</h1>
+                <formgroup>
+                  <h3>Create your Account</h3>
+                </formgroup>
               </hgroup>
               <form>
-                <img src="img/login.png" alt="loginlogo"/>
+                <img className="logo" alt="loginlogo"/>
                 <CardActions>
                   <div>
                     <TextField
