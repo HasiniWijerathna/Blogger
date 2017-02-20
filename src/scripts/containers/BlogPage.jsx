@@ -67,6 +67,7 @@ class BlogPage extends Component {
       const blogAddedUser = this.state.blog.UserId;
       if (blogAddedUser == loggedUser) {
         browserHistory.push(`/blogs/${blogId}/posts/new`);
+        console.log(this.state.errorMessage);
       } else {
         this.setState({
           open: true,
@@ -408,7 +409,7 @@ class BlogPage extends Component {
             <ContentAdd />
           </FloatingActionButton>
           <div className= "socialIcon">
-            <SocialIcon url="http://twitter.com/jaketrent" />
+            <SocialIcon url="http://twitter.com/" />
           </div>
         </div>
       );
