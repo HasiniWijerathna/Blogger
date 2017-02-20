@@ -18,7 +18,7 @@ const App = ({children}) => (
     <div>
       <HeaderBar/>
       <section>
-        {children || 'Blogger App loading...'}
+        {children || 'Bloggger App loading...'}
       </section>
       <Footer/>
     </div>

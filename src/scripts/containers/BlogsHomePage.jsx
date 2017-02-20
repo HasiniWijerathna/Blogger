@@ -9,7 +9,7 @@ import {Card, CardActions, CardHeader, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 import {grey700} from 'material-ui/styles/colors';
-
+import LinearProgress from 'material-ui/LinearProgress';
 
 import {get} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
@@ -37,6 +37,8 @@ class BlogsHomePage extends Component {
       blogsData: [],
       open: false,
       message: '',
+      completed: 5000,
+      loading: false,
     },
 
     this.addNewBlog = this.addNewBlog.bind(this);
@@ -55,32 +57,36 @@ class BlogsHomePage extends Component {
   requestData() {
     const url = modelURL('blog');
 
-    this.fetchData(url, 'blogs', true);
+    this.fetchData(url, true);
   }
-/**
-* Abstract function to fetch data from the API
-* @param  {String} url           The URL to GET from
-* @param  {String} stateVariable The name of the variable (inside state object) to store the data in
-* @param  {String} isCollection  Indicates whether the returning data set is a collection
-* @param  {Object} params        The params to be passed with the request
-* @return {Promise}              The request promise object
-*/
-  fetchData(url, stateVariable, isCollection, params) {
+
+  /**
+  * Abstract function to fetch data from the API
+  * @param  {String} url           The URL to GET from
+  * @param  {String} isCollection  Indicates whether the returning data set is a collection
+  * @param  {Object} params        The params to be passed with the request
+  * @return {Promise}              The request promise object
+  */
+  fetchData(url, isCollection, params) {
     this.setState({
-      [`${stateVariable}DataLoading`]: true,
+      loading: true,
     });
 
     return get(url, params)
       .then((response) => {
         this.setState({
-          [`${stateVariable}DataLoading`]: false,
-          [`${stateVariable}Data`]: isCollection ? response.data.results : response.data,
+          loading: false,
+          blogsData: isCollection ? response.data.results : response.data,
         });
 
         return response.data;
       })
       .catch((error) => {
-        console.log(error);
+        this.setState({
+          loading: false,
+          open: false,
+          message: 'Oops something went wrong!',
+        });
       });
   }
 /**
@@ -111,6 +117,10 @@ class BlogsHomePage extends Component {
     const blogs = this.state.blogsData.map((blog) => {
       const onBlogClick = BlogsHomePage.onBlogClick.bind(this, blog.id);
       const noOfPosts = blog.Posts.length;
+      const blogger = [];
+      if(blog.User) {
+        blogger.push(blog.User.username);
+      }
       return (
         <div key={blog.id}>
           <Card>
@@ -118,7 +128,7 @@ class BlogsHomePage extends Component {
               title="No of posts"
               subtitle={noOfPosts}
             />
-            <CardTitle title={blog.name} subtitle={blog.author} />
+            <CardTitle title={blog.name} subtitle= {blogger} />
             <CardActions>
               <RaisedButton label="Click here for posts" onClick={onBlogClick} />
             </CardActions>
@@ -142,6 +152,38 @@ class BlogsHomePage extends Component {
         color: grey700,
       },
     };
+
+    let content =null;
+    const loading = this.state.loading;
+    if(loading) {
+      content=(
+        <LinearProgress mode="indeterminate"/>
+      );
+    } else {
+      content =(
+        <div>
+          <div>
+            <AutoComplete
+             floatingLabelText="Search Blogs"
+             floatingLabelStyle = {styles.floatingLabelStyle}
+             underlineFocusStyle={styles.underlineStyle}
+              filter={AutoComplete.caseInsensitiveFilter}
+              dataSource={blogName}
+              onNewRequest={this.addNewBlog}
+              fullWidth
+            />
+          </div>
+          <List>
+            <Subheader>Blogs</Subheader>
+            {blogs}
+          </List>
+          <FloatingActionButton onClick={this.addNewBlog} style={buttonStyle}>
+            <ContentAdd />
+          </FloatingActionButton>
+        </div>
+      );
+    }
+
     return (
       <div className =".app.blogList">
         <Snackbar
@@ -150,25 +192,7 @@ class BlogsHomePage extends Component {
          autoHideDuration={4000}
          onRequestClose={handleRequestClose}
        />
-        <div>
-          <AutoComplete
-           floatingLabelText="Search Blogs"
-           floatingLabelStyle = {styles.floatingLabelStyle}
-           underlineFocusStyle={styles.underlineStyle}
-            filter={AutoComplete.caseInsensitiveFilter}
-            dataSource={blogName}
-            onNewRequest={this.addNewBlog}
-            fullWidth
-
-          />
-        </div>
-        <List>
-          <Subheader>Blogs</Subheader>
-          {blogs}
-        </List>
-        <FloatingActionButton onClick={this.addNewBlog} style={buttonStyle}>
-          <ContentAdd />
-        </FloatingActionButton>
+        <div>{content}</div>
       </div>
     );
   }

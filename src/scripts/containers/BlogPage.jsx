@@ -14,7 +14,7 @@ import ActionGrade from 'material-ui/svg-icons/action/grade';
 import ActionStar from 'material-ui/svg-icons/toggle/star-border';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-
+import LinearProgress from 'material-ui/LinearProgress';
 
 import {get, httDelete} from '../services/Requests';
 import {modelURL, modelLikeURL} from '../services/urlFactory';
@@ -84,12 +84,12 @@ class BlogPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataLoading: true,
       blog: {},
       open: false,
       errorMessage: '',
       count: false,
       alertOpen: false,
+      loading: false,
     };
 
     this.fetchBlog = this.fetchBlog.bind(this);
@@ -103,12 +103,14 @@ class BlogPage extends Component {
 */
   fetchBlog(blogId) {
     const url = modelURL('blog', blogId);
-
+    this.setState({
+      loading: true,
+    });
     return get(url)
       .then((response) => {
         this.setState({
-          dataLoading: false,
           blog: response.data,
+          loading: false,
         });
       })
       .catch((error) => {
@@ -116,6 +118,7 @@ class BlogPage extends Component {
           dataLoading: true,
           blog: {},
           open: true,
+          loading: true,
         });
       });
   }
@@ -129,7 +132,7 @@ class BlogPage extends Component {
       .then((response) => {
         this.setState({
           post: {},
-          dataLoading: true,
+          loading: true,
         });
         browserHistory.push('blogs');
         // refresh
@@ -137,7 +140,7 @@ class BlogPage extends Component {
       .catch((error) => {
         this.setState({
           blog: {},
-          dataLoading: false,
+          loading: true,
         });
         browserHistory.push('blogs');
       });
@@ -188,7 +191,10 @@ class BlogPage extends Component {
       this.fetchBlog(blogId);
     })
     .catch((error) => {
-      console.log('error!');
+      this.setState({
+        open: false,
+        errorMessage: 'Oops something went wrong!',
+      });
     });
   }
   /**
@@ -208,7 +214,10 @@ class BlogPage extends Component {
     })
     .catch((error) => {
       this.fetchBlog(blogId);
-      console.log('error');
+      this.setState({
+        open: false,
+        errorMessage: 'Oops something went wrong!',
+      });
     });
   }
 /**
@@ -247,7 +256,6 @@ class BlogPage extends Component {
     const handleOpen = this.handleOpen.bind(this);
     const handleClose = this.handleClose.bind(this);
     const signUp = this.signUp.bind(this);
-
     const iconButton = {
       marginLeft: '700px',
     };
@@ -328,12 +336,13 @@ class BlogPage extends Component {
       marginLeft: '100px',
     };
 
-
     if(blog.Posts && blog.Posts.length) {
       posts = blog.Posts.map((post) => {
         const onPostClick = BlogPage.onPostClick.bind(this, blog.id, post.id);
         const navigateEditPost = BlogPage.navigateEditPost.bind(this, blog.id, post.id);
         const postContent = <div> <ReactMarkdown source={post.content || ''} /></div>;
+        // const noOfComments = null;
+        // noOfComments.push(post.Comments);
         return (
           <div key={`${blog.id}-${post.id}`}>
             <Card key={`${blog.id}-${post.id}`}>>
@@ -349,6 +358,10 @@ class BlogPage extends Component {
           </div>
         );
       });
+    } else {
+      posts = (<div><formgroup>
+        <h3>No posts yet!</h3>
+      </formgroup></div>);
     }
 
     let deleteAction = null;
@@ -360,6 +373,46 @@ class BlogPage extends Component {
         deleteAction = <RaisedButton label="Delete Blog" onClick={onDeleteBlog} style={deleteButtonStyle}/>;
       }
     }
+    let blogger = '';
+    if(this.state.blog.User) {
+      blogger = blog.User.username;
+    }
+
+    let content =null;
+    const loading = this.state.loading;
+    if(loading) {
+      content=(
+        <LinearProgress mode="indeterminate"/>
+      );
+    } else {
+      content=(
+        <div>
+          <List>
+            <header>
+              {this.state.blog.name}
+              {deleteAction}
+              <div>
+                <div>
+                  {favouriteButton}
+                </div>
+              </div>
+            </header>
+            <Subheader>Postes</Subheader>
+            <div>Posted by : {blogger}</div>
+            {posts}
+          </List>
+          <FloatingActionButton
+            style={buttonStyle}
+            onClick={addNewPost}
+            >
+            <ContentAdd />
+          </FloatingActionButton>
+          <div className= "socialIcon">
+            <SocialIcon url="http://twitter.com/jaketrent" />
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div>
@@ -369,28 +422,7 @@ class BlogPage extends Component {
          autoHideDuration={4000}
          onRequestClose={handleRequestClose}
        />
-        <List>
-          <header>
-            {this.state.blog.name}
-            {deleteAction}
-            <div>
-              <div>
-                {favouriteButton}
-              </div>
-            </div>
-          </header>
-          <Subheader>Postes</Subheader>
-          {posts}
-        </List>
-        <FloatingActionButton
-          style={buttonStyle}
-          onClick={addNewPost}
-          >
-          <ContentAdd />
-        </FloatingActionButton>
-        <div className= "socialIcon">
-          <SocialIcon url="http://twitter.com/jaketrent" />
-        </div>
+        <div>{content}</div>
       </div>
     );
   }

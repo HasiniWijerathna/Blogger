@@ -257,7 +257,12 @@ class EditProfile extends Component {
       browserHistory.push('login');
     })
     .catch((error) => {
-      console.log('error');
+      this.setState({
+        errorMessage: {
+          open: true,
+          message: 'Oops Something went wrong!',
+        },
+      });
     });
   };
 /**
@@ -276,10 +281,14 @@ class EditProfile extends Component {
             email: response.data.email,
           },
         });
-        console.log(this.state.user);
       })
       .catch((error) => {
-        console.log(error);
+        this.setState({
+          errorMessage: {
+            open: true,
+            message: 'Oops Something went wrong!',
+          },
+        });
       });
   }
 /**

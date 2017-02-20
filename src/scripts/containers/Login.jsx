@@ -155,6 +155,9 @@ class Login extends Component {
       left: '20%',
     };
 
+    const buttonStyle = {
+      paddingTop: '10px',
+    };
     return (
       <div>
         <Snackbar
@@ -184,7 +187,7 @@ class Login extends Component {
 
                 <RaisedButton label="Login" onClick={onConfirm} />
                 <h2>
-                  <RaisedButton label="Create your account" onClick={signUp}/>
+                  <RaisedButton label="Create your account" onClick={signUp} style={buttonStyle}/>
                 </h2>
               </hgroup>
             </formgroup>
