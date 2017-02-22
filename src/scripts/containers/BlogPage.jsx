@@ -129,14 +129,14 @@ class BlogPage extends Component {
   onDeleteBlog() {
     const blogId = this.state.blog.id;
     const url = modelURL('blog', blogId);
-    httDelete(url)
+    httDelete(url, {foo: 'foo'})
       .then((response) => {
         this.setState({
           post: {},
           loading: true,
         });
         browserHistory.push('blogs');
-        // refresh
+        this.fetchBlog(this.props.params.blogId);
       })
       .catch((error) => {
         this.setState({
@@ -144,6 +144,7 @@ class BlogPage extends Component {
           loading: true,
         });
         browserHistory.push('blogs');
+        this.fetchBlog(this.props.params.blogId);
       });
   }
 /**
@@ -370,7 +371,10 @@ class BlogPage extends Component {
     if (auth) {
       const loggedUser = getSession().user.id;
       const blogAddedUser = this.state.blog.UserId;
-      if(loggedUser == blogAddedUser) {
+      if(!this.state.blog) {
+        this.fetchBlog(this.props.params.blogId);
+        deleteAction = <RaisedButton label="Delete Blog" onClick={onDeleteBlog} style={deleteButtonStyle}/>;
+      } else if (loggedUser == blogAddedUser) {
         deleteAction = <RaisedButton label="Delete Blog" onClick={onDeleteBlog} style={deleteButtonStyle}/>;
       }
     }

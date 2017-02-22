@@ -1,14 +1,18 @@
+import {browserHistory} from 'react-router';
 
 /**
  * Returns current session
- * @return {object}  Currernt session object
+* @return {object}  Currernt session object
  */
 const getSession = () => {
   const session = localStorage.session ? JSON.parse(localStorage.session) : {authenticated: false};
-
-  return session;
+  if (session) {
+    return session;
+  } else {
+    resetSession();
+    browserHistory.push('login');
+  }
 };
-
 /**
  * Update session
  * @param  {object} session Updated session
