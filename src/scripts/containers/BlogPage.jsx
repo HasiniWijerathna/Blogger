@@ -93,9 +93,15 @@ class BlogPage extends Component {
     };
 
     this.fetchBlog = this.fetchBlog.bind(this);
+  }
 
+  /**
+   * Called after the component is mounted
+   */
+  componentDidMount() {
     this.fetchBlog(this.props.params.blogId);
   }
+
 /**
 * Fetches a blog
 * @param  {Integer} blogId The blogId
@@ -128,21 +134,19 @@ class BlogPage extends Component {
   onDeleteBlog() {
     const blogId = this.state.blog.id;
     const url = modelURL('blog', blogId);
-    httDelete(url, {foo: 'foo'})
+    httDelete(url)
       .then((response) => {
         this.setState({
           post: {},
           loading: true,
         });
-        browserHistory.push('blogs');
-        this.fetchBlog(this.props.params.blogId);
+        browserHistory.push('/blogs');
       })
       .catch((error) => {
         this.setState({
           blog: {},
           loading: true,
         });
-        browserHistory.push('blogs');
         this.fetchBlog(this.props.params.blogId);
       });
   }
@@ -343,10 +347,12 @@ class BlogPage extends Component {
       const bloggger = this.state.blog.UserId;
       if(userId == bloggger) {
         if(blog.Posts && blog.Posts.length) {
-          const navigateEditPost = BlogPage.navigateEditPost.bind(this, blog.id, post.id);
-          editPost = (
-            <RaisedButton label="Edit Post" onClick={navigateEditPost} />
-        );
+          posts = blog.Posts.map((post) => {
+            const navigateEditPost = BlogPage.navigateEditPost.bind(this, blog.id, post.id);
+            editPost = (
+              <RaisedButton label="Edit Post" onClick={navigateEditPost} />
+          );
+          });
         }
       }
     }
