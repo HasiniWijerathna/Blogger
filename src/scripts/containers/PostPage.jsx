@@ -95,7 +95,7 @@ class PostPage extends Component {
         browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
       })
       .catch((error) =>{
-        console.log(error);
+        browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
       });
     }
   }
