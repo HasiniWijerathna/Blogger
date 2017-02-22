@@ -59,13 +59,12 @@ const put = (url, data) => {
 /**
  * Sends a DELETE request
  * @param  {String} url    The URL of the current request
- * @param  {Object} data   The data object of the request
  * @param  {[type]} params [description]
  * @return {Request}       The DELETE request
  */
-const httDelete = (url, data, params) => {
+const httDelete = (url, params) => {
   const headers = generateHeaders();
-  return axios.delete(url, data, {
+  return axios.delete(url, {
     headers,
     params,
   });
