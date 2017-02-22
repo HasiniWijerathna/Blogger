@@ -67,7 +67,6 @@ class BlogPage extends Component {
       const blogAddedUser = this.state.blog.UserId;
       if (blogAddedUser == loggedUser) {
         browserHistory.push(`/blogs/${blogId}/posts/new`);
-        console.log(this.state.errorMessage);
       } else {
         this.setState({
           open: true,
@@ -273,10 +272,10 @@ class BlogPage extends Component {
       onTouchTap={handleClose}
       />,
     ];
-    const userLikedBlog = hasUserLiked(getSession().user, blog);
     let favouriteButton = null;
     const authenticated = getSession().authenticated;
     if(authenticated) {
+      const userLikedBlog = hasUserLiked(getSession().user, blog);
       if (userLikedBlog) {
         favouriteButton = (
           <div>
@@ -339,22 +338,22 @@ class BlogPage extends Component {
     };
 
     let editPost = null;
-    const userId = getSession().user.id;
-    const bloggger = this.state.blog.UserId;
-    if(userId == bloggger) {
-      if(blog.Posts && blog.Posts.length) {
-        const navigateEditPost = BlogPage.navigateEditPost.bind(this, blog.id, post.id);
-        editPost = (
-          <RaisedButton label="Edit Post" onClick={navigateEditPost} />
-      );
+    if(getSession().user) {
+      const userId = getSession().user.id;
+      const bloggger = this.state.blog.UserId;
+      if(userId == bloggger) {
+        if(blog.Posts && blog.Posts.length) {
+          const navigateEditPost = BlogPage.navigateEditPost.bind(this, blog.id, post.id);
+          editPost = (
+            <RaisedButton label="Edit Post" onClick={navigateEditPost} />
+        );
+        }
       }
     }
     if(blog.Posts && blog.Posts.length) {
       posts = blog.Posts.map((post) => {
         const onPostClick = BlogPage.onPostClick.bind(this, blog.id, post.id);
         const postContent = <div> <ReactMarkdown source={post.content || ''} /></div>;
-        // const noOfComments = null;
-        // noOfComments.push(post.Comments);
         return (
           <div key={`${blog.id}-${post.id}`}>
             <Card key={`${blog.id}-${post.id}`}>>

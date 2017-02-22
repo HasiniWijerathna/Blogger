@@ -23,6 +23,7 @@ class BlogsHomePage extends Component {
 * @param  {Integer} blogId Id of the selected blog
 */
   static onBlogClick(blogId) {
+    console.log(blogId);
     browserHistory.push(`/blogs/${blogId}`);
   }
 
