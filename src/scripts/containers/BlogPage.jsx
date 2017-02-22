@@ -128,7 +128,7 @@ class BlogPage extends Component {
   onDeleteBlog() {
     const blogId = this.state.blog.id;
     const url = modelURL('blog', blogId);
-    httDelete(url, {foo: 'foo'})
+    httDelete(url)
       .then((response) => {
         this.setState({
           post: {},
@@ -142,7 +142,6 @@ class BlogPage extends Component {
           blog: {},
           loading: true,
         });
-        browserHistory.push('blogs');
         this.fetchBlog(this.props.params.blogId);
       });
   }
