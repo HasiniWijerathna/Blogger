@@ -96,11 +96,13 @@ class AddNewPost extends Component {
         </div>
         <div>
           <RichTextEditor value={this.state.post.rteContent} onChange={contentOnChange}/>
-          <RaisedButton
-            label="Save"
-            primary
-            onClick={onAddPost}
-            style={buttonStyle} />
+          <div>
+            <RaisedButton
+              label="Publish"
+              primary
+              onClick={onAddPost}
+              style={buttonStyle} />
+          </div>
         </div>
       </div>
     );
