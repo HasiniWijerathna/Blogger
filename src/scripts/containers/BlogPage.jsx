@@ -338,10 +338,20 @@ class BlogPage extends Component {
       marginLeft: '100px',
     };
 
+    let editPost = null;
+    const userId = getSession().user.id;
+    const bloggger = this.state.blog.UserId;
+    if(userId == bloggger) {
+      if(blog.Posts && blog.Posts.length) {
+        const navigateEditPost = BlogPage.navigateEditPost.bind(this, blog.id, post.id);
+        editPost = (
+          <RaisedButton label="Edit Post" onClick={navigateEditPost} />
+      );
+      }
+    }
     if(blog.Posts && blog.Posts.length) {
       posts = blog.Posts.map((post) => {
         const onPostClick = BlogPage.onPostClick.bind(this, blog.id, post.id);
-        const navigateEditPost = BlogPage.navigateEditPost.bind(this, blog.id, post.id);
         const postContent = <div> <ReactMarkdown source={post.content || ''} /></div>;
         // const noOfComments = null;
         // noOfComments.push(post.Comments);
@@ -354,7 +364,7 @@ class BlogPage extends Component {
                 </CardTitle>
               <CardActions>
                 <RaisedButton label="View Post" onClick={onPostClick} />
-                <RaisedButton label="Edit Post" onClick={navigateEditPost}/>
+                {editPost}
               </CardActions>
             </Card>
           </div>
