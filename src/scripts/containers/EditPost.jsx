@@ -112,11 +112,14 @@ class EditPost extends Component {
             <TextField floatingLabelText="Title" value={this.state.post.title} onChange={onChangeTitle} fullWidth/>
           </div>
           <RichTextEditor value={this.state.post.rteContent} onChange={contentOnChange}/>
-          <RaisedButton
-            label="Save"
-            primary
-            onClick={onAddPost}
-            style={buttonStyle} />
+          <div></div>
+          <div>
+            <RaisedButton
+              label="Publish"
+              primary
+              onClick={onAddPost}
+              style={buttonStyle} />
+          </div>
         </div>
       </div>
     );
