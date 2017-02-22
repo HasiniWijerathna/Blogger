@@ -20,12 +20,20 @@ class EditPost extends Component {
       post: {
         title: '',
         rteContent: RichTextEditor.createEmptyValue(),
+        open: false,
+        errorMessage: '',
         // rteContent: RichTextEditor.createValueFromString( '', 'markdown'),
       },
     };
     this.getPostContent = this.getPostContent.bind(this);
+  }
+  /**
+   * Called after the component is mounted
+   */
+  componentDidMount() {
     this.getPostContent();
   }
+
   /**
   * Updates the state according to the change event of new title of the post
   * @param  {Event} changeEvent The change event of the post title
@@ -87,7 +95,7 @@ class EditPost extends Component {
       });
     })
     .catch((error) => {
-      console.log('error');
+      browserHistory.push(`/blogs/${blogId}`);
     });
   }
  /**

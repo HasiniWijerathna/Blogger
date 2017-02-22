@@ -26,7 +26,12 @@ class PostPage extends Component {
       dataLoading: true,
     };
     this.fetchPost = this.fetchPost.bind(this);
+  }
 
+/**
+ * Called after the component is mounted
+ */
+  componentDidMount() {
     this.fetchPost(this.props.params.postId);
   }
 /**
