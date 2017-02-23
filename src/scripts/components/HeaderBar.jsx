@@ -76,6 +76,12 @@ class HeaderBar extends Component {
     browserHistory.push('/settings');
   }
   /**
+   * Navigate to the home page
+   */
+  navigateHome() {
+    browserHistory.push('/');
+  }
+  /**
   * Describes the elements on the registration page
   * @return {String} HTML elements
   */
@@ -84,6 +90,7 @@ class HeaderBar extends Component {
     const navigateEditProfile = this.navigateEditProfile.bind(this);
     const navigateSettings = this.navigateSettings.bind(this);
     const signOut = this.signOut.bind(this);
+    const navigateHome = this.navigateHome.bind(this);
     let container = <div className="container">
       <div className="row">
         <div className="col-12">
@@ -91,7 +98,7 @@ class HeaderBar extends Component {
             <div className="container-fluid">
               <div className="navbar-header">
                 <a className="navbar-brand">
-                  <img className="logo" alt="Logo"/>
+                  <img className="logo" alt="Logo" onClick={navigateHome}/>
                 </a>
               </div>
               <div className="navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -115,7 +122,7 @@ class HeaderBar extends Component {
               <div className="container-fluid">
                 <div className="navbar-header">
                   <a className="navbar-brand">
-                    <img className="logo" alt="Logo"/>
+                    <img className="logo" alt="Logo" onClick={navigateHome}/>
                   </a>
                 </div>
                 <div className="navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -142,11 +149,11 @@ class HeaderBar extends Component {
       </div>;
     }
     return (
-        <div>
-          <header>
-            {container}
-          </header>
-        </div>
+      <div>
+        <header>
+          {container}
+        </header>
+      </div>
     );
   }
 }
