@@ -54,7 +54,7 @@ render(
       <Route path="editProfile" component={EditProfile} />
       <Route path="settings" component={Settings}/>
       <Route path="aboutUs" component={AboutUs} />
-      <Route path="moreHelp" component={MoreHelp} />
+      <Route path="help" component={MoreHelp} />
       <Route path="login" component={Login} onEnter={checkAuth} />
       <Route path="registration" component={Registration} onEnter={checkAuth} />
       <Route path="blogs" component={BlogsHomePage} />

@@ -4,9 +4,12 @@ import RichTextEditor from 'react-rte';
 import {browserHistory} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 import {post} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
+import Snackbar from 'material-ui/Snackbar';
 /**
  * Representing the logic of adding new posts functionality
  */
@@ -24,6 +27,9 @@ class AddNewPost extends Component {
         content: '',
         rteContent: RichTextEditor.createEmptyValue(),
       },
+      alertOpen: false,
+      open: false,
+      errorMessage: '',
     };
   }
 
@@ -31,21 +37,28 @@ class AddNewPost extends Component {
 * Adds new posts
 */
   onAddPost() {
-    const url = modelURL('post');
-    const data = {
-      blogId: this.props.routeParams.blogId,
-      title: this.state.post.title,
-      content: this.state.post.rteContent.toString('markdown'),
-    };
-    post(url, data)
-    .then(() => {
-      browserHistory.push(`/blogs/${data.blogId}`);
-    })
-    .catch((error) =>{
-      this.setState({
-        post,
+    if(this.state.post.title && this.state.post.rteContent) {
+      const url = modelURL('post');
+      const data = {
+        blogId: this.props.routeParams.blogId,
+        title: this.state.post.title,
+        content: this.state.post.rteContent.toString('markdown'),
+      };
+      post(url, data)
+      .then(() => {
+        browserHistory.push(`/blogs/${data.blogId}`);
+      })
+      .catch((error) =>{
+        this.setState({
+          post,
+        });
       });
-    });
+    } else {
+      this.setState({
+        open: true,
+        errorMessage: 'Post title and content can not be empty',
+      });
+    }
   }
 /**
 * Updates the state according to the change event of new title of the post
@@ -72,6 +85,31 @@ class AddNewPost extends Component {
       post,
     });
   };
+  /**
+   * Alert handle alert
+   */
+  handleOpen() {
+    this.setState({
+      alertOpen: true,
+    });
+  };
+  /**
+   * Alert handle alert
+   */
+  handleClose() {
+    this.setState({
+      alertOpen: false,
+    });
+  };
+  /**
+   * Hides the snackbar when the user clicks it
+   */
+  handleRequestClose() {
+    this.setState({
+      open: false,
+      errorMessage: '',
+    });
+  }
 /**
 * Describes the elements on the Add new post page
 * @return {String} HTML elements
@@ -80,12 +118,26 @@ class AddNewPost extends Component {
     const onAddPost = this.onAddPost.bind(this);
     const onChangeTitle = this.onChangeTitle.bind(this);
     const contentOnChange =this.contentOnChange.bind(this);
-
+    const handleClose = this.handleClose.bind(this);
+    const handleOpen =this.handleOpen.bind(this);
+    const handleRequestClose = this.handleRequestClose.bind(this);
     const buttonStyle = {
       marginBottom: '250px',
       marginTop: '70px',
       float: 'right',
     };
+    const actions = [
+      <FlatButton
+      label="Add post"
+      primary={true}
+      onTouchTap={onAddPost}
+      />,
+      <FlatButton
+      label="Change"
+      primary={true}
+      onTouchTap={handleClose}
+      />,
+    ];
 
     return (
       <div className="col-md-12">
@@ -100,10 +152,23 @@ class AddNewPost extends Component {
             <RaisedButton
               label="Publish"
               primary
-              onClick={onAddPost}
+              onClick={handleOpen}
               style={buttonStyle} />
+            <Dialog actions={actions}
+              title="Ready to publish?"
+              modal={false}
+              open={this.state.alertOpen}
+              onRequestClose={handleClose}>
+              Add or change content so your story reaches more people
+              </Dialog>
           </div>
         </div>
+        <Snackbar
+         open={this.state.open}
+         message={this.state.errorMessage}
+         autoHideDuration={4000}
+         onRequestClose={handleRequestClose}
+       />
       </div>
     );
   }
@@ -111,6 +176,7 @@ class AddNewPost extends Component {
 
 AddNewPost.propTypes = {
   routeParams: React.PropTypes.object.isRequired,
+  params: React.PropTypes.object.isRequired,
 };
 
 export default AddNewPost;

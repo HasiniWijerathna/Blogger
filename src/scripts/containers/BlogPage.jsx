@@ -410,7 +410,7 @@ class BlogPage extends Component {
             modal={false}
             open={this.state.alertOpen}
             onRequestClose={handleClose}>
-            Deleted stories are gone forever. Are you sure?
+            Deleted blogs are gone forever. Are you sure?
             </Dialog>
         </div>;
       }

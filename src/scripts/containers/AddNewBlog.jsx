@@ -36,7 +36,7 @@ class AddNewBlog extends Component {
           name: '',
         },
         open: true,
-        message: 'Empty blog name',
+        message: 'Blog name can not be empty',
       });
     } else if (loggedUser) {
       const url = modelURL('blog');

@@ -82,6 +82,12 @@ class HeaderBar extends Component {
     browserHistory.push('/');
   }
   /**
+   * Navigate to the home page
+   */
+  navigateHelp() {
+    browserHistory.push('/help');
+  }
+  /**
   * Describes the elements on the registration page
   * @return {String} HTML elements
   */
@@ -91,6 +97,7 @@ class HeaderBar extends Component {
     const navigateSettings = this.navigateSettings.bind(this);
     const signOut = this.signOut.bind(this);
     const navigateHome = this.navigateHome.bind(this);
+    const navigateHelp = this.navigateHelp.bind(this);
     let container = <div className="container">
       <div className="row">
         <div className="col-12">
@@ -137,6 +144,7 @@ class HeaderBar extends Component {
                          targetOrigin={{horizontal: 'left', vertical: 'top'}}
                     >
                       <MenuItem primaryText="Edit Profile" onClick={navigateEditProfile} />
+                      <MenuItem primaryText="Help" onClick={navigateHelp} disabled/>
                       <MenuItem primaryText="Settings" onClick={navigateSettings} disabled/>
                     </IconMenu>
                     </li>
