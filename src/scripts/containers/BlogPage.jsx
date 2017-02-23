@@ -276,6 +276,19 @@ class BlogPage extends Component {
       onTouchTap={handleClose}
       />,
     ];
+    const actionDelete = [
+      <FlatButton
+      label="Delete"
+      primary={true}
+      onTouchTap={onDeleteBlog}
+      />,
+      <FlatButton
+      label="Cancel"
+      primary={true}
+      onTouchTap={handleClose}
+      />,
+    ];
+
     let favouriteButton = null;
     const authenticated = getSession().authenticated;
     if(authenticated) {
@@ -390,7 +403,16 @@ class BlogPage extends Component {
         this.fetchBlog(this.props.params.blogId);
         deleteAction = <RaisedButton label="Delete Blog" onClick={onDeleteBlog} style={deleteButtonStyle}/>;
       } else if (loggedUser == blogAddedUser) {
-        deleteAction = <RaisedButton label="Delete Blog" onClick={onDeleteBlog} style={deleteButtonStyle}/>;
+        deleteAction = <div>
+          <RaisedButton label="Delete Blog" onClick={handleOpen} style={deleteButtonStyle}/>
+          <Dialog actions={actionDelete}
+            title="Delete"
+            modal={false}
+            open={this.state.alertOpen}
+            onRequestClose={handleClose}>
+            Deleted stories are gone forever. Are you sure?
+            </Dialog>
+        </div>;
       }
     }
     let blogger = '';
