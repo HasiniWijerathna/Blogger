@@ -107,11 +107,9 @@ class EditPost extends Component {
     const onChangeTitle = this.onChangeTitle.bind(this);
     const onAddPost = this.onAddPost.bind(this);
     const buttonStyle = {
-      position: 'fixed',
-      bottom: 0,
-      right: 0,
-      marginBottom: '205px',
-      marginRight: '60px',
+      marginBottom: '250px',
+      marginTop: '70px',
+      float: 'right',
     };
     return(
       <div>
