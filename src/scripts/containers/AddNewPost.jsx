@@ -82,21 +82,21 @@ class AddNewPost extends Component {
     const contentOnChange =this.contentOnChange.bind(this);
 
     const buttonStyle = {
-      position: 'fixed',
-      bottom: 0,
-      right: 0,
-      marginBottom: '205px',
-      marginRight: '60px',
+      marginBottom: '250px',
+      marginTop: '70px',
+      float: 'right',
     };
 
     return (
       <div className="col-md-12">
-        <div className="floatingLabelText">
-          <TextField floatingLabelText="Title" value={this.state.post.title} onChange={onChangeTitle} fullWidth/>
-        </div>
-        <div>
-          <RichTextEditor value={this.state.post.rteContent} onChange={contentOnChange}/>
+        <div className= "textArea">
+          <div className="floatingLabelText">
+            <TextField floatingLabelText="Title" value={this.state.post.title} onChange={onChangeTitle} fullWidth/>
+          </div>
           <div>
+            <RichTextEditor value={this.state.post.rteContent} onChange={contentOnChange}/>
+            <div>
+            </div>
             <RaisedButton
               label="Publish"
               primary
