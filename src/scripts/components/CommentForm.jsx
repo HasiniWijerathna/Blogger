@@ -49,7 +49,7 @@ class CommentForm extends Component {
       this.setState({
         errorMessage: {
           open: true,
-          message: 'Empty Comment',
+          message: 'Empty Responses',
         },
       });
     }
@@ -124,7 +124,10 @@ class CommentForm extends Component {
     const authenticated = getSession().authenticated;
     if (authenticated) {
       addAction = <div>
-        <TextField floatingLabelText="Comment" value={this.state.comment} onChange={onChange} style={{width: '85%'}}/>
+        <TextField floatingLabelText="Write a response.."
+          value={this.state.comment}
+          onChange={onChange}
+          style={{width: '85%'}}/>
         <FlatButton label="Save" onClick={onAddComment} />
       </div>;
     } else {

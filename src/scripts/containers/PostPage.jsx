@@ -165,7 +165,7 @@ class PostPage extends Component {
           <CardTitle>{post.title}</CardTitle>
           <CardText>{postContent}</CardText>
         </Card>
-        <CardTitle>Comments</CardTitle>
+        <CardTitle>Responses</CardTitle>
         <div>{comments}</div>
         <div>
           <CommentForm onAdd={onCommentAdd} post={this.state.post} />

@@ -87,7 +87,7 @@ class Comment extends Component {
       body = (
         <div>
           <TextField
-            floatingLabelText="Edit comment"
+            floatingLabelText="Edit your response"
             value={this.state.editingComment}
             onChange={onChange}
              style={{width: '90%'}}
