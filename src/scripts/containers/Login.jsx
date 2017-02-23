@@ -156,7 +156,8 @@ class Login extends Component {
     };
 
     const buttonStyle = {
-      paddingTop: '10px',
+      paddingTop: '5px',
+      paddingBottom: '5px',
     };
     return (
       <div>
@@ -185,7 +186,7 @@ class Login extends Component {
                   type="password"
                   onChange={onChangePassword} />
 
-                <RaisedButton label="Login" onClick={onConfirm} />
+                <RaisedButton label="Login" onClick={onConfirm}/>
                 <h2>
                   <RaisedButton label="Create your account" onClick={signUp} style={buttonStyle}/>
                 </h2>
