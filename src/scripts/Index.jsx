@@ -20,6 +20,7 @@ import AboutUs from './containers/AboutUs';
 import EditProfile from './containers/EditProfile';
 import Settings from './containers/Settings';
 import EditPost from './containers/EditPost';
+import MoreHelp from './containers/MoreHelp';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -53,6 +54,7 @@ render(
       <Route path="editProfile" component={EditProfile} />
       <Route path="settings" component={Settings}/>
       <Route path="aboutUs" component={AboutUs} />
+      <Route path="moreHelp" component={MoreHelp} />
       <Route path="login" component={Login} onEnter={checkAuth} />
       <Route path="registration" component={Registration} onEnter={checkAuth} />
       <Route path="blogs" component={BlogsHomePage} />
