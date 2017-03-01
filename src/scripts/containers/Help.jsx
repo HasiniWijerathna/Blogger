@@ -57,6 +57,26 @@ class Help extends Component {
               </div>
             </div>
           </section>
+          <section id="intro">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-7 col-sm-12">
+                  <div className="block">
+                    <div className="section-title">
+                      <h2>About Us</h2>
+                    </div>
+                    <div className="content">
+                      <p>To write a story on Bloggger, you'll need to set up a user account and sign in to Bloggger.
+                    Once you're logged in, you can click on your user icon in the bottom
+                    right corner.After adding a blog title you will see the Bloggger editor, which looks like this:</p>
+                      <img className="textboxImg" alt="Img"/>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </section>
         </Card>
       </div>
     );
