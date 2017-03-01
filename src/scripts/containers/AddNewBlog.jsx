@@ -103,6 +103,7 @@ class AddNewBlog extends Component {
 */
   getCategory() {
     const url = modelURL('blogCategory');
+    console.log(url);
     return get(url)
       .then((response) => {
         console.log(response);
