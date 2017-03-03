@@ -3,7 +3,6 @@ import {Card} from 'material-ui/Card';
 import {browserHistory} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import {isAuthenticated, resetSession} from '../services/SessionService';
-
 /**
 * Representing the login sign up functionalities
 */
@@ -30,6 +29,7 @@ class Home extends Component {
 
     this.state = {
       isAuthenticated: isAuthenticated(),
+      blogsOfCategory: [],
     };
   }
 /**
@@ -41,7 +41,6 @@ class Home extends Component {
       isAuthenticated: false,
     });
   }
-
 /**
  * Navigate to the blogs page
  */

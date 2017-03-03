@@ -1,6 +1,11 @@
 .app-toolbar {
   background-color:#7a7f93 !important;
 }
+.grid {
+  border: 1px solid #999999;
+  display: inline-block;
+  margin-bottom: 40px;
+}
 .commentLabel {
   width: 90%;
 }
@@ -12,9 +17,14 @@
   z-index: 99999;
 }
 .addBlog {
+  margin-left: 20px;
   addBlog p {
     font-size: 18px;
   }
+}
+.blogCategory {
+  margin-bottom: 35px;
+  color: #424242;
 }
 .count {
   margin-right: 60px;
