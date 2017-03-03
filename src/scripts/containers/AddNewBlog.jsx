@@ -2,11 +2,15 @@ import React, {Component} from 'react';
 import {browserHistory} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import DropDownMenu from 'material-ui/DropDownMenu';
 
 import {post} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
 import Snackbar from 'material-ui/Snackbar';
 import {getSession} from '../services/SessionService';
+import {get} from '../services/Requests';
 /**
 * Represents the view logic of adding new blogs functionality
 */
@@ -20,37 +24,52 @@ class AddNewBlog extends Component {
     this.state = {
       blog: {
         name: '',
+        category: '',
       },
       open: false,
       message: '',
+      value: 8,
+      category: [],
     };
+    this.getCategory = this.getCategory.bind(this);
+  }
+
+  /**
+   * Called after the component is mounted
+   */
+  componentDidMount() {
+    this.getCategory();
   }
   /**
    * Allows logged users to add blogs
    */
   addNewBlog() {
     const loggedUser = getSession().user.id;
-    if(!this.state.blog.name) {
+    if(!this.state.blog.name && !this.state.blog.category) {
       this.setState({
         blog: {
           name: '',
+          category: '',
         },
         open: true,
-        message: 'Blog name can not be empty',
+        message: 'Blog name and category can not be empty',
       });
     } else if (loggedUser) {
       const url = modelURL('blog');
       const data = {
         name: this.state.blog.name,
+        category: this.state.value,
       };
       post(url, data)
       .then(() => {
         browserHistory.goBack();
+        console.log(data);
       })
       .catch((error) =>{
         this.setState({
           blog: {
             name: '',
+            category: '',
           },
           open: true,
           message: 'Plese login to add blogs',
@@ -70,6 +89,15 @@ class AddNewBlog extends Component {
     this.setState({blog});
   }
 /**
+* Updates the state according to the change event of the category
+* @param  {Event} event  Change event of the blog name
+* @param  {Integer} index  Change event of the category index
+* @param  {String} value  Change event of the category
+*/
+  handleChangeList(event, index, value) {
+    this.setState({value});
+  }
+/**
  * Hides the snackbar when the user clicks it
  */
   handleRequestClose() {
@@ -79,6 +107,23 @@ class AddNewBlog extends Component {
     });
   }
 /**
+* Gets all the blog categories
+* @return {Event}   Sends a GET request
+*/
+  getCategory() {
+    const url = modelURL('blogCategory');
+    return get(url)
+      .then((response) => {
+        this.setState({
+          value: '1',
+          category: response.data.results,
+        });
+      })
+      .catch((error) => {
+        console.log('error');
+      });
+  }
+/**
 * Describes the elements on the Add new post page
 * @return {String} HTML elements
 */
@@ -86,7 +131,43 @@ class AddNewBlog extends Component {
     const onAddBlog = this.addNewBlog.bind(this);
     const onChangeName = this.onChangeName.bind(this);
     const handleRequestClose = this.handleRequestClose.bind(this);
+    const handleChangeList = this.handleChangeList.bind(this);
+    const styles = {
+      customWidth: {
+        width: 200,
+        paddingTop: '6px',
+      },
+    };
+    const buttonStyle = {
+      marginLeft: '20px',
+      marginTop: '20px',
+      float: 'left',
+    };
+    const textBarStyle = {
+      paddingLeft: '22px',
+      marginBottom: '35px',
+    };
 
+    let dropDown = null;
+    if(this.state.category) {
+      const blogCategory = this.state.category;
+      let categories = [];
+
+      if (blogCategory && blogCategory.length) {
+        categories = blogCategory.map((item) => {
+          return <MenuItem key={`${item.id}`} value={`${item.id}`} primaryText={item.name}/>;
+        });
+      }
+
+      dropDown =(
+        <DropDownMenu
+          value={this.state.value}
+          style={styles.customWidth}
+          onChange={handleChangeList}>
+          {categories}
+        </DropDownMenu >
+      );
+    }
     return (
       <div>
         <Snackbar
@@ -95,9 +176,20 @@ class AddNewBlog extends Component {
          autoHideDuration={4000}
          onRequestClose={handleRequestClose}
        />
-        <p>New blog</p>
-        <TextField floatingLabelText="Name" value={this.state.blog.name} onChange={onChangeName} fullWidth/>
-        <RaisedButton label="Save" primary onClick={onAddBlog} />
+        <div>
+          <div className="addBlog">
+            <p>New blog</p>
+          </div>
+          <TextField floatingLabelText="Name" value={this.state.blog.name} onChange={onChangeName} fullWidth
+            style={textBarStyle}/>
+        </div>
+        <div>
+          <div className ="addBlog">
+            <p>Select a blog category</p>
+          </div>
+          {dropDown}
+        </div>
+        <RaisedButton label="Save" primary onClick={onAddBlog} style={buttonStyle} />
       </div>
     );
   }

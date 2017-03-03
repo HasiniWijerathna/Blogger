@@ -37,7 +37,7 @@ class PostPage extends Component {
 /**
 * Fetches the post by it's ID
 * @param  {Integer} postId [description]
-* @return {Requests}        [description]
+* @return {Event}          Sends a GET request
 */
   fetchPost(postId) {
     const url = modelURL('post', postId);

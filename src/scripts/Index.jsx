@@ -21,6 +21,8 @@ import EditProfile from './containers/EditProfile';
 import Settings from './containers/Settings';
 import EditPost from './containers/EditPost';
 import Help from './containers/Help';
+import AllBlogs from './containers/AllBlogs';
+import BlogCategory from './containers/BlogCategory';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -55,10 +57,12 @@ render(
       <Route path="settings" component={Settings}/>
       <Route path="aboutUs" component={AboutUs} />
       <Route path="help" component={Help} />
+      <Route path="allBlogs" component={AllBlogs} />
       <Route path="login" component={Login} onEnter={checkAuth} />
       <Route path="registration" component={Registration} onEnter={checkAuth} />
       <Route path="blogs" component={BlogsHomePage} />
       <Route path="blogs/new" component={AddNewBlog} onEnter={requireAuth} />
+      <Route path="blogs/category/:categoryId" component={BlogCategory} />
       <Route path="blogs/:blogId" component={BlogPage} />
       <Route path="blogs/:blogId/posts/new" component={AddNewPost} onEnter={requireAuth} />
       <Route path="blogs/:blogId/posts/:postId/editPost" component={EditPost} />
