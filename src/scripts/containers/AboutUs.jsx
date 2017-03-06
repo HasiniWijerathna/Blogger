@@ -33,7 +33,7 @@ class AboutUs extends Component {
                   <div className="block">
                     <div className="section-title">
                       <h2>About Us</h2>
-                      <p>Promote your business, showcase your art,set up an online shop or just test out new ideas</p>
+                      <p>Promote your business, showcase your art, set up an online shop or just test out new ideas</p>
                     </div>
                     <p>It’s time to get more from what you read.Share perspectives about topics that matter today </p>
                   </div>
