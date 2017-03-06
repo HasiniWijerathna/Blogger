@@ -124,7 +124,7 @@ class BlogPage extends Component {
           dataLoading: true,
           blog: {},
           open: true,
-          loading: true,
+          loading: false,
         });
       });
   }
@@ -145,7 +145,7 @@ class BlogPage extends Component {
       .catch((error) => {
         this.setState({
           blog: {},
-          loading: true,
+          loading: false,
         });
         this.fetchBlog(this.props.params.blogId);
       });
