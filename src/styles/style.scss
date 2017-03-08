@@ -13,11 +13,13 @@ body {
   color: #333;
   background-color: #fff;
   margin: 0;
-  padding: 0;
+  padding: 0px;
   -webkit-font-smoothing: antialiased;
   margin: 0 0 303px;
   /* bottom = footer height */
-  padding: 25px;
+}
+.section {
+  padding: 0px;
 }
 h1,
 h2,

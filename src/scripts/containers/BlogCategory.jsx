@@ -2,17 +2,9 @@ import React, {Component} from 'react';
 import {get} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
 
-import {Card, CardActions, CardHeader, CardTitle} from 'material-ui/Card';
+import {Card, CardActions, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import {browserHistory} from 'react-router';
-import Subheader from 'material-ui/Subheader';
-import AutoComplete from 'material-ui/AutoComplete';
-import Snackbar from 'material-ui/Snackbar';
-import {grey700} from 'material-ui/styles/colors';
-import LinearProgress from 'material-ui/LinearProgress';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import {List} from 'material-ui/List';
-import ContentAdd from 'material-ui/svg-icons/content/add';
 /**
 * Represents the view logic of  blogs belongs to a one category functionality
 */

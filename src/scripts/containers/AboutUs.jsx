@@ -4,10 +4,10 @@ import {Card} from 'material-ui/Card';
 * Represents the view logic of adding new blogs functionality
 */
 class AboutUs extends Component {
-  /**
-  * Describes the elements on the About Us page
-  * @return {String} HTML elements
-  */
+/**
+* Describes the elements on the About Us page
+* @return {String} HTML elements
+*/
   render() {
     return (
       <div>
