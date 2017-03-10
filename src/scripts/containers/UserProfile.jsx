@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle} from 'material-ui/Card';
 import {List, ListItem} from 'material-ui/List';
 import ContentInbox from 'material-ui/svg-icons/action/class';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
@@ -8,16 +7,42 @@ import ContentSend from 'material-ui/svg-icons/content/send';
 import ContentDrafts from 'material-ui/svg-icons/content/create';
 import Subheader from 'material-ui/Subheader';
 import RaisedButton from 'material-ui/RaisedButton';
+import Snackbar from 'material-ui/Snackbar';
 
 import {getSession} from '../services/SessionService';
 import {browserHistory} from 'react-router';
 import {get} from '../services/Requests';
-import {modelURL} from '../services/urlFactory';
+import {modelURL, getPosts, getBlogs, getFavouriteBlogs} from '../services/urlFactory';
+
+/**
+ * viewTypes of the content
+ */
+const viewTypes = {
+  blogs: 'blogs',
+  posts: 'posts',
+  favourites: 'favourites',
+};
+
 /**
 * Represents the view logic of User Profile functionality
 */
 class UserProfile extends Component {
-
+/**
+ * Navigates to the relevent post of the selected blog
+ * @param  {Integer} blogId The blog ID
+ * @param  {Integer} postId The post ID
+ */
+  static onPostClick(blogId, postId) {
+    browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
+  }
+  /**
+  * Navigates to the relevent blog page
+  * @param  {Integer} blogId Id of the selected blog
+  */
+  static onBlogClick(blogId) {
+    browserHistory.push(`/blogs/${blogId}`);
+  }
+  /**
 /**
 * Class constructor
 * @param {Object} props User define component
@@ -26,16 +51,25 @@ class UserProfile extends Component {
     super(props);
 
     this.state = {
+      favouriteBlogs: [],
+      allBlogs: [],
       blogs: [],
       posts: [],
+      viewType: 'blogs',
     };
+    this.fetchUserPosts = this.fetchUserPosts.bind(this);
     this.fetchUserBlogs = this.fetchUserBlogs.bind(this);
+    this.fetchBlogs = this.fetchBlogs.bind(this);
+    this.fetchFavouriteBlogs = this.fetchFavouriteBlogs.bind(this);
   }
 /**
  * Called after the component is mounted
  */
   componentDidMount() {
+    this.fetchUserPosts();
     this.fetchUserBlogs();
+    this.fetchBlogs();
+    this.fetchFavouriteBlogs();
   }
 /**
  * Navigate to the edit profile page
@@ -43,54 +77,144 @@ class UserProfile extends Component {
   navigateEditProfile() {
     browserHistory.push('/editProfile');
   }
-/**
- * Fetches all the blogs and posts belongs to a user
- * @return {Event}              Sends a GET request
- */
-  fetchUserBlogs() {
+  /**
+   * Fetches all the blogs and posts belongs to a user
+   * @return {Event}              Sends a GET request
+   */
+  fetchUserPosts() {
     const userId = getSession().user.id;
-    const url = modelURL('user', userId);
-
+    const url = getPosts(userId);
     return get(url)
      .then((response) => {
        this.setState({
-         blogs: response.data.Blogs,
+         posts: response.data,
        });
      })
      .catch((error) => {
        console.log(error);
      });
   }
+  /**
+   * Fetches all the blogs and posts belongs to a user
+   * @return {Event}              Sends a GET request
+   */
+  fetchUserBlogs() {
+    const userId = getSession().user.id;
+    const url = getBlogs(userId);
+    return get(url)
+     .then((response) => {
+       this.setState({
+         blogs: response.data,
+       });
+     })
+     .catch((error) => {
+       console.log(error);
+     });
+  }
+  /**
+   * Fetches all the blogs
+   * @return {Event}          Sends a GET request
+   */
+  fetchBlogs() {
+    const url = modelURL('blog');
+    return get(url)
+      .then((response) => {
+        this.setState({
+          allBlogs: response.data.results,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  /**
+   * Fetches all user favourite blogs
+   * @return {Event}          Sends a GET request
+   */
+  fetchFavouriteBlogs() {
+    const userId = getSession().user.id;
+    const url = getFavouriteBlogs(userId);
+    return get(url)
+      .then((response) => {
+        // console.log('response', response);
+        const favouriteBlogs = [];
+        response.data.map((favouriteBlog) => {
+          if(favouriteBlog.Blog) {
+            favouriteBlogs.push(favouriteBlog.Blog);
+          }
+        });
+        this.setState({
+          favouriteBlogs: favouriteBlogs,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 /**
-* Describes the elements on the About Us page
+ * Sets the state according to the each value
+* @param {String} type The view type
+ */
+  viewType(type) {
+    this.setState({
+      viewType: type,
+    });
+  }
+
+/** Describes the elements on the About Us page
 * @return {String} HTML elements
 */
   render() {
-    console.log(this.state.blogs);
+    const blogViewType = this.viewType.bind(this, viewTypes.blogs);
+    const postViewType = this.viewType.bind(this, viewTypes.posts);
+    const favouriteViewType = this.viewType.bind(this, viewTypes.favourites);
     const imageStyle = {
       height: '400px',
     };
     const overlayStyle = {
       height: '90px',
     };
-    const listStyle = {
-      width: '300px',
-    };
-    const cardStyle = {
-      position: 'absolute',
-      right: 0,
-    };
+
+    const posts = this.state.posts.map((post) => {
+      const onPostClick = UserProfile.onPostClick.bind(this, post.BlogId, post.id);
+      return(
+        <div key={post.id}>
+          <Card>
+            <CardTitle title={post.title} />
+            <CardActions>
+              <RaisedButton label="Click here for posts" onClick={onPostClick}/>
+            </CardActions>
+          </Card>
+        </div>
+      );
+    });
     const blogs = this.state.blogs.map((blog) => {
+      const onBlogClick = UserProfile.onBlogClick.bind(this, blog.id);
       return(
         <div key={blog.id}>
           <Card>
             <CardTitle title={blog.name} />
             <CardActions>
-              <RaisedButton label="Click here for posts" />
+              <RaisedButton label="View blogs" onClick={onBlogClick}/>
             </CardActions>
           </Card>
         </div>
       );
+    });
+    const favouriteBlogs = this.state.favouriteBlogs.map((favouriteBlog, index) => {
+      if(favouriteBlog) {
+        const onBlogClick = UserProfile.onBlogClick.bind(this, favouriteBlog.id);
+        return(
+          <div key={index}>
+            <Card>
+              <CardTitle title={favouriteBlog.name} />
+              <CardActions>
+                <RaisedButton label="View blogs" onClick={onBlogClick}/>
+              </CardActions>
+            </Card>
+          </div>
+        );
+      }
     });
     const bloggerName = getSession().user.name;
     const list = getSession().user.createdAt.split(':');
@@ -99,6 +223,35 @@ class UserProfile extends Component {
     const year = date[0];
     const month = date[1];
     const memberSince = `Member since : ${month}-${year}`;
+    const postedBy = `Posted by : ${bloggerName}`;
+    let content = (<div>
+      {posts}
+    </div>);
+    switch(this.state.viewType) {
+    case viewTypes.blogs:
+      content = (<div>
+        <CardTitle title="Blogs" subtitle={postedBy}/>
+        {blogs}
+      </div>);
+      break;
+    case viewTypes.posts:
+      content = (<div>
+        <CardTitle title="Posts" subtitle={postedBy} />
+        {posts}
+      </div>);
+      break;
+    case viewTypes.favourites:
+      content = (<div>
+        <CardTitle title="Favourites" subtitle="Your favourites" />
+        {favouriteBlogs}
+      </div>);
+      break;
+    default:
+      content = (<div>
+        {posts}
+      </div>);
+    }
+
     return(
       <div>
         <div id="profileCard">
@@ -117,18 +270,19 @@ class UserProfile extends Component {
             </CardMedia>
           </Card>
         </div>
-        <List style ={listStyle}>
-          <Subheader>Great stories deserve a great audience</Subheader>
-          <ListItem
-          primaryText="Start Reading" leftIcon={<ContentSend />}
-        />
-          <ListItem primaryText="Blogs" leftIcon={<ContentDrafts />} />
-          <ListItem primaryText="Posts" leftIcon={<ContentInbox />} />
-          <ListItem primaryText="Likes" leftIcon={<ActionGrade />} />
-        </List>
-        <card >
-          {blogs}
-        </card>
+        <div className="profileGrid">
+          <List className="col-sm-5 col-md-3">
+            <Subheader>Start reading your Stories</Subheader>
+            <ListItem primaryText="Blogs" leftIcon={<ContentDrafts />} onClick={blogViewType}/>
+            <ListItem primaryText="Posts" leftIcon={<ContentInbox />} onClick={postViewType}/>
+            <ListItem primaryText="Favourites" leftIcon={<ActionGrade />} onClick={favouriteViewType}/>
+          </List>
+          <div className="profileGrid col-sm-7 col-md-9">
+            <card>
+              {content}
+            </card>
+          </div>
+        </div>
       </div>
     );
   }
