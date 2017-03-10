@@ -160,11 +160,17 @@ class UserProfile extends Component {
       viewType: type,
     });
   }
-
+/**
+ * Navigate to the editProfile page
+ */
+  navigateEditProfile() {
+    browserHistory.push('/editProfile');
+  }
 /** Describes the elements on the About Us page
 * @return {String} HTML elements
 */
   render() {
+    const navigateEditProfile = this.navigateEditProfile.bind(this);
     const blogViewType = this.viewType.bind(this, viewTypes.blogs);
     const postViewType = this.viewType.bind(this, viewTypes.posts);
     const favouriteViewType = this.viewType.bind(this, viewTypes.favourites);
@@ -276,6 +282,7 @@ class UserProfile extends Component {
             <ListItem primaryText="Blogs" leftIcon={<ContentDrafts />} onClick={blogViewType}/>
             <ListItem primaryText="Posts" leftIcon={<ContentInbox />} onClick={postViewType}/>
             <ListItem primaryText="Favourites" leftIcon={<ActionGrade />} onClick={favouriteViewType}/>
+            <ListItem primaryText="Edit Profile" leftIcon={<ContentSend />} onClick={navigateEditProfile}/>
           </List>
           <div className="profileGrid col-sm-7 col-md-9">
             <card>

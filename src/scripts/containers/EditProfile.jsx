@@ -272,7 +272,6 @@ class EditProfile extends Component {
   editProfileInfo() {
     const userId = getSession().user.id;
     const url = modelURL('user', userId);
-
     return get(url)
       .then((response) => {
         this.setState({
@@ -352,6 +351,7 @@ class EditProfile extends Component {
                 <CardActions>
                   <div>
                     <TextField
+                      id = "1"
                       value={this.state.user.name}
                       errorText={this.state.focused.name && this.state.error.name}
                       onChange={onChangeName}
@@ -360,6 +360,7 @@ class EditProfile extends Component {
                   </div>
                   <div>
                     <TextField
+                      id="2"
                       value={this.state.user.email}
                       errorText={this.state.focused.email && this.state.error.email}
                       onChange={onChangeEmail}
@@ -368,6 +369,7 @@ class EditProfile extends Component {
                   </div>
                   <div>
                     <TextField
+                      id="3"
                       floatingLabelText="Change your password"
                       value={this.state.user.password}
                       errorText={this.state.focused.password && this.state.error.password}
@@ -378,6 +380,7 @@ class EditProfile extends Component {
                   </div>
                   <div>
                     <TextField
+                      id="4"
                       floatingLabelText="Confirm new Password"
                       value={this.state.user.confirmPassword}
                       errorText={this.state.focused.confirmPassword && this.state.error.confirmPassword}
