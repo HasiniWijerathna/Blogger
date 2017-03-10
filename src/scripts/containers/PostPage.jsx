@@ -43,9 +43,11 @@ class PostPage extends Component {
     const url = modelURL('post', postId);
     return get(url)
      .then((response) => {
-       this.setState({
-         post: response.data,
-         dataLoading: false,
+       response.data.map((data)=>{
+         this.setState({
+           post: data,
+           dataLoading: false,
+         });
        });
      })
      .catch((error) => {
@@ -157,6 +159,7 @@ class PostPage extends Component {
         />
     );
     }
+
     this.reactSurce = post.content;
     const postContent = <div> <ReactMarkdown source={post.content || ''} /></div>;
     return (
