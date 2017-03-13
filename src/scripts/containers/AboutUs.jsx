@@ -5,12 +5,13 @@ import BaseComponent from '../components/BaseComponent';
 * Represents the view logic of adding new blogs functionality
 */
 class AboutUs extends BaseComponent {
+
 /**
 * Describes the elements on the About Us page
 * @return {String} HTML elements
 */
   render() {
-    const parent = super.render();
+    this.login();
     return (
       <div>
         <Card>

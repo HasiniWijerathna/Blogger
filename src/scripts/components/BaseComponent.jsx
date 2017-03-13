@@ -17,8 +17,6 @@ class BaseComponent extends Component {
  * @return {[type]} [description]
  */
   render() {
-    const login = this.login.bind(this);
-    login();
     return(
       <div>
 
