@@ -134,7 +134,7 @@ class CommentForm extends Component {
       addAction =<div>
         <hgroup>
           <formgroup>
-            <h3>Please login to add comments</h3>
+            <h3>Please login to add responses</h3>
           </formgroup>
           <RaisedButton label="Login" onClick={this.login} />
         </hgroup>
