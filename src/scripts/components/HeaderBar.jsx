@@ -66,8 +66,8 @@ class HeaderBar extends Component {
 /**
  * Navigate to the about us page
  */
-  navigateEditProfile() {
-    browserHistory.push('/editProfile');
+  navigateProfile() {
+    browserHistory.push('/UserProfile');
   }
   /**
    * Navigate to the settings page
@@ -93,7 +93,7 @@ class HeaderBar extends Component {
   */
   render() {
     const authenticated = getSession().authenticated;
-    const navigateEditProfile = this.navigateEditProfile.bind(this);
+    const navigateProfile = this.navigateProfile.bind(this);
     const navigateSettings = this.navigateSettings.bind(this);
     const signOut = this.signOut.bind(this);
     const navigateHome = this.navigateHome.bind(this);
@@ -143,7 +143,7 @@ class HeaderBar extends Component {
                          anchorOrigin={{horizontal: 'left', vertical: 'top'}}
                          targetOrigin={{horizontal: 'left', vertical: 'top'}}
                     >
-                      <MenuItem primaryText="Edit Profile" onClick={navigateEditProfile} />
+                      <MenuItem primaryText="Profile" onClick={navigateProfile} />
                       <MenuItem primaryText="Help" onClick={navigateHelp} disabled/>
                       <MenuItem primaryText="Settings" onClick={navigateSettings} disabled/>
                     </IconMenu>

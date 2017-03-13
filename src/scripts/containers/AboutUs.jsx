@@ -1,14 +1,16 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Card} from 'material-ui/Card';
+import BaseComponent from '../components/BaseComponent';
 /**
 * Represents the view logic of adding new blogs functionality
 */
-class AboutUs extends Component {
-  /**
-  * Describes the elements on the About Us page
-  * @return {String} HTML elements
-  */
+class AboutUs extends BaseComponent {
+/**
+* Describes the elements on the About Us page
+* @return {String} HTML elements
+*/
   render() {
+    const parent = super.render();
     return (
       <div>
         <Card>
@@ -33,7 +35,7 @@ class AboutUs extends Component {
                   <div className="block">
                     <div className="section-title">
                       <h2>About Us</h2>
-                      <p>Promote your business, showcase your art,set up an online shop or just test out new ideas</p>
+                      <p>Promote your business, showcase your art, set up an online shop or just test out new ideas</p>
                     </div>
                     <p>It’s time to get more from what you read.Share perspectives about topics that matter today </p>
                   </div>

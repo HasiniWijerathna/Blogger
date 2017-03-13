@@ -1,14 +1,40 @@
 import React, {Component} from 'react';
 import {Card} from 'material-ui/Card';
+import Dropzone from 'react-dropzone';
+import Plupload from 'react-plupload';
 /**
 * Represents the view logic of adding new blogs functionality
 */
 class Help extends Component {
+
+/**
+* Class constructor
+* @param {Object} props User define component
+*/
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      files: [],
+    };
+  }
+
+  onDrop(acceptedFiles) {
+    this.setState({
+      files: acceptedFiles,
+    });
+  }
+
+  onOpenClick() {
+    this.dropzone.open();
+  }
   /**
   * Describes the elements on the About Us page
   * @return {String} HTML elements
   */
   render() {
+    const onDrop = this.onDrop.bind(this);
+    const onOpenClick = this.onOpenClick.bind(this);
     return (
       <div>
         <Card>

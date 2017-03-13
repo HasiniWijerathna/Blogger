@@ -23,6 +23,7 @@ import EditPost from './containers/EditPost';
 import Help from './containers/Help';
 import AllBlogs from './containers/AllBlogs';
 import BlogCategory from './containers/BlogCategory';
+import UserProfile from './containers/UserProfile';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -57,6 +58,7 @@ render(
       <Route path="settings" component={Settings}/>
       <Route path="aboutUs" component={AboutUs} />
       <Route path="help" component={Help} />
+      <Route path="userProfile" component={UserProfile} />
       <Route path="allBlogs" component={AllBlogs} />
       <Route path="login" component={Login} onEnter={checkAuth} />
       <Route path="registration" component={Registration} onEnter={checkAuth} />
