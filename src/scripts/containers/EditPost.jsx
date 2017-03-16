@@ -101,12 +101,6 @@ class EditPost extends BaseContainer {
           },
         });
       });
-      this.setState({
-        post: {
-          title: response.data.title,
-          rteContent: RichTextEditor.createValueFromString( response.data.content, 'markdown'),
-        },
-      });
     })
     .catch((error) => {
       browserHistory.push(`/blogs/${this.props.params.blogId}`);
