@@ -1,15 +1,15 @@
-import React, {Component} from 'react';
+import React from 'react';
+import BaseContainer from './BaseContainer';
+import {post} from '../services/Requests';
+import {modelURL} from '../services/urlFactory';
+
 import {Card, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-
-// import {getSession} from '../services/SessionService';
-import {post} from '../services/Requests';
-import {modelURL} from '../services/urlFactory';
 /**
  * Represents the Settings page components
  */
-class Settings extends Component {
+class Settings extends BaseContainer {
 /**
 * Class constructor
 * @param {Object} props User define component
@@ -45,20 +45,26 @@ class Settings extends Component {
     const data = {
       password: this.state.user.password,
     };
-
-    post(url, data)
-      .then((response) => {
-        console.log('deletion');
-        console.log(response);
+    // post(url, data)
+    //   .then((response) => {
+    //     console.log('deletion');
+    //     console.log(response);
         // resetSession();
         // isAuthenticated() === false;
         // browserHistory.push('/home');
 
         // refresh
-      })
-      .catch((error) => {
-        console.log('error!');
-      });
+      // })
+      // .catch((error) => {
+      //   console.log('error!');
+      // });
+    this.makePOSTrequest(url, data)
+     .then((response) => {
+
+     })
+     .catch((error) => {
+
+     });
   }
 /**
  * Describes the HTML elements

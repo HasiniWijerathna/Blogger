@@ -1,21 +1,23 @@
-import React, {Component} from 'react';
-import {get} from '../services/Requests';
+import React from 'react';
 import {modelURL} from '../services/urlFactory';
+import BaseContainer from './BaseContainer';
+import {browserHistory} from 'react-router';
+
+import {grey700} from 'material-ui/styles/colors';
+import LinearProgress from 'material-ui/LinearProgress';
+import Subheader from 'material-ui/Subheader';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import {List} from 'material-ui/List';
 import {Card, CardActions, CardHeader, CardTitle} from 'material-ui/Card';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import AutoComplete from 'material-ui/AutoComplete';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
-import {grey700} from 'material-ui/styles/colors';
-import LinearProgress from 'material-ui/LinearProgress';
-import Subheader from 'material-ui/Subheader';
-import {browserHistory} from 'react-router';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import {List} from 'material-ui/List';
+
 /**
 * Represents the view logic of all blogs functionality
 */
-class AllBlogs extends Component {
+class AllBlogs extends BaseContainer {
 /**
 * Navigates to the relevent blog page
 * @param  {Integer} blogId Id of the selected blog
@@ -62,27 +64,26 @@ class AllBlogs extends Component {
   * @param  {String} url           The URL to GET from
   * @param  {String} isCollection  Indicates whether the returning data set is a collection
   * @param  {Object} params        The params to be passed with the request
-  * @return {Promise}              The request promise object
   */
   fetchData(url, isCollection, params) {
     this.setState({
       loading: true,
     });
 
-    return get(url, params)
-      .then((response) => {
-        this.setState({
-          loading: false,
-          blogsData: response.data.results,
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          loading: false,
-          open: false,
-          message: 'Oops something went wrong!',
-        });
+    this.makeGETRequest(url)
+    .then((response) => {
+      this.setState({
+        loading: false,
+        blogsData: response.results,
       });
+    })
+    .catch((error) => {
+      this.setState({
+        loading: false,
+        open: false,
+        message: 'Oops something went wrong!',
+      });
+    });
   }
 /**
  * Hides the snack bar

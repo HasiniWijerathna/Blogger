@@ -1,19 +1,20 @@
-import React, {Component} from 'react';
+import React from 'react';
+import {getSession} from '../services/SessionService';
+import {modelURL} from '../services/urlFactory';
+import BaseContainer from './BaseContainer';
+import {browserHistory} from 'react-router';
+
 import TextField from 'material-ui/TextField';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import {browserHistory} from 'react-router';
-import {getSession} from '../services/SessionService';
 
-import {put, get} from '../services/Requests';
-import {modelURL} from '../services/urlFactory';
 /**
  * Represents the Edit profile components
  */
-class EditProfile extends Component {
+class EditProfile extends BaseContainer {
 /**
 * Validate username
 * @param  {String} name The username
@@ -68,7 +69,6 @@ class EditProfile extends Component {
     if (password !== confirmPassword) {
       confirmPasswordError = 'Confirm password does not match';
     }
-
     return {passwordError, confirmPasswordError};
   }
 
@@ -80,10 +80,6 @@ class EditProfile extends Component {
     super(props);
 
     this.state = {
-      // userInfo: {
-      //   name: '',
-      //   email: '',
-      // },
       user: {
         username: '',
         name: '',
@@ -93,10 +89,10 @@ class EditProfile extends Component {
       },
       formValid: false,
       error: {
-        name: EditProfile.validateName(),
-        email: EditProfile.validateEmail(),
-        password: EditProfile.validatePassword().passwordError,
-        confirmPassword: EditProfile.validatePassword().confirmPasswordError,
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
       },
       focused: {
         name: false,
@@ -201,8 +197,8 @@ class EditProfile extends Component {
 * @return {Boolean} valied user credentials
 */
   validateAll() {
-    return this.state.error.name === null && this.state.error.email === null &&
-      this.state.error.password === null && this.state.error.confirmPassword === null;
+    return !this.state.error.name && !this.state.error.email &&
+      !this.state.error.password && !this.state.error.confirmPassword;
   }
   /**
    * Hides the snackbar
@@ -252,8 +248,8 @@ class EditProfile extends Component {
       email: this.state.user.email,
       password: this.state.user.password,
     };
-    put(url, data)
-    .then((user) => {
+    this.makePUTrequest(url, data)
+    .then((response) => {
       browserHistory.push('login');
     })
     .catch((error) => {
@@ -267,28 +263,36 @@ class EditProfile extends Component {
   };
 /**
  * Sends a GET request to user.js
- * @return {[type]} [description]
  */
   editProfileInfo() {
     const userId = getSession().user.id;
     const url = modelURL('user', userId);
-    return get(url)
-      .then((response) => {
-        this.setState({
-          user: {
-            name: response.data.name,
-            email: response.data.email,
-          },
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          errorMessage: {
-            open: true,
-            message: 'Oops Something went wrong!',
-          },
-        });
-      });
+    this.makeGETRequest(url)
+     .then((response) => {
+       this.setState({
+         user: {
+           name: response.name,
+           email: response.email,
+           password: '',
+           confirmPassword: '',
+         },
+
+         error: {
+           name: EditProfile.validateName(response.name),
+           email: EditProfile.validateEmail(response.email),
+           password: EditProfile.validatePassword().passwordError,
+           confirmPassword: EditProfile.validatePassword().confirmPasswordError,
+         },
+       });
+     })
+     .catch((error) => {
+       this.setState({
+         errorMessage: {
+           open: true,
+           message: 'Oops Something went wrong!',
+         },
+       });
+     });
   }
 /**
  * Describes the HTML elements

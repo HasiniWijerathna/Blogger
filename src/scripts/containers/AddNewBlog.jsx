@@ -1,20 +1,18 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {browserHistory} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
 
-import {post} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
 import Snackbar from 'material-ui/Snackbar';
 import {getSession} from '../services/SessionService';
-import {get} from '../services/Requests';
+import BaseContainer from './BaseContainer';
 /**
 * Represents the view logic of adding new blogs functionality
 */
-class AddNewBlog extends Component {
+class AddNewBlog extends BaseContainer {
   /**
   * Class constructor
   * @param {Object} props User define component
@@ -60,12 +58,11 @@ class AddNewBlog extends Component {
         name: this.state.blog.name,
         category: this.state.value,
       };
-      post(url, data)
-      .then(() => {
-        browserHistory.goBack();
-        console.log(data);
-      })
-      .catch((error) =>{
+      this.makePOSTrequest(url, data)
+        .then(() => {
+          browserHistory.goBack();
+        })
+      .catch((error) => {
         this.setState({
           blog: {
             name: '',
@@ -108,19 +105,21 @@ class AddNewBlog extends Component {
   }
 /**
 * Gets all the blog categories
-* @return {Event}   Sends a GET request
 */
   getCategory() {
     const url = modelURL('blogCategory');
-    return get(url)
+    this.makeGETRequest(url)
       .then((response) => {
         this.setState({
           value: '1',
-          category: response.data.results,
+          category: response.results,
         });
       })
       .catch((error) => {
-        console.log('error');
+        this.setState({
+          open: true,
+          message: 'Oops something went wrong',
+        });
       });
   }
 /**

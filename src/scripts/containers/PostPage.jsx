@@ -1,19 +1,18 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {findIndex} from 'lodash';
 import {browserHistory} from 'react-router';
-import ReactMarkdown from 'react-markdown';
-import {Card, CardTitle, CardText} from 'material-ui/Card';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
-
-import {get, post, put, httDelete} from '../services/Requests';
+import BaseContainer from './BaseContainer';
 import {modelURL} from '../services/urlFactory';
 import {getSession} from '../services/SessionService';
 
+import ReactMarkdown from 'react-markdown';
+import {Card, CardTitle, CardText} from 'material-ui/Card';
 /**
  * Representing the logic of adding new posts
  */
-class PostPage extends Component {
+class PostPage extends BaseContainer {
 /**
 * Class constructor
 * @param {Object} props User define component
@@ -27,7 +26,6 @@ class PostPage extends Component {
     };
     this.fetchPost = this.fetchPost.bind(this);
   }
-
 /**
  * Called after the component is mounted
  */
@@ -37,27 +35,25 @@ class PostPage extends Component {
 /**
 * Fetches the post by it's ID
 * @param  {Integer} postId [description]
-* @return {Event}          Sends a GET request
 */
   fetchPost(postId) {
     const url = modelURL('post', postId);
-    return get(url)
-     .then((response) => {
-       response.data.map((data)=>{
-         this.setState({
-           post: data,
-           dataLoading: false,
-         });
-       });
-     })
-     .catch((error) => {
-       this.setState({
-         post: {},
-         dataLoading: false,
-       });
-     });
+    this.makeGETRequest(url)
+    .then((response) => {
+      response.map((data)=>{
+        this.setState({
+          post: data,
+          dataLoading: false,
+        });
+      });
+    })
+    .catch((error) => {
+      this.setState({
+        post: {},
+        dataLoading: false,
+      });
+    });
   }
-
 /**
 * Callback function for deleting comment
 * @param  {object} comment The deleting comment object
@@ -65,22 +61,21 @@ class PostPage extends Component {
   onCommentDelete(comment) {
     const commentId = comment.id;
     const url = modelURL('comment', commentId);
-    httDelete(url)
-      .then((response) => {
-        this.setState({
-          post: {},
-          dataLoading: true,
-        });
-        this.fetchPost(this.props.params.postId);
-      })
-      .catch((error) => {
-        this.setState({
-          blog: {},
-          dataLoading: false,
-        });
+    this.makeDELETErequest(url)
+    .then((response) => {
+      this.setState({
+        post: {},
+        dataLoading: true,
       });
+      this.fetchPost(this.props.params.postId);
+    })
+    .catch((error) => {
+      this.setState({
+        blog: {},
+        dataLoading: false,
+      });
+    });
   }
-
 /**
 * Callback function for editing comment
 * @param  {object} editingComment The editng comment object
@@ -97,16 +92,14 @@ class PostPage extends Component {
       const data = {
         comment: newValue,
       };
-      put(url, data)
+      this.makePUTrequest(url, data)
       .then((response) => {
-        browserHistory.push(`/blogs/${blogId}/posts/${postId}`);
+        browserHistory.push(`/blogs/${this.props.params.blogId}/posts/${this.props.params.postId}`);
       })
-      .catch((error) =>{
-        console.log(error);
+      .catch((error) => {
       });
     }
   }
-
 /**
 * Callback function for adding comment
 * @param  {object} value The adding comment
@@ -119,20 +112,19 @@ class PostPage extends Component {
         comment: value,
         postId: this.state.post.id,
       };
-      post(url, data)
+      this.makePOSTrequest(url, data)
       .then((response) => {
         this.setState({
           comment: response.data.comment,
           dataLoading: true,
         });
         this.fetchPost(this.props.params.postId);
-      })
-      .catch((error) =>{
         this.setState({
           comment: '',
           dataLoading: false,
-
         });
+      })
+      .catch((error) => {
       });
     } else {
       browserHistory.push('/login');

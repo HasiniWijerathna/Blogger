@@ -10,10 +10,11 @@ import FlatButton from 'material-ui/FlatButton';
 import {post} from '../services/Requests';
 import {modelURL} from '../services/urlFactory';
 import Snackbar from 'material-ui/Snackbar';
+import BaseContainer from './BaseContainer';
 /**
  * Representing the logic of adding new posts functionality
  */
-class AddNewPost extends Component {
+class AddNewPost extends BaseContainer {
 /**
 * Class constructor
 * @param {Object} props User define component
@@ -44,15 +45,17 @@ class AddNewPost extends Component {
         title: this.state.post.title,
         content: this.state.post.rteContent.toString('markdown'),
       };
-      post(url, data)
-      .then(() => {
-        browserHistory.push(`/blogs/${data.blogId}`);
-      })
-      .catch((error) =>{
-        this.setState({
-          post,
+      this.makePOSTrequest(url, data)
+        .then(() => {
+          browserHistory.push(`/blogs/${data.blogId}`);
+        })
+        .catch((error) => {
+          this.setState({
+            post,
+            open: true,
+            errorMessage: 'Oops something went wrong',
+          });
         });
-      });
     } else {
       this.setState({
         open: true,

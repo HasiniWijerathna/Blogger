@@ -1,18 +1,19 @@
-import React, {Component} from 'react';
+import React from 'react';
 import RichTextEditor from 'react-rte';
-
+import {post} from '../services/Requests';
+import {modelURL} from '../services/urlFactory';
 import {browserHistory} from 'react-router';
+import BaseContainer from './BaseContainer';
+
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import {post, get, put} from '../services/Requests';
-import {modelURL} from '../services/urlFactory';
 import Snackbar from 'material-ui/Snackbar';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 /**
  * Representing the logic of adding new posts functionality
  */
-class EditPost extends Component {
+class EditPost extends BaseContainer {
   /**
   * Class constructor
   * @param {Object} props User define component
@@ -53,8 +54,8 @@ class EditPost extends Component {
     });
   }
   /**
-   * [contentOnChange description]
-   * @param  {[type]} value [description]
+   * Updated the rteContent
+   * @param  {String} value rteContent
    */
   contentOnChange(value) {
     const post = this.state.post;
@@ -74,11 +75,11 @@ class EditPost extends Component {
       title: this.state.post.title,
       content: this.state.post.rteContent.toString('markdown'),
     };
-    put(url, data)
+    this.makePUTrequest(url, data)
     .then(() => {
       browserHistory.push(`/blogs/${blogId}`);
     })
-    .catch((error) =>{
+    .catch((error) => {
       this.setState({
         post,
       });
@@ -86,22 +87,29 @@ class EditPost extends Component {
   }
 /**
  * Sends a GET request to get the editing post content
- * @return {[type]} [description]
  */
   getPostContent() {
     const postId = this.props.routeParams.postId;
     const url = modelURL('post', postId);
-    return get(url)
-    .then((responce) => {
+    this.makeGETRequest(url)
+    .then((response) => {
+      response.map((data) => {
+        this.setState({
+          post: {
+            title: data.title,
+            rteContent: RichTextEditor.createValueFromString( data.content, 'markdown'),
+          },
+        });
+      });
       this.setState({
         post: {
-          title: responce.data.title,
-          rteContent: RichTextEditor.createValueFromString( responce.data.content, 'markdown'),
+          title: response.data.title,
+          rteContent: RichTextEditor.createValueFromString( response.data.content, 'markdown'),
         },
       });
     })
     .catch((error) => {
-      browserHistory.push(`/blogs/${blogId}`);
+      browserHistory.push(`/blogs/${this.props.params.blogId}`);
     });
   }
   /**

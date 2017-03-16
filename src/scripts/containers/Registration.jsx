@@ -1,19 +1,19 @@
-import React, {Component} from 'react';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import React from 'react';
 import {browserHistory} from 'react-router';
-import Popup from 'react-popup';
-import Snackbar from 'material-ui/Snackbar';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-
 import {setSession} from '../services/SessionService';
 import {post} from '../services/Requests';
 import {registerURL} from '../services/urlFactory';
+import BaseContainer from './BaseContainer';
 
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import Popup from 'react-popup';
+import Snackbar from 'material-ui/Snackbar';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 /**
  * Representing the logic of user registration
  */
-class Registration extends Component {
+class Registration extends BaseContainer {
   /**
   * Validate username
   * @param  {String} username The username
@@ -218,7 +218,7 @@ class Registration extends Component {
       email: this.state.user.email,
       password: this.state.user.password,
     };
-    post(registerURL(), data)
+    this.makePOSTrequest(registerURL(), data)
       .then((response) => {
         const session = {
           authenticated: true,
@@ -227,7 +227,7 @@ class Registration extends Component {
         setSession(session);
         browserHistory.push('/');
       })
-      .catch((error) =>{
+      .catch((error) => {
         this.setState({
           errorMessage: {
             open: true,
@@ -279,8 +279,8 @@ class Registration extends Component {
 * @return {Boolean} valied user credentials
 */
   validateAll() {
-    return this.state.error.name === null && this.state.error.email === null &&
-      this.state.error.password === null && this.state.error.confirmPassword === null;
+    return !this.state.error.name && !this.state.error.email &&
+      !this.state.error.password&& !this.state.error.confirmPassword;
   }
 
   /**
