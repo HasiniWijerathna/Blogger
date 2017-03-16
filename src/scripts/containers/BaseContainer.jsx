@@ -102,17 +102,6 @@ class BaseComponent extends Component {
       message: '',
     });
   }
-/**
- * [login description]
- */
-  login() {
-    console.log('login');
-    if(getSession()) {
-      console.log(getSession());
-    } else {
-      browserHistory.push('/login');
-    }
-  }
   /**
   * Describes the elements on the Add new post page
   * @return {String} HTML elements
