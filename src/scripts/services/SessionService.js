@@ -9,7 +9,6 @@ const getSession = () => {
   if (session) {
     return session;
   } else {
-    resetSession();
     browserHistory.push('login');
   }
 };

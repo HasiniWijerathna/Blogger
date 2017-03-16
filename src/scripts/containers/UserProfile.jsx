@@ -1,4 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
+import BaseContainer from './BaseContainer';
+import {getSession} from '../services/SessionService';
+import {browserHistory} from 'react-router';
+import {get} from '../services/Requests';
+import {modelURL, getPosts, getBlogs, getFavouriteBlogs} from '../services/urlFactory';
+
 import {Card, CardActions, CardHeader, CardMedia, CardTitle} from 'material-ui/Card';
 import {List, ListItem} from 'material-ui/List';
 import ContentInbox from 'material-ui/svg-icons/action/class';
@@ -8,12 +14,6 @@ import ContentDrafts from 'material-ui/svg-icons/content/create';
 import Subheader from 'material-ui/Subheader';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
-
-import {getSession} from '../services/SessionService';
-import {browserHistory} from 'react-router';
-import {get} from '../services/Requests';
-import {modelURL, getPosts, getBlogs, getFavouriteBlogs} from '../services/urlFactory';
-
 /**
  * viewTypes of the content
  */
@@ -26,7 +26,7 @@ const viewTypes = {
 /**
 * Represents the view logic of User Profile functionality
 */
-class UserProfile extends Component {
+class UserProfile extends BaseContainer {
 /**
  * Navigates to the relevent post of the selected blog
  * @param  {Integer} blogId The blog ID
@@ -42,7 +42,6 @@ class UserProfile extends Component {
   static onBlogClick(blogId) {
     browserHistory.push(`/blogs/${blogId}`);
   }
-  /**
 /**
 * Class constructor
 * @param {Object} props User define component
@@ -56,6 +55,8 @@ class UserProfile extends Component {
       blogs: [],
       posts: [],
       viewType: 'blogs',
+      open: false,
+      message: '',
     };
     this.fetchUserPosts = this.fetchUserPosts.bind(this);
     this.fetchUserBlogs = this.fetchUserBlogs.bind(this);
@@ -79,37 +80,42 @@ class UserProfile extends Component {
   }
   /**
    * Fetches all the blogs and posts belongs to a user
-   * @return {Event}              Sends a GET request
    */
   fetchUserPosts() {
     const userId = getSession().user.id;
     const url = getPosts(userId);
-    return get(url)
-     .then((response) => {
-       this.setState({
-         posts: response.data,
-       });
-     })
-     .catch((error) => {
-       console.log(error);
-     });
+
+    this.makeGETRequest(url)
+    .then((response) => {
+      this.setState({
+        posts: response,
+      });
+    })
+    .catch((error) => {
+      this.setState({
+        open: true,
+        message: 'Oops something went wrong!',
+      });
+    });
   }
   /**
    * Fetches all the blogs and posts belongs to a user
-   * @return {Event}              Sends a GET request
    */
   fetchUserBlogs() {
     const userId = getSession().user.id;
     const url = getBlogs(userId);
-    return get(url)
-     .then((response) => {
-       this.setState({
-         blogs: response.data,
-       });
-     })
-     .catch((error) => {
-       console.log(error);
-     });
+    this.makeGETRequest(url)
+    .then((response) => {
+      this.setState({
+        blogs: response,
+      });
+    })
+    .catch((error) => {
+      this.setState({
+        open: true,
+        message: 'Oops something went wrong!',
+      });
+    });
   }
   /**
    * Fetches all the blogs
@@ -124,7 +130,10 @@ class UserProfile extends Component {
         });
       })
       .catch((error) => {
-        console.log(error);
+        this.setState({
+          open: true,
+          message: 'Oops something went wrong!',
+        });
       });
   }
   /**
@@ -136,7 +145,6 @@ class UserProfile extends Component {
     const url = getFavouriteBlogs(userId);
     return get(url)
       .then((response) => {
-        // console.log('response', response);
         const favouriteBlogs = [];
         response.data.map((favouriteBlog) => {
           if(favouriteBlog.Blog) {
@@ -148,7 +156,10 @@ class UserProfile extends Component {
         });
       })
       .catch((error) => {
-        console.log(error);
+        this.setState({
+          open: true,
+          message: 'Oops something went wrong!',
+        });
       });
   }
 /**
@@ -166,6 +177,15 @@ class UserProfile extends Component {
   navigateEditProfile() {
     browserHistory.push('/editProfile');
   }
+/**
+ * Hides the snackbar when the user clicks it
+ */
+  handleRequestClose() {
+    this.setState({
+      open: false,
+      message: '',
+    });
+  }
 /** Describes the elements on the About Us page
 * @return {String} HTML elements
 */
@@ -174,6 +194,7 @@ class UserProfile extends Component {
     const blogViewType = this.viewType.bind(this, viewTypes.blogs);
     const postViewType = this.viewType.bind(this, viewTypes.posts);
     const favouriteViewType = this.viewType.bind(this, viewTypes.favourites);
+    const handleRequestClose = this.handleRequestClose.bind(this);
     const imageStyle = {
       height: '400px',
     };
@@ -257,9 +278,14 @@ class UserProfile extends Component {
         {posts}
       </div>);
     }
-
     return(
       <div>
+        <Snackbar
+         open={this.state.open}
+         message={this.state.message}
+         autoHideDuration={4000}
+         onRequestClose={handleRequestClose}
+       />
         <div id="profileCard">
           <Card>
             <CardMedia

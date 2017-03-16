@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {Card} from 'material-ui/Card';
 import {browserHistory} from 'react-router';
-import RaisedButton from 'material-ui/RaisedButton';
 import {isAuthenticated, resetSession} from '../services/SessionService';
+
+import {Card} from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
+
 /**
 * Representing the login sign up functionalities
 */

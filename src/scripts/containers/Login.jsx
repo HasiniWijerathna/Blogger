@@ -1,14 +1,13 @@
-import React, {Component} from 'react';
+import React from 'react';
+import {browserHistory} from 'react-router';
+import {setSession} from '../services/SessionService';
+import {loginURL} from '../services/urlFactory';
+import BaseContainer from './BaseContainer';
+
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import {browserHistory} from 'react-router';
 import Snackbar from 'material-ui/Snackbar';
 import {Card, CardText} from 'material-ui/Card';
-
-import {setSession} from '../services/SessionService';
-import {post} from '../services/Requests';
-import {loginURL} from '../services/urlFactory';
-
 
 const snackBarStyleMap = {
   success: {
@@ -40,7 +39,7 @@ const snackBarStyleMap = {
 /**
 * Representing the logic of user login function
 */
-class Login extends Component {
+class Login extends BaseContainer {
 /**
 * Class constructor
 * @param {Object} props User define component
@@ -103,24 +102,24 @@ class Login extends Component {
       username: this.state.user.name,
       password: this.state.user.password,
     };
-    post(loginURL(), data)
-      .then((response) => {
-        const session = {
-          authenticated: true,
-          token: response.data.token,
-          user: response.data.user,
-        };
-        setSession(session);
-        browserHistory.push(this.state.nextPathname);
-      })
-      .catch((error) => {
-        this.setState({
-          errorMessage: {
-            open: true,
-            message: 'Incorrect email or password',
-          },
-        });
+    this.makePOSTrequest(loginURL(), data)
+    .then((response) => {
+      const session = {
+        authenticated: true,
+        token: response.data.token,
+        user: response.data.user,
+      };
+      setSession(session);
+      browserHistory.push(this.state.nextPathname);
+    })
+    .catch((error) => {
+      this.setState({
+        errorMessage: {
+          open: true,
+          message: 'Incorrect email or password',
+        },
       });
+    });
   }
 /**
  * Navigates to the registration page

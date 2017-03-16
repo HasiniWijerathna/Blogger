@@ -1,7 +1,13 @@
-import React, {Component} from 'react';
+import React from 'react';
+import {httDelete} from '../services/Requests';
+import {modelURL, modelLikeURL} from '../services/urlFactory';
+import {getSession} from '../services/SessionService';
+import {post} from '../services/Requests';
+import BaseContainer from './BaseContainer';
+import {browserHistory} from 'react-router';
+
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import {browserHistory} from 'react-router';
 import {List} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import {Card, CardActions, CardTitle} from 'material-ui/Card';
@@ -16,11 +22,12 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import LinearProgress from 'material-ui/LinearProgress';
 
-import {get, httDelete} from '../services/Requests';
-import {modelURL, modelLikeURL} from '../services/urlFactory';
-import {getSession} from '../services/SessionService';
-import {post} from '../services/Requests';
-
+/**
+ * Checks if the user has already liked the blog
+ * @param  {Object} user The user object
+ * @param  {Object} blog The blog object
+ * @return {[type]}      [description]
+ */
 const hasUserLiked = (user, blog) => {
   let userLiked = false;
 
@@ -38,7 +45,7 @@ const hasUserLiked = (user, blog) => {
 /**
  * Representing the logic of presenting existing posts belogs to the blog
  */
-class BlogPage extends Component {
+class BlogPage extends BaseContainer {
 
 /**
  * Navigates to the relevent post of the selected blog
@@ -50,8 +57,8 @@ class BlogPage extends Component {
   }
 /**
  * Navigates to the edit opst page
- * @param  {[type]} blogId [description]
- * @param  {[type]} postId [description]
+ * @param  {Integer} blogId The blogId
+ * @param  {Integer} postId The postId
  */
   static navigateEditPost(blogId, postId) {
     browserHistory.push(`/blogs/${blogId}/posts/${postId}/editPost`);
@@ -103,19 +110,18 @@ class BlogPage extends Component {
   }
 
 /**
-* Fetches a blog
-* @param  {Integer} blogId The blogId
-* @return {Event}          Sends a GET request
-*/
+ * Fetaches a blogId
+ * @param  {Integer} blogId The blogId
+ */
   fetchBlog(blogId) {
     const url = modelURL('blog', blogId);
     this.setState({
       loading: true,
     });
-    return get(url)
+    this.makeGETRequest(url)
       .then((response) => {
         this.setState({
-          blog: response.data,
+          blog: response,
           loading: false,
         });
       })
@@ -124,17 +130,19 @@ class BlogPage extends Component {
           dataLoading: true,
           blog: {},
           open: true,
+          errorMessage: 'Oops something went wrong',
           loading: false,
         });
       });
   }
+
 /**
  * Delets a selected post
  */
   onDeleteBlog() {
     const blogId = this.state.blog.id;
     const url = modelURL('blog', blogId);
-    httDelete(url)
+    this.makeDELETErequest(url)
       .then((response) => {
         this.setState({
           post: {},
@@ -145,7 +153,7 @@ class BlogPage extends Component {
       .catch((error) => {
         this.setState({
           blog: {},
-          loading: false,
+          loading: true,
         });
         this.fetchBlog(this.props.params.blogId);
       });
@@ -163,7 +171,6 @@ class BlogPage extends Component {
    * Gets the count of the likes
    */
   toggleFavourite() {
-    // const loggedUser = getSession().user.id;
     const blogId = this.state.blog.id;
     const baseURL = modelURL('blog', blogId, 'like');
     const url = modelLikeURL(baseURL);
@@ -187,8 +194,7 @@ class BlogPage extends Component {
     const blogId = this.state.blog.id;
     const baseURL = modelURL('blog', blogId, 'like');
     const url = modelLikeURL(baseURL);
-
-    post(url)
+    this.makePOSTrequest(url)
     .then((response) => {
       this.setState({
         blog: response.data,
@@ -207,23 +213,23 @@ class BlogPage extends Component {
    */
   toggleDown() {
     const blogId = this.state.blog.id;
-    const baseURL = modelURL('blog', blogId, 'like');
+    const baseURL = modelURL('blog', blogId, 'likTe');
     const url = modelLikeURL(baseURL);
 
-    httDelete(url)
-    .then((response) => {
-      this.setState({
-        blog: response.data,
+    this.makeDELETErequest(url)
+      .then((response) => {
+        this.setState({
+          blog: response.data,
+        });
+        this.fetchBlog(blogId);
+      })
+      .catch((error) => {
+        this.fetchBlog(blogId);
+        this.setState({
+          open: false,
+          errorMessage: 'Oops something went wrong!',
+        });
       });
-      this.fetchBlog(blogId);
-    })
-    .catch((error) => {
-      this.fetchBlog(blogId);
-      this.setState({
-        open: false,
-        errorMessage: 'Oops something went wrong!',
-      });
-    });
   }
 /**
  * Alert handle alert
@@ -288,7 +294,17 @@ class BlogPage extends Component {
       onTouchTap={handleClose}
       />,
     ];
+    const buttonStyle = {
+      position: 'fixed',
+      bottom: '16px',
+      right: '16px',
+      marginBottom: '10px',
+      zIndex: 99999,
+    };
 
+    const deleteButtonStyle = {
+      marginLeft: '100px',
+    };
     let favouriteButton = null;
     const authenticated = getSession().authenticated;
     if(authenticated) {
@@ -341,19 +357,6 @@ class BlogPage extends Component {
     }
 
     let posts = [];
-
-    const buttonStyle = {
-      position: 'fixed',
-      bottom: '16px',
-      right: '16px',
-      marginBottom: '10px',
-      zIndex: 99999,
-    };
-
-    const deleteButtonStyle = {
-      marginLeft: '100px',
-    };
-
     let editPost = null;
     if(getSession().user) {
       const userId = getSession().user.id;

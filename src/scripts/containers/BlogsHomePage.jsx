@@ -1,25 +1,21 @@
-import React, {Component} from 'react';
-import Subheader from 'material-ui/Subheader';
+import React from 'react';
+import {modelURL} from '../services/urlFactory';
 import {browserHistory} from 'react-router';
+import BaseContainer from './BaseContainer';
+
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import AutoComplete from 'material-ui/AutoComplete';
-import {List} from 'material-ui/List';
-import {Card, CardActions, CardHeader, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
-import {grey700} from 'material-ui/styles/colors';
-import LinearProgress from 'material-ui/LinearProgress';
 import {GridList, GridTile} from 'material-ui/GridList';
-import IconButton from 'material-ui/IconButton';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
+import ActionFlightTakeoff from 'material-ui/svg-icons/action/touch-app';
+import {grey50} from 'material-ui/styles/colors';
 
-import {get} from '../services/Requests';
-import {modelURL} from '../services/urlFactory';
 /**
 * Representing the logic of presenting existing blogs
 */
-class BlogsHomePage extends Component {
+class BlogsHomePage extends BaseContainer {
 
 /**
 * Navigates to the relevent blog page
@@ -70,14 +66,13 @@ class BlogsHomePage extends Component {
 /**
  * Fetches the category by it's ID
  * @param  {Event} categoryId   Category ID
- * @return {Integer}            Sends a GET request
  */
   getOneCategory(categoryId) {
     const url = modelURL('blogCategory', categoryId);
-    return get(url)
+    this.makeGETRequest(url)
       .then((response) => {
         this.setState({
-          blogsOfCategory: response.data.Blogs,
+          blogsOfCategory: response.Blogs,
         });
         browserHistory.push(`/blogs/category/${categoryId}`);
       })
@@ -91,15 +86,14 @@ class BlogsHomePage extends Component {
   }
   /**
   * Gets all the blog categories
-  * @return {Event}   Sends a GET request
   */
   getCategory() {
     const url = modelURL('blogCategory');
-    return get(url)
+    this.makeGETRequest(url)
       .then((response) => {
         this.setState({
           value: '1',
-          category: response.data.results,
+          category: response.results,
         });
       })
       .catch((error) => {
@@ -159,6 +153,10 @@ class BlogsHomePage extends Component {
       marginBottom: '10px',
       zIndex: 99999,
     };
+    const iconStyles = {
+      marginRight: 20,
+    };
+
     const categories = this.state.category;
     const grids = categories.map((category) => {
       const getOneCategory = this.getOneCategory.bind(this, category.id);
@@ -166,7 +164,13 @@ class BlogsHomePage extends Component {
         <GridTile
           key={category.id}
           title={category.name}
-          actionIcon={<IconButton onClick={getOneCategory} ><StarBorder color="white" /></IconButton>}
+          actionIcon={<ActionFlightTakeoff
+            onClick={getOneCategory}
+            style={iconStyles}
+            color={grey50}>
+            <StarBorder
+            color="white"
+             /></ActionFlightTakeoff>}
         >
           <img src={category.imageURL} />
         </GridTile>

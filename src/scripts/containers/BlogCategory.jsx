@@ -1,14 +1,15 @@
-import React, {Component} from 'react';
-import {get} from '../services/Requests';
+import React from 'react';
 import {modelURL} from '../services/urlFactory';
+import {browserHistory} from 'react-router';
+import BaseContainer from './BaseContainer';
 
 import {Card, CardActions, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
-import {browserHistory} from 'react-router';
+
 /**
 * Represents the view logic of  blogs belongs to a one category functionality
 */
-class BlogCategory extends Component {
+class BlogCategory extends BaseContainer {
 /**
 * Navigates to the relevent blog page
 * @param  {Integer} blogId Id of the selected blog
@@ -49,7 +50,6 @@ class BlogCategory extends Component {
 /**
  * Fetches all the blogs belongs to a category
  * @param  {Integer} categoryId Selected categoryId
- * @return {Event}              Sends a GET request
  */
   fetchCategory(categoryId) {
     const url = modelURL('blogCategory', categoryId);
@@ -57,20 +57,20 @@ class BlogCategory extends Component {
       loading: true,
     });
 
-    return get(url)
-     .then((response) => {
-       this.setState({
-         category: response.data.name,
-         blogs: response.data.Blogs,
-         loading: false,
-       });
-     })
-     .catch((error) => {
-       this.setState({
-         blogs: [],
-         loading: false,
-       });
-     });
+    this.makeGETRequest(url)
+    .then((response) => {
+      this.setState({
+        category: response.name,
+        blogs: response.Blogs,
+        loading: false,
+      });
+    })
+    .catch((error) => {
+      this.setState({
+        blogs: [],
+        loading: false,
+      });
+    });
   }
 /**
  * Hides the snack bar
