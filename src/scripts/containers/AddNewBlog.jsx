@@ -146,15 +146,15 @@ class AddNewBlog extends Component {
             onChange={handleChangeList}
             autoWidth={true}
           >
-            <MenuItem value={1} primaryText="Technology" />
+            <MenuItem value={1} primaryText="Music" />
             <MenuItem value={2} primaryText="Entertainment" />
             <MenuItem value={3} primaryText="Photography" />
-            <MenuItem value={4} primaryText="Music" />
+            <MenuItem value={4} primaryText="Technology" />
             <MenuItem value={5} primaryText="Travel" />
             <MenuItem value={6} primaryText="Life Style" />
             <MenuItem value={7} primaryText="Food" />
-            <MenuItem value={8} primaryText="Beauty" />
-            <MenuItem value={9} primaryText="Sports" />
+            <MenuItem value={8} primaryText="Sports" />
+            <MenuItem value={9} primaryText="Beauty" />
           </SelectField>
         </div>
         <RaisedButton label="Save" primary onClick={onAddBlog} />
