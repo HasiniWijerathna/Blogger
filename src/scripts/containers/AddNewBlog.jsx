@@ -127,6 +127,7 @@ class AddNewBlog extends BaseContainer {
 * @return {String} HTML elements
 */
   render() {
+    this.getCategory();
     const onAddBlog = this.addNewBlog.bind(this);
     const onChangeName = this.onChangeName.bind(this);
     const handleRequestClose = this.handleRequestClose.bind(this);
