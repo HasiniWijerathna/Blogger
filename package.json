@@ -58,7 +58,7 @@
     "http-server": "^0.8.0",
     "img-loader": "^1.2.0",
     "json-loader": "^0.5.4",
-    "node-sass": "^3.2.0",
+    "node-sass": "^4.14.1",
     "opn": "^4.0.2",
     "ora": "^0.3.0",
     "path": "^0.12.7",
